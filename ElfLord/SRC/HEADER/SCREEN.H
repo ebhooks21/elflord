@@ -1,0 +1,42 @@
+/**
+ * Screen.h
+ * Author: Eric HOoks
+ * Purpose: Definitions for the Screen functions.
+ */
+
+#ifndef SCREEN_H
+#define SCREEN_H
+
+//Forward declare the game structure
+typedef struct game_t Game;
+
+//Define the Screen
+typedef struct screen_t {
+} Screen;
+
+/**
+ * Function to initialize the game screen.
+ */
+void initScreen(Screen* s);
+
+/**
+ * Function to destroy the screen.
+ */
+void destroyScreen(Screen* s);
+
+/**
+ * Function to draw the screen border.
+ */
+void drawScreenBorder(Screen* s);
+
+/**
+ * Function to render the shop status area.
+ */
+void renderStatusBar(Screen* s, Game* g);
+
+/**
+ * Function to render the screen.
+ */
+void render(Screen* s, Game* g);
+
+#endif 
