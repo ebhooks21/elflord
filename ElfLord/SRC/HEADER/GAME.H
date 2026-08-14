@@ -31,7 +31,7 @@ void destroyGame(Game* g);
 /**
  * Function to create the game screen.
  */
-Screen* createGameScreen();
+Screen* createGameScreen(int width, int height);
 
 /**
  * Function to start the game loop.

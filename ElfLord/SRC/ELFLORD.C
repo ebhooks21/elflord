@@ -25,7 +25,8 @@
 	free(g);
 
 	//Output thank you message
-	printf("Thank you for playing.\n");
+	freopen("CON", "w", stderr);
+	fprintf(stderr, "Thank you for playing.\n");
 
 	return 0;
  }
