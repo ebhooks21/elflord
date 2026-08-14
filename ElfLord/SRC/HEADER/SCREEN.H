@@ -12,6 +12,11 @@ typedef struct game_t Game;
 
 //Define the Screen
 typedef struct screen_t {
+	//Width of the screen
+	int width;
+
+	//Height of the screen
+	int height;
 } Screen;
 
 /**

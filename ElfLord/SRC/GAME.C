@@ -13,7 +13,7 @@
  * Function to start thhe game.
  */
 void startGame(Game* g) {
-	g->screen = createGameScreen();
+	g->screen = createGameScreen(320, 200);
 
 	//Set the game state
 	g->state = MENU;
@@ -39,8 +39,12 @@ void destroyGame(Game* g) {
 /**
  * Function to create a screen reference.
  */
-Screen* createGameScreen(void) {
-	return malloc(sizeof(Screen));
+Screen* createGameScreen(int width, int height) {
+	Screen* s = malloc(sizeof(Screen));
+	s->width = width;
+	s->height = height;
+
+	return s;
 }
 
 /**

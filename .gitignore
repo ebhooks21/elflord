@@ -56,3 +56,6 @@ dkms.conf
 
 # build files
 ElfLord/BUILD/*
+
+# tags file
+tags

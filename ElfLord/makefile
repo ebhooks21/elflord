@@ -11,6 +11,9 @@ clean-obj:
 
 release: clean build clean-obj
 
+run:
+	BUILD\ELFLORD.EXE
+
 build: BUILD\ELFLORD.EXE
 
 BUILD\ELFLORD.EXE: $(OBJECTS)
