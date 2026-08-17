@@ -1,0 +1,9 @@
+CompileFlags:
+  Add: [-I/home/ehooks/DOS/DJGPP/INCLUDE/, -xc, -std=c11, -Wno-c++-compat]
+
+Diagnostics:
+  Suppress: [
+    "c++11-extensions",
+    "c++20-extensions",
+    "c++-compat"
+  ]
