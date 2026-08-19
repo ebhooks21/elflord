@@ -5,6 +5,8 @@ LIBS = -lgrx20
 clean:
 	del BUILD\*.o 
 	del BUILD\ELFLORD.EXE
+	del BUILD\ASSET\*.*
+	rmdir BUILD\ASSET
 
 clean-obj:
 	del BUILD\*.o
@@ -18,6 +20,8 @@ build: BUILD\ELFLORD.EXE
 
 BUILD\ELFLORD.EXE: $(OBJECTS)
 	$(CC) -o BUILD\ELFLORD.EXE $(OBJECTS) $(LIBS)
+	mkdir BUILD\ASSET
+	copy ASSET\*.* BUILD\ASSET
 
 BUILD\ElfLord.o: SRC\ElfLord.c
 	$(CC) -c SRC\ElfLord.c -o BUILD\ElfLord.o

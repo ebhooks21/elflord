@@ -49,8 +49,17 @@ void renderStatusBar(Screen* s, Game* g) {
  */
 void render(Screen* s, Game* g) {
 	//Draw the screen border
-	drawScreenBorder(s);
+	//drawScreenBorder(s);
 
+    GrContext* bg = GrCreateContext(s->width, s->height, NULL, NULL);
+    int imgW = 0;
+    int imgH = 0;
+    int* imgData = NULL;
+
+    GrSetRGBcolorMode();
+    GrLoadContextFromPnm(bg, "ASSET\\title.ppm");
+    GrBitBlt(GrScreenContext(), 0, 0, bg, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+    GrDestroyContext(bg);
     //Render the status bar
-    renderStatusBar(s, g);
+    //renderStatusBar(s, g);
 }
