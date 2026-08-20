@@ -16,7 +16,7 @@ void startGame(Game* g) {
 	g->screen = createGameScreen(320, 200);
 
 	//Set the game state
-	g->state = MENU;
+	g->state = TITLE;
 
 	//Initialize the screen
 	initScreen(g->screen);
@@ -43,6 +43,7 @@ Screen* createGameScreen(int width, int height) {
 	Screen* s = malloc(sizeof(Screen));
 	s->width = width;
 	s->height = height;
+	s->background = NULL;
 
 	return s;
 }
@@ -57,9 +58,19 @@ void startGameLoop(Game* g) {
 		render(g->screen, g);
 
 		if(GrKeyPressed != 0) {
-			if(GrKeyRead() == GrKey_Escape) {
-				running = 0;
-			}
+			switch(g->state) {
+				case TITLE:
+					if(GrKeyRead() == GrKey_Return) {
+						g->state = MENU;
+					}
+					break;
+
+				default:
+					if(GrKeyRead() == GrKey_Escape) {
+						running = 0;
+					}
+					break;
+			}	
 		}
 	} while(running == 1);
 }

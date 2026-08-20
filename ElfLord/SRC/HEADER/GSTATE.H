@@ -8,6 +8,7 @@
 #define GSTATE_H
 
 typedef enum {
+	TITLE,
 	MENU,
 	EXIT_PROMPT
 } GSTATE;
