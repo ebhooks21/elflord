@@ -53,6 +53,11 @@ void renderStatusBar(Screen* s, Game* g);
 void renderTitleScreen(Screen* s);
 
 /**
+ * Function to render screen text.
+ */
+void renderScreenText(char* t, int x, int y, GrColor fg, GrColor bg);
+
+/**
  * Function to render the screen.
  */
 void render(Screen* s, Game* g);

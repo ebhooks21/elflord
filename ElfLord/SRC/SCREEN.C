@@ -64,7 +64,18 @@ void renderTitleScreen(Screen* s) {
         GrLoadContextFromPnm(s->background, "ASSET\\title.ppm");
     }
 
+    //Write the background image
     GrBitBlt(s->sContext, 0, 0, s->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+
+    //Write the menu options to the screen
+    renderScreenText("New Game", ((int)(s->width / 2) - (4 * 16)), (int)(s->height / 2), GrWhite(), NULL);
+}
+
+/**
+ * Function to render screen text.
+ */
+void renderScreenText(char* t, int x, int y, GrColor fg, GrColor bg) {
+    GrTextXY(x, y, t, fg, bg);
 }
 
 /**
