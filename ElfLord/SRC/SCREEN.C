@@ -7,6 +7,7 @@
 #include "HEADER/GAME.H"
 #include <GRX20.H>
 #include <stdio.h>
+#include <string.h>
 
 /**
  * Function to initialize the screen.
@@ -57,7 +58,7 @@ void renderStatusBar(Screen* s, Game* g) {
 /**
  * Function to render the title screen.
  */
-void renderTitleScreen(Screen* s) {
+void renderTitleScreen(Screen* s, int menuOption) {
     if(s->background == NULL) {
         //Load the background image into memory
         s->background = GrCreateContext(s->width, s->height, NULL, NULL);
@@ -68,14 +69,53 @@ void renderTitleScreen(Screen* s) {
     GrBitBlt(s->sContext, 0, 0, s->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
 
     //Write the menu options to the screen
-    renderScreenText("New Game", ((int)(s->width / 2) - (4 * 16)), (int)(s->height / 2), GrWhite(), NULL);
+    if(menuOption == 0) {
+        renderScreenText("[ New Game ]", (int)(s->width / 2), (int)(s->height / 2), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+    }
+
+    else {
+        renderScreenText("New Game", (int)(s->width / 2), (int)(s->height / 2), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+    }
+
+    if(menuOption == 1) {
+        renderScreenText("[ Continue ]", (int)(s->width / 2), ((int)(s->height / 2) + 32), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+    }
+
+    else {
+        renderScreenText("Continue", (int)(s->width / 2), ((int)(s->height / 2) + 32), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+    }
+
+    if(menuOption == 2) {
+        renderScreenText("[ Return to DOS ]", (int)(s->width / 2), ((int)(s->height / 2) + 64), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+    }
+
+    else {
+        renderScreenText("Return to DOS", (int)(s->width / 2), ((int)(s->height / 2) + 64), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+    }
 }
 
 /**
  * Function to render screen text.
  */
-void renderScreenText(char* t, int x, int y, GrColor fg, GrColor bg) {
-    GrTextXY(x, y, t, fg, bg);
+void renderScreenText(char* t, int x, int y, GrColor fc, GrColor bc, GrFont* fnt) {
+    GrTextOption options;
+
+    options.txo_font = fnt;
+    options.txo_fgcolor.v = fc;
+    //options.txo_bgcolor.v = GrNOCOLOR;
+    options.txo_bgcolor.v = bc;
+    options.txo_chrtype = GR_BYTE_TEXT;
+    options.txo_direct = GR_TEXT_RIGHT;
+    options.txo_xalign = GR_ALIGN_CENTER;
+    options.txo_yalign = GR_ALIGN_TOP;
+
+    GrDrawString(
+        (void *)t,
+        strlen(t),
+        x,
+        y,
+        &options
+    );
 }
 
 /**
@@ -85,7 +125,7 @@ void render(Screen* s, Game* g) {
     //See what we need to render
     switch(g->state) {
         case TITLE:
-            renderTitleScreen(s);
+            renderTitleScreen(s, g->menuOption);
             break;
 
         default:

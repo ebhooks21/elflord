@@ -50,12 +50,12 @@ void renderStatusBar(Screen* s, Game* g);
 /**
  * Function to render the title screen.
  */
-void renderTitleScreen(Screen* s);
+void renderTitleScreen(Screen* s, int menuOption);
 
 /**
  * Function to render screen text.
  */
-void renderScreenText(char* t, int x, int y, GrColor fg, GrColor bg);
+void renderScreenText(char* t, int x, int y, GrColor fc, GrColor bc, GrFont* fnt);
 
 /**
  * Function to render the screen.
