@@ -4,6 +4,8 @@
  * Purpose: Definitions for the Screen functions.
  */
 
+#include <GRX20.H>
+
 #ifndef SCREEN_H
 #define SCREEN_H
 
@@ -17,6 +19,12 @@ typedef struct screen_t {
 
 	//Height of the screen
 	int height;
+
+	//Context for the entire screen background
+	GrContext* background;
+
+	//Context for the entire screen
+	GrContext* sContext;
 } Screen;
 
 /**
@@ -38,6 +46,16 @@ void drawScreenBorder(Screen* s);
  * Function to render the shop status area.
  */
 void renderStatusBar(Screen* s, Game* g);
+
+/**
+ * Function to render the title screen.
+ */
+void renderTitleScreen(Screen* s, int menuOption);
+
+/**
+ * Function to render screen text.
+ */
+void renderScreenText(char* t, int x, int y, GrColor fc, GrColor bc, GrFont* fnt);
 
 /**
  * Function to render the screen.

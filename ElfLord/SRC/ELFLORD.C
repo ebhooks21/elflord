@@ -13,7 +13,7 @@
   */
  int main() {
 	//Create a game reference
-	Game* g = malloc(sizeof(Game));
+	Game* g = malloc(sizeof *g);
 
 	//Start the game
 	startGame(g);
