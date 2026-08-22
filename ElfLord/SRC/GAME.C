@@ -43,10 +43,11 @@ void destroyGame(Game* g) {
  * Function to create a screen reference.
  */
 Screen* createGameScreen(int width, int height) {
-	Screen* s = malloc(sizeof(Screen));
+	Screen* s = malloc(sizeof *s);
 	s->width = width;
 	s->height = height;
 	s->background = NULL;
+	s->frame = NULL;
 
 	return s;
 }

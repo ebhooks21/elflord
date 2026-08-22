@@ -48,7 +48,7 @@ void handleGenericKeyInput(Game* g, GrKeyType key) {
 void processKeyInput(Game* g) {
 	GrKeyType key;
 
-	if(GrKeyPressed != 0) {
+	if(GrKeyPressed() != 0) {
 		key = GrKeyRead();
 
 		switch(g->state) {

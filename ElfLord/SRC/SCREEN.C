@@ -5,6 +5,7 @@
  */
 #include "HEADER/SCREEN.H"
 #include "HEADER/GAME.H"
+#include "HEADER/GSTATE.H"
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
@@ -19,6 +20,12 @@ void initScreen(Screen* s) {
 
     //Preset the context
     s->sContext = GrScreenContext();
+
+    //Off-screen back buffer
+    s->frame = GrCreateContext(s->width, s->height, NULL, NULL);
+
+    //Start drawing into the back buffer
+    GrSetContext(s->frame);
 }
 
 /**
@@ -27,8 +34,12 @@ void initScreen(Screen* s) {
 void destroyScreen(Screen* s) {
     //Delete the background context if it hasnt been already
     if(s->background != NULL) {
-        GrDestroyContext(s->background);
-        s->background = NULL;
+        unloadBackground(s);
+    }
+
+    if(s->frame != NULL) {
+        GrDestroyContext(s->frame);
+        s->frame = NULL;
     }
 
 	//Reset the video mode
@@ -61,12 +72,11 @@ void renderStatusBar(Screen* s, Game* g) {
 void renderTitleScreen(Screen* s, int menuOption) {
     if(s->background == NULL) {
         //Load the background image into memory
-        s->background = GrCreateContext(s->width, s->height, NULL, NULL);
-        GrLoadContextFromPnm(s->background, "ASSET\\title.ppm");
+        loadBackground(s, "ASSET\\title.ppm");
     }
 
     //Write the background image
-    GrBitBlt(s->sContext, 0, 0, s->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+    GrBitBlt(s->frame, 0, 0, s->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
 
     //Write the menu options to the screen
     if(menuOption == 0) {
@@ -122,14 +132,43 @@ void renderScreenText(char* t, int x, int y, GrColor fc, GrColor bc, GrFont* fnt
  * Function to render the game screen.
  */
 void render(Screen* s, Game* g) {
+     //Draw into the off-screen frame
+    GrSetContext(s->frame);
+    GrClearContext(GrBlack());
+
     //See what we need to render
     switch(g->state) {
         case TITLE:
             renderTitleScreen(s, g->menuOption);
             break;
 
+        case GAME_START:
+            //Unload the background and start the game
+            unloadBackground(s);
+            g->state = MENU;
+            break;
+
         default:
             GrClearScreen(GrBlack());
             break;
     }
+
+    GrBitBlt(s->sContext, 0, 0, s->frame, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+}
+
+/**
+ * Function to unload the background.
+ */
+void unloadBackground(Screen* s) {
+    GrDestroyContext(s->background);
+    s->background = NULL;
+}
+
+/**
+ * Function to load a background.
+ */
+void loadBackground(Screen* s, char* backgroundPath) {
+    //Load the background image into memory
+    s->background = GrCreateContext(s->width, s->height, NULL, NULL);
+    GrLoadContextFromPnm(s->background, backgroundPath);
 }

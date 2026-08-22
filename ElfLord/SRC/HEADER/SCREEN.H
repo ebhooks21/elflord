@@ -25,6 +25,9 @@ typedef struct screen_t {
 
 	//Context for the entire screen
 	GrContext* sContext;
+
+	//Context for a given frame
+	GrContext* frame;
 } Screen;
 
 /**
@@ -62,4 +65,14 @@ void renderScreenText(char* t, int x, int y, GrColor fc, GrColor bc, GrFont* fnt
  */
 void render(Screen* s, Game* g);
 
+/**
+ * Function to unload the background.
+ */
+void unloadBackground(Screen* s);
+
+/**
+ * Function to load a background.
+ */
+void loadBackground(Screen* s, char* backgroundPath);
+	
 #endif 
