@@ -69,7 +69,7 @@ void startGameLoop(Game* g) {
 					if(key == GrKey_Return) {
 						switch(g->menuOption) {
 							case 0:
-								g->state = MENU;
+								g->state = GAME_START;
 								break;
 							
 							case 2:
