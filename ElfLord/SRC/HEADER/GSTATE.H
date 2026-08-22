@@ -11,7 +11,8 @@ typedef enum {
 	TITLE,
 	GAME_START,
 	MENU,
-	EXIT_PROMPT
+	EXIT_PROMPT,
+	EXIT_GAME
 } GSTATE;
 
 #endif

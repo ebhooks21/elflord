@@ -4,10 +4,10 @@
  * Purpose: To implement the Game functions.
  */
 #include <stdlib.h>
-#include <GRXKEYS.H>
 #include "HEADER/GAME.H"
 #include "HEADER/SCREEN.H"
 #include "HEADER/GSTATE.H"
+#include "HEADER/KEYB.H"
 
 /**
  * Function to start thhe game.
@@ -56,43 +56,11 @@ Screen* createGameScreen(int width, int height) {
  */
 void startGameLoop(Game* g) {
 	int running = 1;
-	GrKeyType key;
 
 	do {
 		render(g->screen, g);
 
-		if(GrKeyPressed != 0) {
-			key = GrKeyRead();
-
-			switch(g->state) {
-				case TITLE:
-					if(key == GrKey_Return) {
-						switch(g->menuOption) {
-							case 0:
-								g->state = GAME_START;
-								break;
-							
-							case 2:
-								running = 0;
-								break;
-						}
-					}
-
-					else if((key == GrKey_Up) && (g->menuOption > 0)) {
-						g->menuOption--;
-					}
-
-					else if((key == GrKey_Down) && (g->menuOption < 2)) {
-						g->menuOption++;
-					}
-					break;
-
-				default:
-					if(key == GrKey_Escape) {
-						running = 0;
-					}
-					break;
-			}	
-		}
-	} while(running == 1);
+		//Check for keyboard input
+		processKeyInput(g);
+	} while(g->state != EXIT_GAME);
 }
