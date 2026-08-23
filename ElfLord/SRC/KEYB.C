@@ -15,7 +15,7 @@ void handleTitleScreenKeyInput(Game* g, GrKeyType key) {
 	if(key == GrKey_Return) {
 		switch(g->menuOption) {
 			case 0:
-				g->state = GAME_START;
+				g->state = GAME_START_NEW;
 				break;
 			
 			case 2:

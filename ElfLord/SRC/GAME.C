@@ -53,12 +53,33 @@ Screen* createGameScreen(int width, int height) {
 }
 
 /**
+ * Function to define functionality that happens each time the game loop processes.
+ */
+ void tick(Screen* s, Game* g) {
+	//Check the state and do any functionality that should be applied per that state
+	switch(g->state) {
+        case GAME_START_NEW:
+            //Unload the background and start the game
+            unloadBackground(s);
+            g->state = STORY_SCREEN;
+            break;
+
+        default:
+            break;
+    }
+ }
+
+/**
  * Function to start the game loop.
  */
 void startGameLoop(Game* g) {
 	int running = 1;
 
 	do {
+		//Process the tick, which runs each game loop
+		tick(g->screen, g);
+
+		//Render the game screen
 		render(g->screen, g);
 
 		//Check for keyboard input

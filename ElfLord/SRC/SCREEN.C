@@ -142,12 +142,6 @@ void render(Screen* s, Game* g) {
             renderTitleScreen(s, g->menuOption);
             break;
 
-        case GAME_START:
-            //Unload the background and start the game
-            unloadBackground(s);
-            g->state = MENU;
-            break;
-
         default:
             GrClearScreen(GrBlack());
             break;
