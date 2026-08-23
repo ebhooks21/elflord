@@ -18,6 +18,9 @@ void initScreen(Screen* s) {
     GrSetMode(GR_width_height_color_graphics, s->width, s->height, 256);
     GrSetRGBcolorMode();
 
+    //Setup the colors
+    s->red = GrAllocColor(255, 0, 0);
+
     //Preset the context
     s->sContext = GrScreenContext();
 
@@ -49,8 +52,8 @@ void destroyScreen(Screen* s) {
 /**
  * Function to draw the screen border.
  */
-void drawScreenBorder(Screen* s) {
-    GrBox(0, 0, GrMaxX(), GrMaxY(), GrWhite());
+void drawScreenBorder(Screen* s, GrColor c) {
+    GrBox(0, 0, GrMaxX(), GrMaxY(), c);
 }
 
 /**
@@ -80,34 +83,34 @@ void renderTitleScreen(Screen* s, int menuOption) {
 
     //Write the menu options to the screen
     if(menuOption == 0) {
-        renderScreenText("> New Game <", (int)(s->width / 2), (int)(s->height / 2), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("> New Game <", (int)(s->width / 2), (int)(s->height / 2), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 
     else {
-        renderScreenText("New Game", (int)(s->width / 2), (int)(s->height / 2), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("New Game", (int)(s->width / 2), (int)(s->height / 2), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 
     if(menuOption == 1) {
-        renderScreenText("> Continue <", (int)(s->width / 2), ((int)(s->height / 2) + 32), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("> Continue <", (int)(s->width / 2), ((int)(s->height / 2) + 32), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 
     else {
-        renderScreenText("Continue", (int)(s->width / 2), ((int)(s->height / 2) + 32), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("Continue", (int)(s->width / 2), ((int)(s->height / 2) + 32), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 
     if(menuOption == 2) {
-        renderScreenText("> Return to DOS <", (int)(s->width / 2), ((int)(s->height / 2) + 64), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("> Return to DOS <", (int)(s->width / 2), ((int)(s->height / 2) + 64), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 
     else {
-        renderScreenText("Return to DOS", (int)(s->width / 2), ((int)(s->height / 2) + 64), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("Return to DOS", (int)(s->width / 2), ((int)(s->height / 2) + 64), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 }
 
 /**
  * Function to render screen text.
  */
-void renderScreenText(char* t, int x, int y, GrColor fc, GrColor bc, GrFont* fnt) {
+void renderScreenText(char* t, int x, int y, int align, GrColor fc, GrColor bc, GrFont* fnt) {
     GrTextOption options;
 
     options.txo_font = fnt;
@@ -116,7 +119,7 @@ void renderScreenText(char* t, int x, int y, GrColor fc, GrColor bc, GrFont* fnt
     options.txo_bgcolor.v = bc;
     options.txo_chrtype = GR_BYTE_TEXT;
     options.txo_direct = GR_TEXT_RIGHT;
-    options.txo_xalign = GR_ALIGN_CENTER;
+    options.txo_xalign = align;
     options.txo_yalign = GR_ALIGN_TOP;
 
     GrDrawString(
@@ -142,6 +145,10 @@ void render(Screen* s, Game* g) {
             renderTitleScreen(s, g->menuOption);
             break;
 
+        case STORY_SCREEN:
+            renderStoryScreen(s, g);
+            break;
+
         default:
             GrClearScreen(GrBlack());
             break;
@@ -165,4 +172,20 @@ void loadBackground(Screen* s, char* backgroundPath) {
     //Load the background image into memory
     s->background = GrCreateContext(s->width, s->height, NULL, NULL);
     GrLoadContextFromPnm(s->background, backgroundPath);
+}
+
+/**
+ * Function to render the story screen.
+ */
+void renderStoryScreen(Screen* s, Game* g) {
+    if(s->background == NULL) {
+        //Load the background image into memory
+        loadBackground(s, "ASSET\\paper.ppm");
+    }
+
+    //Write the background image
+    GrBitBlt(s->frame, 0, 0, s->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+
+    //Write the text to the screen
+    renderScreenText("Test Document", 5, 10, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
 }
