@@ -80,7 +80,7 @@ void renderTitleScreen(Screen* s, int menuOption) {
 
     //Write the menu options to the screen
     if(menuOption == 0) {
-        renderScreenText("[ New Game ]", (int)(s->width / 2), (int)(s->height / 2), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("> New Game <", (int)(s->width / 2), (int)(s->height / 2), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 
     else {
@@ -88,7 +88,7 @@ void renderTitleScreen(Screen* s, int menuOption) {
     }
 
     if(menuOption == 1) {
-        renderScreenText("[ Continue ]", (int)(s->width / 2), ((int)(s->height / 2) + 32), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("> Continue <", (int)(s->width / 2), ((int)(s->height / 2) + 32), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 
     else {
@@ -96,7 +96,7 @@ void renderTitleScreen(Screen* s, int menuOption) {
     }
 
     if(menuOption == 2) {
-        renderScreenText("[ Return to DOS ]", (int)(s->width / 2), ((int)(s->height / 2) + 64), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
+        renderScreenText("> Return to DOS <", (int)(s->width / 2), ((int)(s->height / 2) + 64), GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
     }
 
     else {
