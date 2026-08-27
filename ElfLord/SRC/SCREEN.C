@@ -27,6 +27,9 @@ void initScreen(Screen* s) {
     //Off-screen back buffer
     s->frame = GrCreateContext(s->width, s->height, NULL, NULL);
 
+    //Zero the render count
+    s->rCount = 0;
+
     //Start drawing into the back buffer
     GrSetContext(s->frame);
 }
@@ -155,6 +158,9 @@ void render(Screen* s, Game* g) {
     }
 
     GrBitBlt(s->sContext, 0, 0, s->frame, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+
+    //Increment the render count
+    s->rCount++;
 }
 
 /**
@@ -204,8 +210,10 @@ void renderStoryScreen(Screen* s, Game* g) {
     renderScreenText("and the world, while tainting thier most sacred", 7, 122, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
     renderScreenText("artifact. Luckily, a single elf was left outside", 7, 131, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
     renderScreenText("the veil. For the last 40 years, he has wandered", 7, 140, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-    renderScreenText("world, attempting to right the wrongs of his people", 7, 149, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-    renderScreenText("while hiding his own true identity.", 7, 158, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("the world, attempting to right the wrongs of his", 7, 149, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("people while hiding his own true identity.", 7, 158, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
     
-    renderScreenText("PRESS ANY KEY TO CONTINUE...", (int)(s->width / 2), 180, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    if(((s->rCount / 80) % 2) == 0) {
+        renderScreenText("PRESS ANY KEY TO CONTINUE...", ((int)(s->width / 2) + 6), 180, GR_ALIGN_CENTER, s->red, GrNOCOLOR, &GrFont_PC8x14);
+    }
 }

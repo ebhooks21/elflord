@@ -20,6 +20,9 @@ typedef struct screen_t {
 	//Height of the screen
 	int height;
 
+	//Count of frames rendered
+	int rCount;
+
 	//Context for the entire screen background
 	GrContext* background;
 

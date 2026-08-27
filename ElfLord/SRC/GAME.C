@@ -61,6 +61,10 @@ Screen* createGameScreen(int width, int height) {
         case GAME_START_NEW:
             //Unload the background and start the game
             unloadBackground(s);
+
+			//Clear the render count
+			s->rCount = 0;
+
             g->state = STORY_SCREEN;
             break;
 
