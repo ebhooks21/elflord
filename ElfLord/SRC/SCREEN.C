@@ -187,5 +187,25 @@ void renderStoryScreen(Screen* s, Game* g) {
     GrBitBlt(s->frame, 0, 0, s->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
 
     //Write the text to the screen
-    renderScreenText("Test Document", 5, 10, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("50 years ago, the Elves turned on the other races", 7, 10, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("in an attempt to please their dark god Veldor.", 7, 19, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("They started a dark and bloody war that lasted", 7, 27, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("nearly 10 years, before the combined might of the", 7, 36, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("other races prevailed, pushing the Elven forces", 7, 45, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("back and vanquishing them until only a few", 7, 54, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("until only a few hundred remained.", 7, 63, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+
+    
+    renderScreenText("Beaten and on the edge of extinction, the", 7, 77, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("Elves hid themselves away in a distant valley", 7, 86, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("and surrendered. Angered by this, Veldor took", 7, 95, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("vengence against his worshippers, putting a", 7, 104, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("dark and impenetrable veil between his people", 7, 113, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("and the world, while tainting thier most sacred", 7, 122, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("artifact. Luckily, a single elf was left outside", 7, 131, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("the veil. For the last 40 years, he has wandered", 7, 140, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("world, attempting to right the wrongs of his people", 7, 149, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("while hiding his own true identity.", 7, 158, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    
+    renderScreenText("PRESS ANY KEY TO CONTINUE...", (int)(s->width / 2), 180, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
 }
