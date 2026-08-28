@@ -15,7 +15,7 @@ void handleTitleScreenKeyInput(Game* g, GrKeyType key) {
 	if(key == GrKey_Return) {
 		switch(g->menuOption) {
 			case 0:
-				g->state = GAME_START;
+				g->state = GAME_START_NEW;
 				break;
 			
 			case 2:
@@ -43,17 +43,29 @@ void handleGenericKeyInput(Game* g, GrKeyType key) {
 }
 
 /**
+ * Function to handle story screen input.
+ */
+void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
+	//This will accept any key, so just change state
+	g->state = MENU;
+}
+
+/**
  * Function to handle keypresses.
  */
 void processKeyInput(Game* g) {
 	GrKeyType key;
 
-	if(GrKeyPressed != 0) {
+	if(GrKeyPressed() != 0) {
 		key = GrKeyRead();
 
 		switch(g->state) {
 			case TITLE:
 				handleTitleScreenKeyInput(g, key);
+				break;
+
+			case STORY_SCREEN:
+				handleStoryScreenKeyInput(g, key);
 				break;
 
 			default:

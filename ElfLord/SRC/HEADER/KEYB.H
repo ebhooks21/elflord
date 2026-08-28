@@ -18,6 +18,11 @@ typedef struct game_t Game;
 void handleTitleScreenKeyInput(Game* g, GrKeyType key);
 
 /**
+ * Function to handle story screen input.
+ */
+void handleStoryScreenKeyInput(Game* g, GrKeyType key);
+
+/**
  * Function to handle generic input.
  */
 void handleGenericKeyInput(Game* g, GrKeyType key);

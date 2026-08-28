@@ -37,6 +37,11 @@ void destroyGame(Game* g);
 Screen* createGameScreen(int width, int height);
 
 /**
+ * Function to define functionality that happens each time the game loop processes.
+ */
+ void tick(Screen* s, Game* g);
+
+/**
  * Function to start the game loop.
  */
 void startGameLoop(Game* g);
