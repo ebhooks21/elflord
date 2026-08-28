@@ -199,7 +199,7 @@ void renderStoryScreen(Screen* s, Game* g) {
     renderScreenText("nearly 10 years, before the combined might of the", 7, 36, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
     renderScreenText("other races prevailed, pushing the Elven forces", 7, 45, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
     renderScreenText("back and vanquishing them until only a few", 7, 54, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-    renderScreenText("until only a few hundred remained.", 7, 63, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+    renderScreenText("hundred remained.", 7, 63, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
 
     
     renderScreenText("Beaten and on the edge of extinction, the", 7, 77, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
