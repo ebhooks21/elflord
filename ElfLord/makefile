@@ -1,5 +1,5 @@
 CC = gcc
-OBJECTS = BUILD\ElfLord.o BUILD\Keyb.o BUILD\Player.o BUILD\Game.o BUILD\Screen.o 
+OBJECTS = BUILD\ElfLord.o BUILD\Keyb.o BUILD\Player.o BUILD\Stryscr.o BUILD\Game.o BUILD\Screen.o 
 LIBS = -lgrx20
 
 clean:
@@ -37,3 +37,6 @@ BUILD\Keyb.o: SRC\Keyb.c
 
 BUILD\Player.o: SRC\Player.c
 	$(CC) -c SRC\Player.c -o BUILD\Player.o
+
+BUILD\Stryscr.o: SRC\Stryscr.c
+	$(CC) -c SRC\Stryscr.c -o BUILD\Stryscr.o
