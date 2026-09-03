@@ -9,6 +9,7 @@
  #include "HEADER/SCREEN.H"
  #include "HEADER/STRYSCR.H"
  #include <GRXKEYS.H>
+ #include <stdlib.h>
  
 /**
  * Function to handle title screen input.
@@ -51,6 +52,9 @@ void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
 	StoryScreen* ss = (StoryScreen*) (g->screen)->currScreen;
 
 	if(ss->page == 2) {
+		//Delete the story screen, as we no longer need it
+		free((g->screen)->currScreen);
+		
 		//This will accept any key, so just change state
 		g->state = MENU;
 	}
