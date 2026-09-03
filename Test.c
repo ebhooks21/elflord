@@ -24,7 +24,7 @@ int map[MAP_ROWS][MAP_COLS] = {
 typedef struct player_t {
 	float x;
 	float y;
-	double angle;
+	float angle;
 	int moveSpeed;
 	int rotSpeed;
 	float fov;
