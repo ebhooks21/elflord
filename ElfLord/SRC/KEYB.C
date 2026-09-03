@@ -6,6 +6,8 @@
 
  #include "HEADER/KEYB.H"
  #include "HEADER/GAME.H"
+ #include "HEADER/SCREEN.H"
+ #include "HEADER/STRYSCR.H"
  #include <GRXKEYS.H>
  
 /**
@@ -46,8 +48,16 @@ void handleGenericKeyInput(Game* g, GrKeyType key) {
  * Function to handle story screen input.
  */
 void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
-	//This will accept any key, so just change state
-	g->state = MENU;
+	StoryScreen* ss = (StoryScreen*) (g->screen)->currScreen;
+
+	if(ss->page == 2) {
+		//This will accept any key, so just change state
+		g->state = MENU;
+	}
+
+	else {
+		ss->page++;
+	}
 }
 
 /**

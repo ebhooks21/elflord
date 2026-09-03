@@ -34,6 +34,9 @@ typedef struct screen_t {
 
 	//Variable for the color red
 	GrColor red;
+
+	//Variable for the current screen
+	void* currScreen;
 } Screen;
 
 /**
@@ -60,11 +63,6 @@ void renderStatusBar(Screen* s, Game* g);
  * Function to render the title screen.
  */
 void renderTitleScreen(Screen* s, int menuOption);
-
-/**
- * Function to render the story screen.
- */
-void renderStoryScreen(Screen* s, Game* g);
 
 /**
  * Function to render screen text.

@@ -8,6 +8,7 @@
 #include "HEADER/SCREEN.H"
 #include "HEADER/GSTATE.H"
 #include "HEADER/KEYB.H"
+#include "HEADER/STRYSCR.H"
 
 /**
  * Function to start thhe game.
@@ -66,6 +67,10 @@ Screen* createGameScreen(int width, int height) {
 			s->rCount = 0;
 
             g->state = STORY_SCREEN;
+
+			//Create a new story screen for rendering
+			s->currScreen = malloc(sizeof(StoryScreen));
+			((StoryScreen*)s->currScreen)->page = 1;
             break;
 
         default:
