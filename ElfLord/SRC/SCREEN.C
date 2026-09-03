@@ -118,7 +118,6 @@ void renderScreenText(char* t, int x, int y, int align, GrColor fc, GrColor bc, 
 
     options.txo_font = fnt;
     options.txo_fgcolor.v = fc;
-    //options.txo_bgcolor.v = GrNOCOLOR;
     options.txo_bgcolor.v = bc;
     options.txo_chrtype = GR_BYTE_TEXT;
     options.txo_direct = GR_TEXT_RIGHT;
@@ -213,7 +212,7 @@ void renderStoryScreen(Screen* s, Game* g) {
     renderScreenText("the world, attempting to right the wrongs of his", 7, 149, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
     renderScreenText("people while hiding his own true identity.", 7, 158, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
     
-    if(((s->rCount / 80) % 2) == 0) {
+    if(((s->rCount / 120) % 2) == 0) {
         renderScreenText("PRESS ANY KEY TO CONTINUE...", ((int)(s->width / 2) + 6), 180, GR_ALIGN_CENTER, s->red, GrNOCOLOR, &GrFont_PC8x14);
     }
 }
