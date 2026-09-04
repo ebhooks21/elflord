@@ -11,12 +11,16 @@
  * Function to initialize a item.
  */
 Item* initItem() {
-	return malloc(sizeof(Item));
+	Item* i = malloc(sizeof i);
+
+	return i;
 }
 
 /**
  * Function to destory an item.
  */
 void destroyItem(Item* i) {
-	free(i);
+	if(i != NULL) {
+		free(i);
+	}
 }

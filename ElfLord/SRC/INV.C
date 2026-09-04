@@ -38,7 +38,7 @@ void destroyInventory(Inventory* inv) {
 	}
 
 	//Release the inventory
-	free(inv);
+	//free(inv);
 }
 
 /**

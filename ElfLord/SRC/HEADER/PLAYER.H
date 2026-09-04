@@ -52,6 +52,16 @@ typedef struct {
 } Player;
 
 /**
+ * Function to initialize the player.
+ */
+Player* initPlayer();
+
+/**
+ * Function to destroy the player.
+ */
+void destroyPlayer(Player* p);
+
+/**
  * Function to move the player.
  */
 void movePlayer(Player* p, float mAmnt);

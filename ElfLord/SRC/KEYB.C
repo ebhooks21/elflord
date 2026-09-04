@@ -56,7 +56,7 @@ void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
 		free((g->screen)->currScreen);
 		
 		//This will accept any key, so just change state
-		g->state = MENU;
+		g->state = INIT;
 	}
 
 	else {

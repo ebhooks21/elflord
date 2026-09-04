@@ -22,6 +22,9 @@ void startGame(Game* g) {
 	//Preset the menu option
 	g->menuOption = 0;
 
+	//Preset the player
+	g->p = NULL;
+
 	//Initialize the screen
 	initScreen(g->screen);
 
@@ -35,6 +38,9 @@ void startGame(Game* g) {
 void destroyGame(Game* g) {
 	//Destroy the screen
 	destroyScreen(g->screen);
+
+	//Destory the player
+	destroyPlayer(g->p);
 
 	//Release dynamic memory
 	free(g->screen);
@@ -72,6 +78,12 @@ Screen* createGameScreen(int width, int height) {
 			s->currScreen = malloc(sizeof(StoryScreen));
 			((StoryScreen*)s->currScreen)->page = 1;
             break;
+
+		case INIT:
+			//Init the game
+			g->p = initPlayer();
+			g->state = MENU;
+			break;
 
         default:
             break;

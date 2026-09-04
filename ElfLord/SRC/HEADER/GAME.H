@@ -9,6 +9,7 @@
 
 #include "SCREEN.H"
 #include "GSTATE.H"
+#include "PLAYER.H"
 
 typedef struct game_t {
 	//Reference to the screen
@@ -19,6 +20,9 @@ typedef struct game_t {
 
 	//Value for the menu options
 	int menuOption;
+
+	//Variable for the player
+	Player* p;
 } Game;
 
 /**
