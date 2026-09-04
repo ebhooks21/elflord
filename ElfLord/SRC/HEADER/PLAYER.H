@@ -4,6 +4,8 @@
  * Purpose: To define the player. 
  */
 
+#include "INV.H"
+
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -26,6 +28,9 @@ typedef struct {
 
 	//Variable for the player's gold
 	int gold;
+
+	//Variable for the player's inventory
+	Inventory* inv;
 
 	//Variable for the player's x location
 	float xLoc;
