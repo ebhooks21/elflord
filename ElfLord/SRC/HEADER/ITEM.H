@@ -20,6 +20,12 @@ typedef struct {
 
     //Variable for the price of the item
     int price;
+
+    //Variable for the item's armor count
+    int ac;
+
+    //Variable for the item's damage amount
+    int dmg;
 } Item;
 
 /**
