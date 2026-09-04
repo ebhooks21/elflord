@@ -13,7 +13,7 @@
  */
 Player* initPlayer() {
 	//Create a player
-	Player* p = malloc(sizeof p);
+	Player* p = malloc(sizeof *p);
 
 	//Initialize the player's inventory
 	p->inv = initInventory();

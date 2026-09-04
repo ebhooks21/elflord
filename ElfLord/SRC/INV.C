@@ -13,7 +13,7 @@
  */
 Inventory* initInventory() {
 	//Create a new inventory
-	Inventory* inv = malloc(sizeof inv);
+	Inventory* inv = malloc(sizeof *inv);
 
 	//Set the initial number of items
 	inv->numItems = 0;
@@ -32,13 +32,11 @@ Inventory* initInventory() {
 void destroyInventory(Inventory* inv) {
 	//Loop through and destory all items
 	for(int i = 0; i < MAX_INV_ITEMS; i++) {
-		if(inv->items[i] != NULL) {
-			destroyItem(inv->items[i]);
-		}
+		destroyItem(inv->items[i]);
 	}
 
 	//Release the inventory
-	//free(inv);
+	free(inv);
 }
 
 /**

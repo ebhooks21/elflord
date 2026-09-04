@@ -11,7 +11,7 @@
  * Function to initialize a item.
  */
 Item* initItem() {
-	Item* i = malloc(sizeof i);
+	Item* i = malloc(sizeof *i);
 
 	return i;
 }
@@ -20,7 +20,5 @@ Item* initItem() {
  * Function to destory an item.
  */
 void destroyItem(Item* i) {
-	if(i != NULL) {
-		free(i);
-	}
+	free(i);
 }
