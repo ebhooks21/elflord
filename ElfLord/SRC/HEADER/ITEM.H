@@ -14,7 +14,22 @@ typedef struct {
 
     //Variable for the item type
     ItemType type;
+
+    //Variable for the amount of health an item gives(or subtracts)
+    int hpMod;
+
+    //Variable for the price of the item
+    int price;
 } Item;
 
+/**
+ * Function to initialize an item.
+ */
+Item* initItem();
+
+/**
+ * Function to destory an item.
+ */
+void destroyItem(Item* i);
 
 #endif
