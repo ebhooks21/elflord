@@ -7,6 +7,7 @@
 #include "HEADER/GAME.H"
 #include "HEADER/GSTATE.H"
 #include "HEADER/STRYSCR.H"
+#include "HEADER/GPSCR.H"
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
@@ -150,6 +151,10 @@ void render(Screen* s, Game* g) {
 
         case STORY_SCREEN:
             renderStoryScreen(s, g);
+            break;
+        
+        case GAMEPLAY:
+            renderGameplayScreen(s, g);
             break;
 
         default:

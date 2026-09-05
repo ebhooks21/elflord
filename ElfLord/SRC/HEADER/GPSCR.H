@@ -24,6 +24,11 @@ typedef struct {
 } GamePlayScreen;
 
 /**
+ * Function to initialize the gameplay screen.
+ */
+GamePlayScreen* initGPScr();
+
+/**
  * Function to render the game play screen.
  */
 void renderGameplayScreen(Screen* s, Game* g);

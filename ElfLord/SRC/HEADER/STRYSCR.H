@@ -15,6 +15,16 @@ typedef struct {
 } StoryScreen;
 
 /**
+ * Function to initialize the story screen.
+ */
+StoryScreen* initStoryScreen();
+
+/**
+ * Function to destory the story screen.
+ */
+void destoryStoryScreen(StoryScreen* s);
+
+/**
  * Function to render the story screen.
  */
 void renderStoryScreen(Screen* s, Game* g);

@@ -9,6 +9,24 @@
 #include "HEADER/GAME.H"
 #include <GRX20.H>
 #include <stddef.h>
+#include <stdlib.h>
+
+/**
+ * Function to initialize the story screen.
+ */
+StoryScreen* initStoryScreen() {
+	StoryScreen* s = malloc(sizeof *s);
+	s->page = 1;
+
+	return s;
+}
+
+/**
+ * Function to destory the story screen.
+ */
+void destoryStoryScreen(StoryScreen* s) {
+	free(s);
+}
 
 /**
  * Function to render the story screen.

@@ -9,6 +9,7 @@
 #include "HEADER/GSTATE.H"
 #include "HEADER/KEYB.H"
 #include "HEADER/STRYSCR.H"
+#include "HEADER/GPSCR.H"
 
 /**
  * Function to start thhe game.
@@ -75,14 +76,20 @@ Screen* createGameScreen(int width, int height) {
             g->state = STORY_SCREEN;
 
 			//Create a new story screen for rendering
-			s->currScreen = malloc(sizeof(StoryScreen));
-			((StoryScreen*)s->currScreen)->page = 1;
+			s->currScreen = initStoryScreen(); 
             break;
 
 		case INIT:
 			//Init the game
 			g->p = initPlayer();
-			g->state = MENU;
+			g->state = GAMEPLAY;
+
+			//Delete the previous screen
+			unloadBackground(s);
+			destoryStoryScreen(s->currScreen);
+
+			//Create a new gameplay screen for rendering
+			s->currScreen = initGPScr();
 			break;
 
         default:

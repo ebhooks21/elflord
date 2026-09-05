@@ -18,6 +18,14 @@ Player* initPlayer() {
 	//Initialize the player's inventory
 	p->inv = initInventory();
 
+	//Set initial player values
+	p->xLoc = 3.5;
+	p->yLoc = 3.5;
+	p->angle = 0;
+	p->moveSpeed = 3;
+	p->rotSpeed = 2;
+	p->fov = M_PI / 3;
+
 	return p;
 }
 

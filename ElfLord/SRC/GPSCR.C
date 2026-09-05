@@ -9,12 +9,160 @@
  #include "HEADER/GAME.H"
  #include "HEADER/PLAYER.H"
  #include <GRX20.H>
+ #include <stdlib.h>
+ #include <math.h>
+
+ #define MAP_ROWS 6
+ #define MAP_COLS 10
+ #define MOVE_STEP 0.15
+ #define ROT_STEP 0.10
+
+ int map[MAP_ROWS][MAP_COLS] = {
+	{1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,1,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,1},
+	{1,0,0,1,1,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1}
+ };
+
+/**
+ * Function to initialize the gameplay screen.
+ */
+GamePlayScreen* initGPScr() {
+	GamePlayScreen* gps = malloc(sizeof *gps);
+
+	return gps;
+}
 
 /**
  * Function to render the game play screen.
  */
 void renderGameplayScreen(Screen* s, Game* g) {
+	//Get the needed variables, so we don't have to do all of the arrow functions
+	Player* p = g->p;
 
+	double dirX = 0.0;
+	double dirY = 0.0;
+	double planeX = 0.0;
+	double planeY = 0.0;
+	double cameraX = 0.0;
+	double rayDirX = 0.0;
+	double rayDirY = 0.0;
+	int mapX = 0;
+	int mapY = 0;
+	double deltaDistX = 0.0;
+	double deltaDistY = 0.0;
+	int stepX = 0;
+	int stepY = 0;
+	double sideDistX = 0.0;
+	double sideDistY = 0.0;
+	int hit = 0;
+	int wallHit = 0;
+	int side = 0;
+	double distance = 0.0;
+	double wallHeight = 0.0;
+	int start = 0;
+	int end = 0;
+	int skyColor = GrAllocColor(0, 0, 135);
+	int wallColor = GrAllocColor(200, 200, 200);
+	
+	int col = 0;
+
+	dirX = cos(p->angle);
+	dirY = sin(p->angle);
+	planeX = -dirY * tan(p->fov / 2.0);
+	planeY = dirX * tan(p->fov / 2.0);
+
+	int groundColor = GrAllocColor(101, 67, 33);
+
+	GrFilledBox(0, 0, s->width - 1, (s->height / 2) - 1, skyColor);
+	GrFilledBox(0, s->height / 2, s->width - 1, s->height - 1, groundColor);
+
+	for(col = 0; col < s->width; col++) {
+		hit = 0;
+		wallHit = 0;
+
+		cameraX = 2.0 * (double)col / (double)(s->width - 1) - 1.0;
+		rayDirX = dirX + planeX * cameraX;
+		rayDirY = dirY + planeY * cameraX;
+
+		mapX = floor(p->xLoc);
+		mapY = floor(p->yLoc);
+
+		deltaDistX = (rayDirX == 0.0) ? 1e30 : fabs(1.0 / rayDirX);
+		deltaDistY = (rayDirY == 0.0) ? 1e30 : fabs(1.0 / rayDirY);
+
+		if(rayDirX < 0) {
+			stepX = -1;
+			sideDistX = ((p->xLoc - mapX) * deltaDistX);
+		}
+
+		else {
+			stepX = 1;
+			sideDistX = ((mapX + 1 - p->xLoc) * deltaDistX);
+		}
+
+		if(rayDirY < 0) {
+			stepY = -1;
+			sideDistY = ((p->yLoc - mapY) * deltaDistY);
+		}
+		
+		else {
+			stepY = 1;
+			sideDistY = ((mapY + 1 - p->yLoc) * deltaDistY);
+		}
+
+		while(hit == 0) {
+			if(sideDistX < sideDistY) {
+				sideDistX += deltaDistX;
+				mapX += stepX;
+				side = 0;
+			}
+
+			else {
+				sideDistY += deltaDistY;
+				mapY += stepY;
+				side = 1;
+			}
+
+			if(mapX < 0 || mapX >= MAP_COLS || mapY < 0 || mapY >= MAP_ROWS) {
+				hit = 1;
+			}
+			else if(map[mapY][mapX] > 0) {
+				hit = 1;
+				wallHit = 1;
+			}
+		}
+
+		if(wallHit == 0) {
+			continue;
+		}
+
+		if(side == 0) {
+			distance = (rayDirX == 0.0) ? 1e30 : (mapX - p->xLoc + (1 - stepX) / 2.0) / rayDirX;
+		}
+
+		else {
+			distance = (rayDirY == 0.0) ? 1e30 : (mapY - p->yLoc + (1 - stepY) / 2.0) / rayDirY;
+		}
+
+		wallHeight = (distance <= 0.0) ? 1e30 : (double)s->height / distance;
+
+		start = (int)((s->height / 2.0) - (wallHeight / 2.0));
+		end = (int)((s->height / 2.0) + (wallHeight / 2.0));
+
+		if(start < 0) {
+			start = 0;
+		}
+
+		if(end >= s->height) {
+			end = s->height - 1;
+		}
+
+		//Draw the walls
+		GrVLine(col, start, end, wallColor);
+	}
 }
 
 /**
