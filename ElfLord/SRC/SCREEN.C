@@ -21,7 +21,7 @@ void initScreen(Screen* s) {
     GrSetRGBcolorMode();
 
     //Setup the mouse -- move to a function later
-    if(GrMouseDetect()) {
+    /*if(GrMouseDetect()) {
         GrMouseInit();
 
         //Use this to stop the mouse input from eating keyboard input
@@ -29,7 +29,7 @@ void initScreen(Screen* s) {
 
         GrMouseSetLimits(0, 0, s->width - 1, s->height - 1);
         GrMouseDisplayCursor();
-    }
+    }*/
 
     //Setup the colors
     s->red = GrAllocColor(255, 0, 0);
@@ -62,7 +62,7 @@ void destroyScreen(Screen* s) {
     }
 
     //Unset the mouse
-    GrMouseUnInit();
+    //GrMouseUnInit();
 
 	//Reset the video mode
     GrSetMode(GR_default_text);
@@ -153,7 +153,7 @@ void renderScreenText(char* t, int x, int y, int align, GrColor fc, GrColor bc, 
  * Function to render the game screen.
  */
 void render(Screen* s, Game* g) {
-    int cursorState = GrMouseBlock(s->sContext, 0, 0, s->width - 1, s->height - 1); 
+    //int cursorState = GrMouseBlock(s->sContext, 0, 0, s->width - 1, s->height - 1); 
     //Draw into the off-screen frame
     GrSetContext(s->frame);
     GrClearContext(GrBlack());
@@ -180,7 +180,7 @@ void render(Screen* s, Game* g) {
     GrBitBlt(s->sContext, 0, 0, s->frame, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
 
     //Redraw the mouse cursor
-    GrMouseUnBlock(cursorState);
+    //GrMouseUnBlock(cursorState);
 
     //Increment the render count
     s->rCount++;
