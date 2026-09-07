@@ -5,6 +5,7 @@
  */
 #include "SCREEN.H"
 #include "GAME.H"
+#include "MAP.H"
 
 #ifndef GPSCR_H
 #define GPSCR_H
@@ -27,6 +28,11 @@ typedef struct {
  * Function to initialize the gameplay screen.
  */
 GamePlayScreen* initGPScr();
+
+/**
+ * Function to destroy the gameplay screen.
+ */
+void destoryGPScr(GamePlayScreen* g);
 
 /**
  * Function to render the game play screen.

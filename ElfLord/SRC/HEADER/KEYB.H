@@ -28,6 +28,11 @@ void handleStoryScreenKeyInput(Game* g, GrKeyType key);
 void handleGenericKeyInput(Game* g, GrKeyType key);
 
 /**
+ * Function to handle the game play screen input.
+ */
+void handleGameplayScreenKeyInput(Game* g, GrKeyType key);
+
+/**
  * Function to handle keypresses.
  */
 void processKeyInput(Game* g);

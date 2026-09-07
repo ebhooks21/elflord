@@ -8,23 +8,13 @@
  #include "HEADER/SCREEN.H"
  #include "HEADER/GAME.H"
  #include "HEADER/PLAYER.H"
+ #include "HEADER/MAP.H"
  #include <GRX20.H>
  #include <stdlib.h>
  #include <math.h>
 
- #define MAP_ROWS 6
- #define MAP_COLS 10
  #define MOVE_STEP 0.15
  #define ROT_STEP 0.10
-
- int map[MAP_ROWS][MAP_COLS] = {
-	{1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,1,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1},
-	{1,0,0,1,1,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1}
- };
 
 /**
  * Function to initialize the gameplay screen.
@@ -36,11 +26,20 @@ GamePlayScreen* initGPScr() {
 }
 
 /**
+ * Function to destroy the gameplay screen.
+ */
+void destoryGPScr(GamePlayScreen* g) {
+	//Destroy the gameplay screen
+	free(g);
+}
+
+/**
  * Function to render the game play screen.
  */
 void renderGameplayScreen(Screen* s, Game* g) {
 	//Get the needed variables, so we don't have to do all of the arrow functions
 	Player* p = g->p;
+	Map* map = g->currMap;
 
 	double dirX = 0.0;
 	double dirY = 0.0;
@@ -126,10 +125,10 @@ void renderGameplayScreen(Screen* s, Game* g) {
 				side = 1;
 			}
 
-			if(mapX < 0 || mapX >= MAP_COLS || mapY < 0 || mapY >= MAP_ROWS) {
+			if(mapX < 0 || mapX >= map->mapCols || mapY < 0 || mapY >= map->mapRows) {
 				hit = 1;
 			}
-			else if(map[mapY][mapX] > 0) {
+			else if(map->mapData[mapY][mapX] > 0) {
 				hit = 1;
 				wallHit = 1;
 			}
