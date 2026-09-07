@@ -19,80 +19,18 @@
 /**
  * Function to initialize the gameplay screen.
  */
-GamePlayScreen* initGPScr(int mRows, int mCols) {
+GamePlayScreen* initGPScr() {
 	GamePlayScreen* gps = malloc(sizeof *gps);
 
-	//Initialize the map
-	gps->map = initMap(mRows, mCols);
-
-	//Initialize the map data
-	(gps->map)->mapData[0][0] = 1;
-	(gps->map)->mapData[0][1] = 1;
-	(gps->map)->mapData[0][2] = 1;
-	(gps->map)->mapData[0][3] = 1;
-	(gps->map)->mapData[0][4] = 1;
-	(gps->map)->mapData[0][5] = 1;
-	(gps->map)->mapData[0][6] = 1;
-	(gps->map)->mapData[0][7] = 1;
-	(gps->map)->mapData[0][8] = 1;
-	(gps->map)->mapData[0][9] = 1;
-
-	(gps->map)->mapData[1][0] = 1;
-	(gps->map)->mapData[1][1] = 0;
-	(gps->map)->mapData[1][2] = 0;
-	(gps->map)->mapData[1][3] = 0;
-	(gps->map)->mapData[1][4] = 0;
-	(gps->map)->mapData[1][5] = 0;
-	(gps->map)->mapData[1][6] = 0;
-	(gps->map)->mapData[1][7] = 0;
-	(gps->map)->mapData[1][8] = 0;
-	(gps->map)->mapData[1][9] = 1;
-
-	(gps->map)->mapData[2][0] = 1;
-	(gps->map)->mapData[2][1] = 0;
-	(gps->map)->mapData[2][2] = 0;
-	(gps->map)->mapData[2][3] = 0;
-	(gps->map)->mapData[2][4] = 1;
-	(gps->map)->mapData[2][5] = 0;
-	(gps->map)->mapData[2][6] = 0;
-	(gps->map)->mapData[2][7] = 0;
-	(gps->map)->mapData[2][8] = 0;
-	(gps->map)->mapData[2][9] = 1;
-
-	(gps->map)->mapData[3][0] = 1;
-	(gps->map)->mapData[3][1] = 0;
-	(gps->map)->mapData[3][2] = 0;
-	(gps->map)->mapData[3][3] = 0;
-	(gps->map)->mapData[3][4] = 0;
-	(gps->map)->mapData[3][5] = 0;
-	(gps->map)->mapData[3][6] = 0;
-	(gps->map)->mapData[3][7] = 0;
-	(gps->map)->mapData[3][8] = 0;
-	(gps->map)->mapData[3][9] = 1;
-
-	(gps->map)->mapData[4][0] = 1;
-	(gps->map)->mapData[4][1] = 0;
-	(gps->map)->mapData[4][2] = 0;
-	(gps->map)->mapData[4][3] = 1;
-	(gps->map)->mapData[4][4] = 1;
-	(gps->map)->mapData[4][5] = 0;
-	(gps->map)->mapData[4][6] = 0;
-	(gps->map)->mapData[4][7] = 0;
-	(gps->map)->mapData[4][8] = 0;
-	(gps->map)->mapData[4][9] = 1;
-
-	(gps->map)->mapData[5][0] = 1;
-	(gps->map)->mapData[5][1] = 1;
-	(gps->map)->mapData[5][2] = 1;
-	(gps->map)->mapData[5][3] = 1;
-	(gps->map)->mapData[5][4] = 1;
-	(gps->map)->mapData[5][5] = 1;
-	(gps->map)->mapData[5][6] = 1;
-	(gps->map)->mapData[5][7] = 1;
-	(gps->map)->mapData[5][8] = 1;
-	(gps->map)->mapData[5][9] = 1;
-
 	return gps;
+}
+
+/**
+ * Function to destroy the gameplay screen.
+ */
+void destoryGPScr(GamePlayScreen* g) {
+	//Destroy the gameplay screen
+	free(g);
 }
 
 /**
@@ -101,8 +39,7 @@ GamePlayScreen* initGPScr(int mRows, int mCols) {
 void renderGameplayScreen(Screen* s, Game* g) {
 	//Get the needed variables, so we don't have to do all of the arrow functions
 	Player* p = g->p;
-	GamePlayScreen* gps = (GamePlayScreen*)(s->currScreen);
-	Map* map = gps->map;
+	Map* map = g->currMap;
 
 	double dirX = 0.0;
 	double dirY = 0.0;

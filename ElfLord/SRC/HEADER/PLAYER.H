@@ -5,6 +5,7 @@
  */
 
 #include "INV.H"
+#include "GAME.H"
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -42,10 +43,10 @@ typedef struct {
 	float angle;
 
 	//Variable for the player's movement speed
-	int moveSpeed;
+	float moveSpeed;
 
 	//Variable for the player's rotation speed
-	int rotSpeed;
+	float rotSpeed;
 
 	//Variable for the player's field of view
 	float fov;
@@ -64,6 +65,11 @@ void destroyPlayer(Player* p);
 /**
  * Function to move the player.
  */
-void movePlayer(Player* p, float mAmnt);
+void movePlayer(Game* g, float mAmnt);
+
+/**
+ * Function to rotate the player.
+ */
+void rotatePlayer(Player* p, double amount);
 
 #endif

@@ -10,6 +10,7 @@
 #include "SCREEN.H"
 #include "GSTATE.H"
 #include "PLAYER.H"
+#include "MAP.H"
 
 typedef struct game_t {
 	//Reference to the screen
@@ -23,6 +24,9 @@ typedef struct game_t {
 
 	//Variable for the player
 	Player* p;
+
+	//Variable for the current game map
+	Map* currMap;
 } Game;
 
 /**

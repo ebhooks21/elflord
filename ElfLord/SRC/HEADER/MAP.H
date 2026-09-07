@@ -28,4 +28,9 @@
   */
  void destroyMap(Map* m);
 
+ /**
+  * Function to see if an area is walkable.
+  */
+ int isWalkable(Map* m, float x, float y);
+
  #endif

@@ -22,15 +22,17 @@ typedef struct {
 
 	//Variable for the hud area height
 	int hAreaHeight;
-
-	//Variable for the current map
-	Map* map;
 } GamePlayScreen;
 
 /**
  * Function to initialize the gameplay screen.
  */
-GamePlayScreen* initGPScr(int mRows, int mCols);
+GamePlayScreen* initGPScr();
+
+/**
+ * Function to destroy the gameplay screen.
+ */
+void destoryGPScr(GamePlayScreen* g);
 
 /**
  * Function to render the game play screen.

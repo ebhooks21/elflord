@@ -62,6 +62,41 @@ void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
 }
 
 /**
+ * Function to handle the game play screen input.
+ */
+void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
+	switch(key) {
+			case GrKey_Up:
+			case 'w':
+			case 'W':
+				movePlayer(g, (g->p)->moveSpeed);
+				break;
+
+			case GrKey_Down:
+			case 's':
+			case 'S':
+				movePlayer(g, -((g->p)->moveSpeed));
+				break;
+
+			case GrKey_Left:
+			case 'a':
+			case 'A':
+				rotatePlayer(g->p, -((g->p)->rotSpeed));
+				break;
+
+			case GrKey_Right:
+			case 'd':
+			case 'D':
+				rotatePlayer(g->p, (g->p)->rotSpeed);
+				break;
+
+			case GrKey_Escape:
+				g->state = EXIT_GAME;
+				break;
+		}	
+}
+
+/**
  * Function to handle keypresses.
  */
 void processKeyInput(Game* g) {
@@ -77,6 +112,10 @@ void processKeyInput(Game* g) {
 
 			case STORY_SCREEN:
 				handleStoryScreenKeyInput(g, key);
+				break;
+
+			case GAMEPLAY:
+				handleGameplayScreenKeyInput(g, key);
 				break;
 
 			default:

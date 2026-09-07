@@ -7,6 +7,7 @@
  #include "HEADER/MAP.H"
  #include "HEADER/GAME.H"
  #include <stdlib.h>
+ #include <math.h>
 
 /**
   * Function to initialze the map.
@@ -47,4 +48,18 @@
 
 	//Free the map
 	free(m);
+ }
+
+ /**
+  * Function to see if a map position is walkable.
+  */
+ int isWalkable(Map* m, float x, float y) {
+	int mapX = (int)floor(x);
+	int mapY = (int)floor(y);
+
+	if(mapX < 0 || mapX >= m->mapCols || mapY < 0 || mapY >= m->mapRows) {
+		return 0;
+	}
+
+	return m->mapData[mapY][mapX] == 0;	
  }
