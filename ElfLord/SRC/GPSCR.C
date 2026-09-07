@@ -13,14 +13,20 @@
  #include <stdlib.h>
  #include <math.h>
 
- #define MOVE_STEP 0.15
- #define ROT_STEP 0.10
-
 /**
  * Function to initialize the gameplay screen.
  */
-GamePlayScreen* initGPScr() {
+GamePlayScreen* initGPScr(Screen* s) {
 	GamePlayScreen* gps = malloc(sizeof *gps);
+
+	gps->hAreaWidth = s->width;
+	gps->hAreaHeight = 40; 
+	gps->gAreaWidth = s->width - 1;
+	gps->gAreaHeight = (s->height - gps->hAreaHeight);
+
+	//Load the hud background
+	gps->hudBackground = GrCreateContext(gps->hAreaWidth, gps->hAreaHeight, NULL, NULL);
+    GrLoadContextFromPnm(gps->hudBackground, "ASSET\\hud.ppm");
 
 	return gps;
 }
@@ -40,6 +46,7 @@ void renderGameplayScreen(Screen* s, Game* g) {
 	//Get the needed variables, so we don't have to do all of the arrow functions
 	Player* p = g->p;
 	Map* map = g->currMap;
+	GamePlayScreen* gps = (GamePlayScreen*)(s->currScreen);
 
 	double dirX = 0.0;
 	double dirY = 0.0;
@@ -75,14 +82,14 @@ void renderGameplayScreen(Screen* s, Game* g) {
 
 	int groundColor = GrAllocColor(101, 67, 33);
 
-	GrFilledBox(0, 0, s->width - 1, (s->height / 2) - 1, skyColor);
-	GrFilledBox(0, s->height / 2, s->width - 1, s->height - 1, groundColor);
+	GrFilledBox(0, 0, (gps->gAreaWidth - 1), (gps->gAreaHeight / 2) - 1, skyColor);
+	GrFilledBox(0, (gps->gAreaHeight / 2), gps->gAreaWidth - 1, gps->gAreaHeight - 1, groundColor);
 
-	for(col = 0; col < s->width; col++) {
+	for(col = 0; col < gps->gAreaWidth; col++) {
 		hit = 0;
 		wallHit = 0;
 
-		cameraX = 2.0 * (double)col / (double)(s->width - 1) - 1.0;
+		cameraX = 2.0 * (double)col / (double)(gps->gAreaWidth - 1) - 1.0;
 		rayDirX = dirX + planeX * cameraX;
 		rayDirY = dirY + planeY * cameraX;
 
@@ -146,22 +153,25 @@ void renderGameplayScreen(Screen* s, Game* g) {
 			distance = (rayDirY == 0.0) ? 1e30 : (mapY - p->yLoc + (1 - stepY) / 2.0) / rayDirY;
 		}
 
-		wallHeight = (distance <= 0.0) ? 1e30 : (double)s->height / distance;
+		wallHeight = (distance <= 0.0) ? 1e30 : (double)gps->gAreaHeight / distance;
 
-		start = (int)((s->height / 2.0) - (wallHeight / 2.0));
-		end = (int)((s->height / 2.0) + (wallHeight / 2.0));
+		start = (int)((gps->gAreaHeight / 2.0) - (wallHeight / 2.0));
+		end = (int)((gps->gAreaHeight / 2.0) + (wallHeight / 2.0));
 
 		if(start < 0) {
 			start = 0;
 		}
 
-		if(end >= s->height) {
-			end = s->height - 1;
+		if(end >= gps->gAreaHeight) {
+			end = gps->gAreaHeight - 1;
 		}
 
 		//Draw the walls
 		GrVLine(col, start, end, wallColor);
 	}
+
+	//Draw the hud area
+	renderHudArea(s, g);
 }
 
 /**
@@ -175,5 +185,8 @@ void renderGameplayArea(Screen* s, Game* g) {
  * Function to render the hud area.
  */
 void renderHudArea(Screen* s, Game* g) {
+	Player* p = g->p;
+	GamePlayScreen* gps = (GamePlayScreen*)(s->currScreen);
 
+    GrBitBlt(s->frame, 0, gps->gAreaHeight, gps->hudBackground, 0, 0, (gps->hAreaWidth - 1), (gps->hAreaHeight - 1), GrWRITE);
 }

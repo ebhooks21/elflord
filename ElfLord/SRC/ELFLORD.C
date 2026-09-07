@@ -1,6 +1,6 @@
 /**
  * Elflord.c
- * Author: Eric HOoks
+ * Author: Eric Hooks
  * Purpose: Main entry point for the Elflord game.
  */
 #include "HEADER/GAME.H"

@@ -6,6 +6,7 @@
 #include "SCREEN.H"
 #include "GAME.H"
 #include "MAP.H"
+#include <GRX20.H>
 
 #ifndef GPSCR_H
 #define GPSCR_H
@@ -22,12 +23,15 @@ typedef struct {
 
 	//Variable for the hud area height
 	int hAreaHeight;
+
+	//Variable for the hud background
+	GrContext* hudBackground;
 } GamePlayScreen;
 
 /**
  * Function to initialize the gameplay screen.
  */
-GamePlayScreen* initGPScr();
+GamePlayScreen* initGPScr(Screen* s);
 
 /**
  * Function to destroy the gameplay screen.
