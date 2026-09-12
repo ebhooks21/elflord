@@ -20,12 +20,18 @@ Player* initPlayer() {
 	p->inv = initInventory();
 
 	//Set initial player values
+	p->name = "Desryn\0";
 	p->xLoc = 3.5;
 	p->yLoc = 3.5;
 	p->angle = 0;
 	p->moveSpeed = .15f;
 	p->rotSpeed = .1f;
 	p->fov = M_PI / 3;
+	p->currHP = 50;
+	p->maxHP = 50;
+	p->currMP = 20;
+	p->maxMP = 20;
+	p->gold = 35;
 
 	return p;
 }
