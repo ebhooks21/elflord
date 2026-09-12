@@ -11,6 +11,7 @@
  #include "HEADER/MAP.H"
  #include <GRX20.H>
  #include <stdlib.h>
+ #include <stdio.h>
  #include <math.h>
 
 /**
@@ -185,8 +186,24 @@ void renderGameplayArea(Screen* s, Game* g) {
  * Function to render the hud area.
  */
 void renderHudArea(Screen* s, Game* g) {
+	//Needed variables
 	Player* p = g->p;
 	GamePlayScreen* gps = (GamePlayScreen*)(s->currScreen);
+	char healthText[20];
+	char manaText[20];
+	char goldText[20];
 
+	//Setup the health, mana, and gold text
+	sprintf(healthText, "HP: %d/%d", p->currHP, p->maxHP);
+	sprintf(manaText, "MP: %d/%d", p->currMP, p->maxMP);
+	sprintf(goldText, "Gold: %d", p->gold);
+
+	//Draw the HUD background
     GrBitBlt(s->frame, 0, gps->gAreaHeight, gps->hudBackground, 0, 0, (gps->hAreaWidth - 1), (gps->hAreaHeight - 1), GrWRITE);
+
+	//Write the player information to the HUD
+	renderScreenText(p->name, 4, gps->gAreaHeight + 4, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText(healthText, 4, gps->gAreaHeight + 13, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText(manaText, 4, gps->gAreaHeight + 21, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText(goldText, 4, gps->gAreaHeight + 29, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 }

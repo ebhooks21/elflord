@@ -12,6 +12,9 @@
 
 //Define the player structure
 typedef struct {
+	//Variable for the player's name
+	char* name;
+
 	//Variable for the player's health
 	int currHP;
 
