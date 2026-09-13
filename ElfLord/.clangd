@@ -1,0 +1,12 @@
+CompileFlags:
+  Add:
+    - --target=i386-pc-msdosdjgpp
+
+    - -ID:\\DOS\\DJGPP\\INCLUDE
+    - -ID:\\DOS\\DJGPP\\LIB
+
+    - -std=gnu99
+
+  Remove:
+    - -m*
+    - -arch
