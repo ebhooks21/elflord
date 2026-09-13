@@ -29,6 +29,10 @@ GamePlayScreen* initGPScr(Screen* s) {
 	gps->hudBackground = GrCreateContext(gps->hAreaWidth, gps->hAreaHeight, NULL, NULL);
     GrLoadContextFromPnm(gps->hudBackground, "ASSET\\hud.ppm");
 
+	//Load the ceiling texture 
+	gps->floorTexture = GrCreateContext(gps->gAreaWidth, (gps->gAreaHeight / 2), NULL, NULL);
+    GrLoadContextFromPnm(gps->floorTexture, "ASSET\\stonef.ppm");
+
 	return gps;
 }
 
@@ -84,7 +88,8 @@ void renderGameplayScreen(Screen* s, Game* g) {
 	int groundColor = GrAllocColor(101, 67, 33);
 
 	GrFilledBox(0, 0, (gps->gAreaWidth - 1), (gps->gAreaHeight / 2) - 1, skyColor);
-	GrFilledBox(0, (gps->gAreaHeight / 2), gps->gAreaWidth - 1, gps->gAreaHeight - 1, groundColor);
+	//GrFilledBox(0, (gps->gAreaHeight / 2), gps->gAreaWidth - 1, gps->gAreaHeight - 1, groundColor);
+    GrBitBlt(s->frame, 0, (gps->gAreaHeight / 2), gps->floorTexture, 0, 0, (gps->gAreaWidth - 1), (gps->gAreaHeight - 1), GrWRITE);
 
 	for(col = 0; col < gps->gAreaWidth; col++) {
 		hit = 0;

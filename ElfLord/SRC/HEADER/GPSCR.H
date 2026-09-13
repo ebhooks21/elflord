@@ -26,6 +26,12 @@ typedef struct {
 
 	//Variable for the hud background
 	GrContext* hudBackground;
+
+	//Variable for the floor texture
+	GrContext* floorTexture;
+
+	//Variable for the ceiling texture
+	GrContext* ceilingTexture;
 } GamePlayScreen;
 
 /**
