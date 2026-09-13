@@ -1,11 +1,14 @@
 CC = gcc
-OBJECTS = BUILD\ElfLord.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Map.o BUILD\Gpscr.o BUILD\Game.o BUILD\Screen.o BUILD\Item.o
+OBJECTS = BUILD\ElfLord.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Screen.o BUILD\Item.o
+TOBJECTS = BUILD\Testm.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Screen.o BUILD\Item.o
 LIBS = -lgrx20
 
 clean:
 	del BUILD\*.o 
 	del BUILD\ELFLORD.EXE
+	del BUILD\ASSET\MAPS\*.*
 	del BUILD\ASSET\*.*
+	rmdir BUILD\MAPS
 	rmdir BUILD\ASSET
 
 clean-obj:
@@ -16,12 +19,26 @@ release: clean build clean-obj
 run:
 	BUILD\ELFLORD.EXE
 
+runtest:
+	BUILD\TESTM.EXE
+
 build: BUILD\ELFLORD.EXE
+
+buildtest: BUILD\TESTM.EXE
+
+BUILD\TESTM.EXE: $(TOBJECTS)
+	$(CC) -o BUILD\TESTM.EXE $(TOBJECTS) $(LIBS)
+	mkdir BUILD\ASSET
+	mkdir BUILD\ASSET\MAPS
+	copy ASSET\*.* BUILD\ASSET
+	copy ASSET\MAPS\*.* BUILD\ASSET\MAPS
 
 BUILD\ELFLORD.EXE: $(OBJECTS)
 	$(CC) -o BUILD\ELFLORD.EXE $(OBJECTS) $(LIBS)
 	mkdir BUILD\ASSET
+	mkdir BUILD\ASSET\MAPS
 	copy ASSET\*.* BUILD\ASSET
+	copy ASSET\MAPS\*.* BUILD\ASSET\MAPS
 
 BUILD\ElfLord.o: SRC\ElfLord.c
 	$(CC) -c SRC\ElfLord.c -o BUILD\ElfLord.o
@@ -52,3 +69,9 @@ BUILD\Gpscr.o: SRC\Gpscr.c
 
 BUILD\Map.o: SRC\Map.c
 	$(CC) -c SRC\Map.c -o BUILD\Map.o
+
+BUILD\Maplo.o: SRC\Maplo.c
+	$(CC) -c SRC\Maplo.c -o BUILD\Maplo.o
+
+BUILD\Testm.o: SRC\Testm.c
+	$(CC) -c SRC\Testm.c -o BUILD\Testm.o
