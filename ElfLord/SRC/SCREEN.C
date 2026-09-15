@@ -17,7 +17,7 @@
  */
 void initScreen(Screen* s) {
 	//Set the graphics mode to 640x480 with 256 colors
-    GrSetMode(GR_width_height_color_graphics, s->width, s->height, 256);
+    GrSetMode(GR_width_height_color_graphics, s->width, s->height);
     GrSetRGBcolorMode();
 
     //Setup the mouse -- move to a function later
