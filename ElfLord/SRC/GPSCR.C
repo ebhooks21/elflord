@@ -33,6 +33,10 @@ GamePlayScreen* initGPScr(Screen* s) {
 	gps->floorTexture = GrCreateContext(gps->gAreaWidth, (gps->gAreaHeight / 2), NULL, NULL);
     GrLoadContextFromPnm(gps->floorTexture, "ASSET\\stonef.ppm");
 
+	//Create the floor scanline
+	//This needs to store a color for each ray of the floor from X0 to X1
+	gps->floorScanline = malloc(sizeof(GrColor) * gps->gAreaWidth);
+
 	return gps;
 }
 
@@ -40,6 +44,21 @@ GamePlayScreen* initGPScr(Screen* s) {
  * Function to destroy the gameplay screen.
  */
 void destoryGPScr(GamePlayScreen* g) {
+	//Destroy the textures
+	if(g->hudBackground != NULL) {
+		GrDestroyContext(g->hudBackground);
+	} 
+
+	if(g->floorTexture != NULL) {
+		GrDestroyContext(g->floorTexture);
+	}
+
+	//Free the contexts and scanline
+	free(g->ceilingTexture);
+	free(g->floorScanline);
+	free(g->floorTexture);
+	free(g->hudBackground);
+
 	//Destroy the gameplay screen
 	free(g);
 }
@@ -59,7 +78,7 @@ void renderGameplayScreen(Screen* s, Game* g) {
 	double planeY = 0.0;
 	double cameraX = 0.0;
 	double rayDirX = 0.0;
-	double rayDirY = 0.0;
+	double rayDirY = 0.0;	
 	int mapX = 0;
 	int mapY = 0;
 	double deltaDistX = 0.0;
@@ -77,20 +96,127 @@ void renderGameplayScreen(Screen* s, Game* g) {
 	int end = 0;
 	int skyColor = GrAllocColor(0, 0, 135);
 	int wallColor = GrAllocColor(200, 200, 200);
-	
 	int col = 0;
 
+	//Values floor casting
+	double leftRayDirX = 0.0;
+	double leftRayDirY = 0.0;
+	double rightRayDirX = 0.0;
+	double rightRayDirY = 0.0;
+
+	double rowDistance = 0.0;
+	double floorStepX = 0.0;
+	double floorStepY = 0.0;
+	double floorX = 0.0;
+	double floorY = 0.0;
+	double fractionX = 0.0;
+	double fractionY = 0.0;
+
+	//Variables needed for floor cells
+	int cellX = 0;
+	int cellY = 0;
+	int textureX = 0;
+	int textureY = 0;
+	int textureWidth = 0;
+	int textureHeight = 0;
+
+	//Calculate horizon start line
+	int horizon = gps->gAreaHeight / 2; //Horizon line is half the screen
+
+	int row = 0; //Row needed for floor casting
+	int x = 0; //X postion needed for floor casting	
+
+	/**
+	 * This is calculated based upon the idea that the player's viewpoint
+	 * is roughly halfway up a single wall instance, which is equal to
+	 * the view area height.
+	 */
+	double cameraHeight = (0.5 * (double)gps->gAreaHeight);
+
+	//Calculate the floor texture sizes
+	textureWidth = ((gps->floorTexture)->gc_xmax + 1);
+	textureHeight = ((gps->floorTexture)->gc_ymax + 1);
+	
+	//Calculate player viewing direction and camera plane
 	dirX = cos(p->angle);
 	dirY = sin(p->angle);
 	planeX = -dirY * tan(p->fov / 2.0);
 	planeY = dirX * tan(p->fov / 2.0);
 
-	int groundColor = GrAllocColor(101, 67, 33);
+	//Draw the sky, with it going slightly past the horizon line
+	GrFilledBox(0, 0, (gps->gAreaWidth - 1), horizon, skyColor);
+    //GrBitBlt(s->frame, 0, (gps->gAreaHeight / 2), gps->floorTexture, 0, 0, (gps->gAreaWidth - 1), (gps->gAreaHeight - 1), GrWRITE);
 
-	GrFilledBox(0, 0, (gps->gAreaWidth - 1), (gps->gAreaHeight / 2) - 1, skyColor);
-	//GrFilledBox(0, (gps->gAreaHeight / 2), gps->gAreaWidth - 1, gps->gAreaHeight - 1, groundColor);
-    GrBitBlt(s->frame, 0, (gps->gAreaHeight / 2), gps->floorTexture, 0, 0, (gps->gAreaWidth - 1), (gps->gAreaHeight - 1), GrWRITE);
+	//Calculate the values for the left and right camera edges
+	leftRayDirX = dirX - planeX;
+	leftRayDirY = dirY - planeY;
+	rightRayDirX = dirX + planeX;
+	rightRayDirY = dirY + planeY;
 
+	//Cast and draw the floor below the horizon
+	//Make sure we have the floor texture and sizes
+	if((gps->floorScanline != NULL) && (textureWidth > 0) && (textureHeight > 0)) {
+		//Loop through the row
+		for(row = (horizon + 1); row < gps->gAreaHeight; row++) {
+			/**
+			 * Calculate the distance from the camera to each screen row.
+			 * Rows get further away from the player as they approach the horizon
+			 */
+			rowDistance = (cameraHeight / (double)(row - horizon));
+
+			//Calculate row position based upon distance from the right and left
+			floorStepX = (rowDistance * (rightRayDirX - leftRayDirX)) / (double)gps->gAreaWidth;
+			floorStepY = (rowDistance * (rightRayDirY - leftRayDirY)) / (double)gps->gAreaWidth;
+
+			//Calculate pixel drawing postion for the raycasted row
+			floorX = (p->xLoc + rowDistance) * leftRayDirX;
+			floorY = (p->yLoc + rowDistance) * leftRayDirY;
+
+			//Calulcate the floor cast line based upon the cell location relative to the pixel location
+			for(x = 0; x < gps->gAreaWidth; x++) {
+				//Calculate cell x and y
+				cellX = (int)floor(floorX);
+				cellY = (int)floor(floorY);
+
+				//Calculate the fractional x and y
+				fractionX = floorX - (double)cellX;
+				fractionY = floorY - (double)cellY;
+
+				//Calculate the texture coordinates based upon the cell and fractional coordinates
+				textureX = (int)(fractionX * textureWidth);
+				textureY = (int)(fractionY * textureHeight);
+
+				//Make sure the texture coordinates are inside the texture
+				if(textureX < 0) {
+					textureX = 0;
+				}
+
+				else if(textureX >= textureWidth) {
+					textureX = textureWidth - 1;
+				}
+
+				if(textureY < 0) {
+					textureY = 0;
+				}
+
+				else if(textureY >= textureHeight) {
+					textureY = textureHeight - 1;
+				}
+
+				//Build the scanline X position
+				gps->floorScanline[x] = GrPixelC(gps->floorTexture, textureX, textureY);
+
+				//Increment the floor values
+				floorX += floorStepX;
+				floorY += floorStepY;
+			}
+
+			//Place the calculated scanline on the context
+			GrPutScanline(0, gps->gAreaWidth - 1, row, gps->floorScanline, GrWRITE);
+		}
+	}
+
+	//Cast and draw the walls
 	for(col = 0; col < gps->gAreaWidth; col++) {
 		hit = 0;
 		wallHit = 0;
