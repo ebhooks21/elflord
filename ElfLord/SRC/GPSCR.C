@@ -145,7 +145,6 @@ void renderGameplayScreen(Screen* s, Game* g) {
 
 	//Draw the sky, with it going slightly past the horizon line
 	GrFilledBox(0, 0, (gps->gAreaWidth - 1), horizon, skyColor);
-    //GrBitBlt(s->frame, 0, (gps->gAreaHeight / 2), gps->floorTexture, 0, 0, (gps->gAreaWidth - 1), (gps->gAreaHeight - 1), GrWRITE);
 
 	//Calculate the values for the left and right camera edges
 	leftRayDirX = dirX - planeX;
