@@ -21,6 +21,10 @@
 	m->mPos.x = (s->width / 2);
 	m->mPos.y = (s->height / 2);
 
+	//Set the previous position
+	m->mPrevPos.x = m->mPos.x;
+	m->mPrevPos.y = m->mPos.y;
+
 	return m;
  }
 
@@ -93,6 +97,29 @@
 			//The mouse moved and the location needs to be updated
 			m->mPos.x = ev.x;
 			m->mPos.y = ev.y;
+
+			//Check the game state
+			switch(g->state) {
+				case GAMEPLAY:
+					//Check to see if the mouse has moved left or right
+					if(m->mPos.x != m->mPrevPos.x) {
+						//Mouse has moved
+						if(m->mPos.x < m->mPrevPos.x) {
+							//Moved left
+							rotatePlayer(g->p, -((g->p)->rotSpeed));
+						}
+
+						else {
+							//Moved right
+							rotatePlayer(g->p, ((g->p)->rotSpeed));
+						}
+					}
+					break;
+			}
+
+			//Set the previous position
+			m->mPrevPos.x = m->mPos.x;
+			m->mPrevPos.y = m->mPos.y;
 		}
 
 		//Check for left mouse button input
@@ -112,23 +139,53 @@
   */
  void renderMouseCursor(Mouse*m, Game* g, Screen* s) {
 	//Get the locations for easy access
-	Vec2 pos = m->mPos;
+	int x = m->mPos.x;
+	int y = m->mPos.y;	
+	int numPoints = 0;
 
 	//Create the cursor
 	int cursor[][2] = {
-		{pos.x, pos.y},
-		{pos.x, pos.y + 9},
-		{pos.x + 2, pos.y + 7},
-		{pos.x + 4, pos.y + 10},
-		{pos.x + 6, pos.y + 9},
-		{pos.x + 4, pos.y + 6},
-		{pos.x + 7, pos.y + 6}
+		{x, y},
+		{x, y + 9},
+		{x + 2, y + 7},
+		{x + 4, y + 10},
+		{x + 6, y + 9},
+		{x + 4, y + 6},
+		{x + 7, y + 6}
 	};
 
-	//Calculate the number of points
-	int numPoints = (sizeof(cursor) / sizeof(cursor[0]));
+	switch(g->state) {
+		case TITLE:
+			//Calculate the number of points
+			numPoints = (sizeof(cursor) / sizeof(cursor[0]));
 
-	//Draw the cursor in the location
-	GrFilledPolygon(numPoints, cursor, GrWhite());
-	GrPolygon(numPoints, cursor, GrBlack());
+			//Draw the cursor in the location
+			GrFilledPolygon(numPoints, cursor, GrWhite());
+			GrPolygon(numPoints, cursor, GrBlack());
+			break;
+
+		case GAMEPLAY:
+			x = (s->width / 2);
+			y = (s->height / 2);
+
+			/* Small crosshair with a one-pixel center gap */
+			GrLine(x - 3, y, x - 1, y, GrWhite());
+			GrLine(x + 1, y, x + 3, y, GrWhite());
+			GrLine(x, y - 3, x, y - 1, GrWhite());
+			GrLine(x, y + 1, x, y + 3, GrWhite());
+
+			//Reset the mouse cursor
+			m->mPos.x = x;
+			m->mPos.y = y;
+
+			if(m->mPos.x <= 1 ) {
+				m->mPos.x = (s->width - 1);
+			}
+
+			if(m->mPos.x >= s->width) {
+				m->mPos.x = 2;
+			}
+			break;
+	}
+
  }
