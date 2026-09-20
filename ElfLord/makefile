@@ -1,6 +1,6 @@
 CC = gcc
-OBJECTS = BUILD\ElfLord.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Screen.o BUILD\Item.o
-TOBJECTS = BUILD\Testm.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Screen.o BUILD\Item.o
+OBJECTS = BUILD\ElfLord.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Item.o
+TOBJECTS = BUILD\Testm.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Item.o
 LIBS = -lgrx20
 
 clean:
@@ -78,6 +78,9 @@ BUILD\Map.o: SRC\Map.c
 
 BUILD\Maplo.o: SRC\Maplo.c
 	$(CC) -c SRC\Maplo.c -o BUILD\Maplo.o
+
+BUILD\Mouse.o: SRC\Mouse.c
+	$(CC) -c SRC\Mouse.c -o BUILD\Mouse.o
 
 BUILD\Testm.o: SRC\Testm.c
 	$(CC) -c SRC\Testm.c -o BUILD\Testm.o

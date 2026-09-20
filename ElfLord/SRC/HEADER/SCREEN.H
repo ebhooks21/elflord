@@ -5,6 +5,8 @@
  */
 
 #include <GRX20.H>
+#include "MOUSE.H"
+#include "VEC2.H"
 
 #ifndef SCREEN_H
 #define SCREEN_H
@@ -37,6 +39,9 @@ typedef struct screen_t {
 
 	//Variable for the current screen
 	void* currScreen;
+
+	//Variable for the mouse
+	Mouse* m;
 } Screen;
 
 /**
