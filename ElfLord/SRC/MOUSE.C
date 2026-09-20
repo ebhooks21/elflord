@@ -37,7 +37,12 @@
   */
  void enableMouse(Mouse* m, Screen* s) {
 	if(GrMouseDetect()) {
+		//Initialize the GRX mouse
         GrMouseInit();
+
+		//Set the mouse sensitivity
+		GrMouseSetSpeed(1, 8);
+		GrMouseSetAccel(64, 1);
 
         //Use this to stop the mouse input from eating keyboard input
         GrMouseEventEnable(0, 1);
@@ -78,10 +83,9 @@
 		return;
 	}
 
-	//Check the mouse event
-	while(GrMousePendingEvent()) {
+	do {
 		//Poll the event from the mouse
-		GrMouseGetEvent(GR_M_MOTION | GR_M_BUTTON_CHANGE, &ev);
+		GrMouseGetEvent(GR_M_MOTION | GR_M_BUTTON_CHANGE | GR_M_POLL | GR_M_NOPAINT, &ev);
 
 		//Check to see if the mouse has moved
 		//Checked by logic AND
@@ -100,7 +104,7 @@
 		if(ev.flags & GR_M_RIGHT_DOWN) {
 
 		}
-	}
+	} while(ev.flags != 0);
  }
 
 /**
@@ -110,19 +114,21 @@
 	//Get the locations for easy access
 	Vec2 pos = m->mPos;
 
-	/*
-     * Black offset creates contrast against bright backgrounds.
-     */
-    GrLine(pos.x + 1, pos.y + 1, pos.x + 1, pos.y + 13, GrBlack());
-    GrLine(pos.x + 1, pos.y + 1, pos.x + 10, pos.y + 10, GrBlack());
-    GrLine(pos.x + 10, pos.y + 10, pos.x + 6, pos.y + 10, GrBlack());
-    GrLine(pos.x + 6, pos.y + 10, pos.x + 9, pos.y + 16, GrBlack());
+	//Create the cursor
+	int cursor[][2] = {
+		{pos.x, pos.y},
+		{pos.x, pos.y + 9},
+		{pos.x + 2, pos.y + 7},
+		{pos.x + 4, pos.y + 10},
+		{pos.x + 6, pos.y + 9},
+		{pos.x + 4, pos.y + 6},
+		{pos.x + 7, pos.y + 6}
+	};
 
-    /*
-     * White cursor foreground.
-     */
-    GrLine(pos.x, pos.y, pos.x, pos.y + 12, GrWhite());
-    GrLine(pos.x, pos.y, pos.x + 9, pos.y + 9, GrWhite());
-    GrLine(pos.x + 9, pos.y + 9, pos.x + 5, pos.y + 9, GrWhite());
-    GrLine(pos.x + 5, pos.y + 9, pos.x + 8, pos.y + 15, GrWhite());
+	//Calculate the number of points
+	int numPoints = (sizeof(cursor) / sizeof(cursor[0]));
+
+	//Draw the cursor in the location
+	GrFilledPolygon(numPoints, cursor, GrWhite());
+	GrPolygon(numPoints, cursor, GrBlack());
  }
