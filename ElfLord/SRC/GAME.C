@@ -11,6 +11,7 @@
 #include "HEADER/STRYSCR.H"
 #include "HEADER/GPSCR.H"
 #include "HEADER/MAPLO.H"
+#include "HEADER/MOUSE.H"
 
 /**
  * Function to start thhe game.
@@ -112,13 +113,16 @@ void startGameLoop(Game* g) {
 	int running = 1;
 
 	do {
+		//Check for keyboard input
+		processKeyInput(g);
+
+		//Check mouse input
+		processMouseInput((g->screen)->m, g, g->screen);
+
 		//Process the tick, which runs each game loop
 		tick(g->screen, g);
 
 		//Render the game screen
-		render(g->screen, g);
-
-		//Check for keyboard input
-		processKeyInput(g);
+		render(g->screen, g);	
 	} while(g->state != EXIT_GAME);
 }

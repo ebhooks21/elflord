@@ -8,6 +8,8 @@
 #include "HEADER/GSTATE.H"
 #include "HEADER/STRYSCR.H"
 #include "HEADER/GPSCR.H"
+#include "HEADER/MOUSE.H"
+#include "HEADER/VEC2.H"
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
@@ -20,16 +22,11 @@ void initScreen(Screen* s) {
     GrSetMode(GR_width_height_color_graphics, s->width, s->height);
     GrSetRGBcolorMode();
 
-    //Setup the mouse -- move to a function later
-    /*if(GrMouseDetect()) {
-        GrMouseInit();
+    //Setup the mouse 
+    s->m = initMouse(s);
 
-        //Use this to stop the mouse input from eating keyboard input
-        GrMouseEventEnable(0, 1);
-
-        GrMouseSetLimits(0, 0, s->width - 1, s->height - 1);
-        GrMouseDisplayCursor();
-    }*/
+    //Attempt to enable the mouse
+    enableMouse(s->m, s); 
 
     //Setup the colors
     s->red = GrAllocColor(255, 0, 0);
@@ -61,8 +58,11 @@ void destroyScreen(Screen* s) {
         s->frame = NULL;
     }
 
-    //Unset the mouse
-    //GrMouseUnInit();
+    //Disable the mouse
+    disableMouse(s->m);
+
+    //Destroy the mouse
+    destroyMouse(s->m);
 
 	//Reset the video mode
     GrSetMode(GR_default_text);
@@ -153,7 +153,6 @@ void renderScreenText(char* t, int x, int y, int align, GrColor fc, GrColor bc, 
  * Function to render the game screen.
  */
 void render(Screen* s, Game* g) {
-    //int cursorState = GrMouseBlock(s->sContext, 0, 0, s->width - 1, s->height - 1); 
     //Draw into the off-screen frame
     GrSetContext(s->frame);
     GrClearContext(GrBlack());
@@ -177,10 +176,13 @@ void render(Screen* s, Game* g) {
             break;
     }
 
-    GrBitBlt(s->sContext, 0, 0, s->frame, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+    //Check to see if we need to draw the mouse cursor
+    if(s->m->enabled == 1) {
+        renderMouseCursor(s->m, g, s);
+    }
 
-    //Redraw the mouse cursor
-    //GrMouseUnBlock(cursorState);
+    //Draw the frame
+    GrBitBlt(s->sContext, 0, 0, s->frame, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
 
     //Increment the render count
     s->rCount++;
