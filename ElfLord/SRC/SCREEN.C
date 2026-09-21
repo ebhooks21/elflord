@@ -7,6 +7,7 @@
 #include "HEADER/GAME.H"
 #include "HEADER/GSTATE.H"
 #include "HEADER/STRYSCR.H"
+#include "HEADER/TITLESCR.H"
 #include "HEADER/GPSCR.H"
 #include "HEADER/MOUSE.H"
 #include "HEADER/VEC2.H"
@@ -89,44 +90,6 @@ void renderStatusBar(Screen* s, Game* g) {
 }
 
 /**
- * Function to render the title screen.
- */
-void renderTitleScreen(Screen* s, int menuOption) {
-    if(s->background == NULL) {
-        //Load the background image into memory
-        loadBackground(s, "ASSET\\title.ppm");
-    }
-
-    //Write the background image
-    GrBitBlt(s->frame, 0, 0, s->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
-
-    //Write the menu options to the screen
-    if(menuOption == 0) {
-        renderScreenText("> New Game <", (int)(s->width / 2), (int)(s->height / 2), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
-    }
-
-    else {
-        renderScreenText("New Game", (int)(s->width / 2), (int)(s->height / 2), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
-    }
-
-    if(menuOption == 1) {
-        renderScreenText("> Continue <", (int)(s->width / 2), ((int)(s->height / 2) + 32), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
-    }
-
-    else {
-        renderScreenText("Continue", (int)(s->width / 2), ((int)(s->height / 2) + 32), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
-    }
-
-    if(menuOption == 2) {
-        renderScreenText("> Return to DOS <", (int)(s->width / 2), ((int)(s->height / 2) + 64), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
-    }
-
-    else {
-        renderScreenText("Return to DOS", (int)(s->width / 2), ((int)(s->height / 2) + 64), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
-    }
-}
-
-/**
  * Function to render screen text.
  */
 void renderScreenText(char* t, int x, int y, int align, GrColor fc, GrColor bc, GrFont* fnt) {
@@ -160,7 +123,7 @@ void render(Screen* s, Game* g) {
     //See what we need to render
     switch(g->state) {
         case TITLE:
-            renderTitleScreen(s, g->menuOption);
+            renderTitleScreen((TitleScreen*)s->currScreen, s, g, g->menuOption);
             break;
 
         case STORY_SCREEN:

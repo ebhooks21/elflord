@@ -65,11 +65,6 @@ void drawScreenBorder(Screen* s, GrColor c);
 void renderStatusBar(Screen* s, Game* g);
 
 /**
- * Function to render the title screen.
- */
-void renderTitleScreen(Screen* s, int menuOption);
-
-/**
  * Function to render screen text.
  */
 void renderScreenText(char* t, int x, int y, int align, GrColor fc, GrColor bc, GrFont* fnt);
