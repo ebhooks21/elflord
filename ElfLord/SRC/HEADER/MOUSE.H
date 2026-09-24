@@ -26,6 +26,9 @@
 
 	//Variable for the mouse previous position
 	Vec2 mPrevPos;
+
+    //Variable for the mouse center position
+    Vec2 mCenterPos;
  } Mouse;
 
  /**

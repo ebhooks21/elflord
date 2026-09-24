@@ -8,6 +8,7 @@
  #include "HEADER/GAME.H"
  #include "HEADER/SCREEN.H"
  #include "HEADER/STRYSCR.H"
+ #include "HEADER/TITLESCR.H"
  #include <GRXKEYS.H>
  #include <stdlib.h>
  
@@ -15,8 +16,10 @@
  * Function to handle title screen input.
  */
 void handleTitleScreenKeyInput(Game* g, GrKeyType key) {
+	TitleScreen* t = (TitleScreen*)(g->screen)->currScreen;
+
 	if(key == GrKey_Return) {
-		switch(g->menuOption) {
+		switch(t->menuOption) {
 			case 0:
 				g->state = GAME_START_NEW;
 				break;
@@ -27,12 +30,12 @@ void handleTitleScreenKeyInput(Game* g, GrKeyType key) {
 		}
 	}
 
-	else if((key == GrKey_Up) && (g->menuOption > 0)) {
-		g->menuOption--;
+	else if((key == GrKey_Up) && (t->menuOption > 0)) {
+		t->menuOption--;
 	}
 
-	else if((key == GrKey_Down) && (g->menuOption < 2)) {
-		g->menuOption++;
+	else if((key == GrKey_Down) && (t->menuOption < 2)) {
+		t->menuOption++;
 	}
 }
 

@@ -9,6 +9,7 @@
 #include "HEADER/GSTATE.H"
 #include "HEADER/KEYB.H"
 #include "HEADER/STRYSCR.H"
+#include "HEADER/TITLESCR.H"
 #include "HEADER/GPSCR.H"
 #include "HEADER/MAPLO.H"
 #include "HEADER/MOUSE.H"
@@ -22,14 +23,14 @@ void startGame(Game* g) {
 	//Set the game state
 	g->state = TITLE;
 
-	//Preset the menu option
-	g->menuOption = 0;
-
 	//Preset the player
 	g->p = NULL;
 
 	//Initialize the screen
 	initScreen(g->screen);
+
+	//Create the title screen
+	(g->screen)->currScreen = initTitleScreen(g->screen);
 
 	//Start the game loop
 	startGameLoop(g);	
@@ -73,7 +74,7 @@ Screen* createGameScreen(int width, int height) {
 	switch(g->state) {
         case GAME_START_NEW:
             //Unload the background and start the game
-            unloadBackground(s);
+			destoryTitleScreen((TitleScreen*)s->currScreen);
 
 			//Clear the render count
 			s->rCount = 0;

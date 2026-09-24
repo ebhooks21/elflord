@@ -25,6 +25,10 @@
 	m->mPrevPos.x = m->mPos.x;
 	m->mPrevPos.y = m->mPos.y;
 
+	//Set the center position
+	m->mCenterPos.x = (s->width / 2);
+	m->mCenterPos.y = (s->height / 2);
+
 	return m;
  }
 
@@ -81,6 +85,9 @@
  void processMouseInput(Mouse* m, Game* g, Screen* s) {
 	//Variable for the mouse event
 	GrMouseEvent ev;
+	int mouseMoved = 0;
+	int mDeltaX = 0;
+	int mDeltaY = 0;
 
 	//Check to see if the mouse is enabled
 	if(m->enabled == 0) {
@@ -92,34 +99,13 @@
 		GrMouseGetEvent(GR_M_MOTION | GR_M_BUTTON_CHANGE | GR_M_POLL | GR_M_NOPAINT, &ev);
 
 		//Check to see if the mouse has moved
-		//Checked by logic AND
+		//Mouse movement is streamed, so we only need to take the last movement each time
 		if(ev.flags & GR_M_MOTION) {
 			//The mouse moved and the location needs to be updated
 			m->mPos.x = ev.x;
-			m->mPos.y = ev.y;
+			m->mPos.y = ev.y;	
 
-			//Check the game state
-			switch(g->state) {
-				case GAMEPLAY:
-					//Check to see if the mouse has moved left or right
-					if(m->mPos.x != m->mPrevPos.x) {
-						//Mouse has moved
-						if(m->mPos.x < m->mPrevPos.x) {
-							//Moved left
-							rotatePlayer(g->p, -((g->p)->rotSpeed));
-						}
-
-						else {
-							//Moved right
-							rotatePlayer(g->p, ((g->p)->rotSpeed));
-						}
-					}
-					break;
-			}
-
-			//Set the previous position
-			m->mPrevPos.x = m->mPos.x;
-			m->mPrevPos.y = m->mPos.y;
+			mouseMoved = 1;	
 		}
 
 		//Check for left mouse button input
@@ -132,6 +118,41 @@
 
 		}
 	} while(ev.flags != 0);
+
+	/**
+	 * Check if mouse movement is registered and we are ni the gameplay screen
+	 * This is becuase the gameplay screen force locks the map.
+	 */
+	if((g->state == GAMEPLAY) && mouseMoved) {
+		//Calcuate the distance moved
+		mDeltaX = m->mPos.x - m->mCenterPos.x;
+
+		//Check to see if the mouse has moved left or right
+		if(mDeltaX < 0) {
+			//Moved left
+			rotatePlayer(g->p, -((g->p)->rotSpeed));
+		}
+
+		else if(mDeltaX > 0) {
+			//Moved right
+			rotatePlayer(g->p, ((g->p)->rotSpeed));
+		}
+
+		//Warp the mouse back to center
+		GrMouseWarp(m->mCenterPos.x, m->mCenterPos.y);
+
+		//Reset the values
+		m->mPrevPos = m->mPos;
+		m->mPos.x = m->mCenterPos.x;
+		m->mPos.y = m->mCenterPos.y;
+	}
+
+	//Movement for menus
+	else if(mouseMoved) {
+		m->mPos.x = ev.x;
+		m->mPos.y = ev.y;	
+		m->mPrevPos = m->mPos;
+	}
  }
 
 /**
@@ -173,18 +194,6 @@
 			GrLine(x + 1, y, x + 3, y, GrWhite());
 			GrLine(x, y - 3, x, y - 1, GrWhite());
 			GrLine(x, y + 1, x, y + 3, GrWhite());
-
-			//Reset the mouse cursor
-			m->mPos.x = x;
-			m->mPos.y = y;
-
-			if(m->mPos.x <= 1 ) {
-				m->mPos.x = (s->width - 1);
-			}
-
-			if(m->mPos.x >= s->width) {
-				m->mPos.x = 2;
-			}
 			break;
 	}
 

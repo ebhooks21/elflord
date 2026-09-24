@@ -19,9 +19,6 @@ typedef struct game_t {
 	//Reference to the game state
 	GSTATE state;
 
-	//Value for the menu options
-	int menuOption;
-
 	//Variable for the player
 	Player* p;
 
