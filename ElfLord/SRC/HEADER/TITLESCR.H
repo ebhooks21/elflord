@@ -6,6 +6,7 @@
 
 #include <GRX20.H>
 #include "SCREEN.H"
+#include "MENUOPT.H"
 
 #ifndef TITLESCR_H
 #define TITLESCR_H
@@ -25,6 +26,9 @@ typedef struct {
 
 	//Variable for the selected menu option
 	int menuOption;
+
+	//Variable for the menu options
+	MenuOption* mOpt[3];
 } TitleScreen;
 
 /**
@@ -41,5 +45,25 @@ void destoryTitleScreen(TitleScreen* t);
  * Function to render the title screen.
  */
 void renderTitleScreen(TitleScreen* t, Screen* s, Game* g);
+
+/**
+ * Function to create the title screen menu options.
+ */
+void createTitleScreenMenuOptions(TitleScreen* t, Screen* s);
+
+/**
+ * Fucntion to handle title screen mouse movement.
+ */
+void handleTitleScreenMouseMovement(TitleScreen* t, Mouse* m, Game* g);
+
+/**
+ * Fucntion to handle title screen mouse left button input.
+ */
+void handleTitleScreenMouseLeftButtonInput(TitleScreen* t, Mouse* m, Game* g);
+
+/**
+ * Function to handle title screen action.
+ */
+void handleTitleScreenAction(TitleScreen* t, Game* g);
 
 #endif
