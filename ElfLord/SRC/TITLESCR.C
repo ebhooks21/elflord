@@ -23,6 +23,7 @@ TitleScreen* initTitleScreen(Screen* s) {
 	t->newGameText = "New Game";
 	t->continueGameText = "Continue Game";
 	t->returnToDosText = "Return to DOS";
+	t->menuOption = 0;
 }
 
 /**
@@ -39,7 +40,7 @@ void destoryTitleScreen(TitleScreen* t) {
 /**
  * Function to render the title screen.
  */
-void renderTitleScreen(TitleScreen* t, Screen* s, Game* g, int menuOption) {
+void renderTitleScreen(TitleScreen* t, Screen* s, Game* g) {
 	//Variable for the screen text
 	char tempText[25];
 
@@ -47,7 +48,7 @@ void renderTitleScreen(TitleScreen* t, Screen* s, Game* g, int menuOption) {
     GrBitBlt(s->frame, 0, 0, t->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
 
     //Write the menu options to the screen
-    if(menuOption == 0) {
+    if(t->menuOption == 0) {
 		sprintf(tempText, "> %s <", t->newGameText);
     }
 
@@ -57,7 +58,7 @@ void renderTitleScreen(TitleScreen* t, Screen* s, Game* g, int menuOption) {
 
 	renderScreenText(tempText, (int)(s->width / 2), (int)(s->height / 2), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
 
-    if(menuOption == 1) {
+    if(t->menuOption == 1) {
 		sprintf(tempText, "> %s <", t->continueGameText);
     }
 
@@ -67,7 +68,7 @@ void renderTitleScreen(TitleScreen* t, Screen* s, Game* g, int menuOption) {
 
 	renderScreenText(tempText, (int)(s->width / 2), ((int)(s->height / 2) + 32), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
 
-    if(menuOption == 2) {
+    if(t->menuOption == 2) {
 		sprintf(tempText, "> %s <", t->returnToDosText);
     }
 

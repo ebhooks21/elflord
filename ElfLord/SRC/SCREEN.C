@@ -123,7 +123,7 @@ void render(Screen* s, Game* g) {
     //See what we need to render
     switch(g->state) {
         case TITLE:
-            renderTitleScreen((TitleScreen*)s->currScreen, s, g, g->menuOption);
+            renderTitleScreen((TitleScreen*)s->currScreen, s, g);
             break;
 
         case STORY_SCREEN:

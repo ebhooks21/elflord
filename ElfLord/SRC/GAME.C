@@ -23,9 +23,6 @@ void startGame(Game* g) {
 	//Set the game state
 	g->state = TITLE;
 
-	//Preset the menu option
-	g->menuOption = 0;
-
 	//Preset the player
 	g->p = NULL;
 

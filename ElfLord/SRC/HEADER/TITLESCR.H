@@ -22,6 +22,9 @@ typedef struct {
 
 	//Variable for the title screen background
 	GrContext* background;
+
+	//Variable for the selected menu option
+	int menuOption;
 } TitleScreen;
 
 /**
@@ -37,6 +40,6 @@ void destoryTitleScreen(TitleScreen* t);
 /**
  * Function to render the title screen.
  */
-void renderTitleScreen(TitleScreen* t, Screen* s, Game* g, int menuOption);
+void renderTitleScreen(TitleScreen* t, Screen* s, Game* g);
 
 #endif
