@@ -1,6 +1,6 @@
 CC = gcc
-OBJECTS = BUILD\ElfLord.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Item.o
-TOBJECTS = BUILD\Testm.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Item.o
+OBJECTS = BUILD\ElfLord.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Menuopt.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Item.o
+TOBJECTS = BUILD\Testm.o BUILD\Keyb.o BUILD\Inv.o BUILD\Player.o BUILD\Menuopt.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Item.o
 LIBS = -lgrx20
 
 clean:
@@ -51,6 +51,9 @@ BUILD\ElfLord.o: SRC\ElfLord.c
 
 BUILD\Game.o: SRC\Game.c
 	$(CC) -c SRC\Game.c -o BUILD\Game.o
+
+BUILD\Menuopt.o: SRC\Menuopt.c
+	$(CC) -c SRC\Menuopt.c -o BUILD\Menuopt.o
 
 BUILD\Screen.o: SRC\Screen.c
 	$(CC) -c SRC\Screen.c -o BUILD\Screen.o

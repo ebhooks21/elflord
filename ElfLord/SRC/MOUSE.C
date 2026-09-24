@@ -8,6 +8,7 @@
  #include "HEADER/SCREEN.H"
  #include "HEADER/GAME.H"
  #include "HEADER/GSTATE.H"
+ #include "HEADER/TITLESCR.H"
  #include <GRX20.H>
  #include <stdlib.h>
 
@@ -110,7 +111,12 @@
 
 		//Check for left mouse button input
 		if(ev.flags & GR_M_LEFT_DOWN) {
-			g->state = EXIT_GAME;
+			//Check the state	
+			switch(g->state) {
+				case TITLE:
+					handleTitleScreenMouseLeftButtonInput((TitleScreen*)(g->screen)->currScreen, m, g);
+				break;
+			}
 		}
 
 		//Check for right mouse button input
@@ -152,6 +158,13 @@
 		m->mPos.x = ev.x;
 		m->mPos.y = ev.y;	
 		m->mPrevPos = m->mPos;
+
+		//Check the state to see what event handler to use
+		switch(g->state) {
+			case TITLE:
+				handleTitleScreenMouseMovement((TitleScreen*)(g->screen)->currScreen, m, g);
+				break;
+		}
 	}
  }
 
