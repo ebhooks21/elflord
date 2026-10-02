@@ -64,37 +64,6 @@ void renderTitleScreen(TitleScreen* t, Screen* s, Game* g) {
 
 		renderMenuOption(t->mOpt[i], tempText);
 	}
-
-    //Write the menu options to the screen
-    // if(t->menuOption == 0) {
-	// 	sprintf(tempText, "> %s <", t->mOpt[0]->text);
-    // }
-
-    // else {
-	// 	sprintf(tempText, "%s", t->mOpt[0]->text);
-    // }
-
-	// renderScreenText(tempText, (int)(s->width / 2), (int)(s->height / 2), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
-
-    // if(t->menuOption == 1) {
-	// 	sprintf(tempText, "> %s <", t->mOpt[1]->text);
-    // }
-
-    // else {
-	// 	sprintf(tempText, "%s", t->mOpt[1]->text);
-    // }
-
-	// renderScreenText(tempText, (int)(s->width / 2), ((int)(s->height / 2) + 32), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
-
-    // if(t->menuOption == 2) {
-	// 	sprintf(tempText, "> %s <", t->returnToDosText);
-    // }
-
-    // else {
-	// 	sprintf(tempText, "%s", t->returnToDosText);
-    // }
-
-	// renderScreenText(tempText, (int)(s->width / 2), ((int)(s->height / 2) + 64), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC8x16);
 }
 
 /**

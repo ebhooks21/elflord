@@ -44,16 +44,9 @@ void handleGenericKeyInput(Game* g, GrKeyType key) {
  * Function to handle story screen input.
  */
 void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
-	StoryScreen* ss = (StoryScreen*) (g->screen)->currScreen;
+	StoryScreen* s = (StoryScreen*) (g->screen)->currScreen;
 
-	if(ss->page == 2) {	
-		//This will accept any key, so just change state
-		g->state = INIT;
-	}
-
-	else {
-		ss->page++;
-	}
+	handleStoryScreenAction(s, g);
 }
 
 /**

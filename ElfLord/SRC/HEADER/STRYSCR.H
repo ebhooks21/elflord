@@ -29,4 +29,14 @@ void destoryStoryScreen(StoryScreen* s);
  */
 void renderStoryScreen(Screen* s, Game* g);
 
+/**
+ * Function to handle story screen mouse left button input.
+ */
+void handleStoryScreenMouseLeftButtonInput(StoryScreen* s, Mouse* m, Game* g);
+
+/**
+ * Function to handle story screen action.
+ */
+void handleStoryScreenAction(StoryScreen* s, Game* g);
+
 #endif

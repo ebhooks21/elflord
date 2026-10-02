@@ -9,6 +9,7 @@
  #include "HEADER/GAME.H"
  #include "HEADER/GSTATE.H"
  #include "HEADER/TITLESCR.H"
+ #include "HEADER/STRYSCR.H"
  #include <GRX20.H>
  #include <stdlib.h>
 
@@ -115,7 +116,11 @@
 			switch(g->state) {
 				case TITLE:
 					handleTitleScreenMouseLeftButtonInput((TitleScreen*)(g->screen)->currScreen, m, g);
-				break;
+					break;
+
+				case STORY_SCREEN:
+					handleStoryScreenAction((StoryScreen*)(g->screen)->currScreen, g);
+					break;
 			}
 		}
 

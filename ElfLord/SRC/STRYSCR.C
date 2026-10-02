@@ -82,3 +82,24 @@ void renderStoryScreen(Screen* s, Game* g) {
 			renderScreenText("PRESS ANY KEY TO CONTINUE...", ((int)(s->width / 2) + 6), 180, GR_ALIGN_CENTER, s->red, GrNOCOLOR, &GrFont_PC8x14);
 	}
 }
+
+/**
+ * Function to handle story screen mouse left button input.
+ */
+void handleStoryScreenMouseLeftButtonInput(StoryScreen* s, Mouse* m, Game* g) {
+	handleStoryScreenAction(s, g);	
+}
+
+/**
+ * Function to handle story screen action.
+ */
+void handleStoryScreenAction(StoryScreen* s, Game* g) {
+	if(s->page == 2) {	
+		//This will accept any key, so just change state
+		g->state = INIT;
+	}
+
+	else {
+		s->page++;
+	}
+}
