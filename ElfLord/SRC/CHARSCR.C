@@ -6,6 +6,7 @@
 #include "HEADER/CHARSCR.H"
 #include "HEADER/GAME.H"
 #include "HEADER/SCREEN.H"
+#include "HEADER/MENUOPT.H"
 #include <GRX20.H>
 #include <stdlib.h>
 
@@ -18,6 +19,9 @@ CharacterScreen* initCharacterScreen(Screen* s) {
 	//Load the screen background
 	c->background = GrCreateContext(s->width, s->height, NULL, NULL);
 	GrLoadContextFromPnm(c->background, "ASSET\\paper.ppm");
+
+	//Create the close menu option
+	createCharacterScreenCloseOption(c, s);
 
 	c->page = 1;
 
@@ -39,20 +43,51 @@ void destroyCharacterScreen(CharacterScreen* c) {
 void renderCharacterScreen(CharacterScreen* c, Screen* s, Game* g) {
 	//Write the background image
     GrBitBlt(s->frame, 0, 0, c->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+
+	renderScreenText("Character Sheet", (int)(s->width / 2), 5, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC8x16);
+
+	//Render the close button
+	renderMenuOption(c->closeOpt, NULL);
+}
+
+/**
+ * Function to create the character screen close button.
+ */
+void createCharacterScreenCloseOption(CharacterScreen* c, Screen* s) {
+	//Create a text option for the menu options
+	GrTextOption* options = malloc(sizeof *options);
+
+    options->txo_font = &GrFont_PC8x16;
+    options->txo_fgcolor.v = GrBlack();
+    options->txo_bgcolor.v = GrNOCOLOR;
+    options->txo_chrtype = GR_BYTE_TEXT;
+    options->txo_direct = GR_TEXT_RIGHT;
+    options->txo_xalign = GR_ALIGN_CENTER;
+    options->txo_yalign = GR_ALIGN_TOP;
+
+	//Create the menu option for new game
+	c->closeOpt = initMenuOption("X", (s->width - 10), 5, options);
 }
 
 /**
  * Function to handle character screen mouse movement.
  */
 void handleCharacterScreenMouseMovement(CharacterScreen* c, Mouse* m, Game* g) {
-
+	
 }
 
 /**
  * Function to handle character screen mouse left button input.
  */
 void handleCharacterScreenMouseLeftButtonInput(CharacterScreen* c, Mouse* m, Game* g) {
-	handleCharacterScreenAction(c, g);	
+	if(checkClosedClicked(c, m)) {
+		//Restore the gameplay screen
+		g->state = GAMEPLAY_SCREEN_RESTORE;
+	}
+
+	else {
+		handleCharacterScreenAction(c, g);
+	}
 }
 
 /**
@@ -60,4 +95,17 @@ void handleCharacterScreenMouseLeftButtonInput(CharacterScreen* c, Mouse* m, Gam
  */
 void handleCharacterScreenAction(CharacterScreen* c, Game* g) {
 	
+}
+
+/**
+ * Function to check if the closed button was clicked.
+ */
+int checkClosedClicked(CharacterScreen* c, Mouse* m) {
+	MenuOption* mo = c->closeOpt;
+
+	if((m->mPos.x >= mo->left) && (m->mPos.x <= mo->right) && (m->mPos.y >= mo->top) && (m->mPos.y <= mo->bottom)) {
+		return 1;
+	}
+
+	return 0;
 }

@@ -11,6 +11,7 @@
 #include "HEADER/STRYSCR.H"
 #include "HEADER/TITLESCR.H"
 #include "HEADER/GPSCR.H"
+#include "HEADER/CHARSCR.H"
 #include "HEADER/MAPLO.H"
 #include "HEADER/MOUSE.H"
 

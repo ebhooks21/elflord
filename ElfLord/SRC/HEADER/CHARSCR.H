@@ -5,6 +5,7 @@
  */
 
 #include "SCREEN.H"
+#include "MENUOPT.H"
 #include <GRX20.H>
 
 #ifndef CHARSCR_H
@@ -16,6 +17,9 @@ typedef struct {
 
 	//Variable for the current page of the character screen
 	int page;
+
+	//Variable for the close option
+	MenuOption* closeOpt;
 } CharacterScreen;
 
 /**
@@ -34,6 +38,11 @@ void destroyCharacterScreen(CharacterScreen* c);
 void renderCharacterScreen(CharacterScreen* c, Screen* s, Game* g);
 
 /**
+ * Function to create the character screen close button.
+ */
+void createCharacterScreenCloseOption(CharacterScreen* c, Screen* s);
+
+/**
  * Function to handle character screen mouse movement.
  */
 void handleCharacterScreenMouseMovement(CharacterScreen* c, Mouse* m, Game* g);
@@ -47,5 +56,10 @@ void handleCharacterScreenMouseLeftButtonInput(CharacterScreen* c, Mouse* m, Gam
  * Function to handle character screen action.
  */
 void handleCharacterScreenAction(CharacterScreen* c, Game* g);
+
+/**
+ * Function to check if the closed button was clicked.
+ */
+int checkClosedClicked(CharacterScreen* c, Mouse* m);
 
 #endif

@@ -10,6 +10,7 @@
  #include "HEADER/GSTATE.H"
  #include "HEADER/TITLESCR.H"
  #include "HEADER/STRYSCR.H"
+ #include "HEADER/CHARSCR.H"
  #include <GRX20.H>
  #include <stdlib.h>
 
@@ -121,6 +122,10 @@
 				case STORY_SCREEN:
 					handleStoryScreenAction((StoryScreen*)(g->screen)->currScreen, g);
 					break;
+
+				case CHARACTER_SCREEN:
+					handleCharacterScreenMouseLeftButtonInput((CharacterScreen*)(g->screen)->currScreen, m, g);
+					break;
 			}
 		}
 
@@ -131,8 +136,8 @@
 	} while(ev.flags != 0);
 
 	/**
-	 * Check if mouse movement is registered and we are ni the gameplay screen
-	 * This is becuase the gameplay screen force locks the map.
+	 * Check if mouse movement is registered and we are in the gameplay screen
+	 * This is because the gameplay screen force locks the mouse.
 	 */
 	if((g->state == GAMEPLAY) && mouseMoved) {
 		//Calcuate the distance moved
