@@ -35,6 +35,11 @@ void destoryTitleScreen(TitleScreen* t) {
 	//Destory the background
     GrDestroyContext(t->background);
 
+	//Destroy the menu options
+	for(int i = 0; i < 3; i++) {
+		destroyMenuOption(t->mOpt[i]);
+	}
+
 	//Destory the screen
 	free(t);
 }

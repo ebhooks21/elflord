@@ -34,7 +34,7 @@ MenuOption* initMenuOption(char* t, int x, int y, GrTextOption *to) {
 	GrStringSize(m->text, length, m->to, &m->width, &m->height);
 
 	m->top = y - (m->height / 2);
-	m->right = x + (m->height / 2);
+	m->right = x + (m->width / 2);
 	m->bottom = y + (m->height / 2);
 	m->left = x - (m->width / 2);
 

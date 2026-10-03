@@ -6,6 +6,7 @@
 
 #include "SCREEN.H"
 #include "MENUOPT.H"
+#include "CSCRST.H"
 #include <GRX20.H>
 
 #ifndef CHARSCR_H
@@ -16,10 +17,13 @@ typedef struct {
 	GrContext* background;
 
 	//Variable for the current page of the character screen
-	int page;
+	CharacterScreenState state;
 
 	//Variable for the close option
 	MenuOption* closeOpt;
+
+	//Variable for the top menu options
+	MenuOption* mOpt[4];
 } CharacterScreen;
 
 /**
@@ -36,6 +40,11 @@ void destroyCharacterScreen(CharacterScreen* c);
  * Function to render the character screen.
  */
 void renderCharacterScreen(CharacterScreen* c, Screen* s, Game* g);
+
+/**
+ * Function to create the character screen menu options.
+ */
+void createCharacterScreenMenuOptions(CharacterScreen* c, Screen* s);
 
 /**
  * Function to create the character screen close button.
