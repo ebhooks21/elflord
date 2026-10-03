@@ -40,6 +40,9 @@ typedef struct screen_t {
 	//Variable for the current screen
 	void* currScreen;
 
+	//Variable for the previous screen(when two screens need to be in memory at the same time. Example: Gamplay and Character)
+	void* prevScreen;
+
 	//Variable for the mouse
 	Mouse* m;
 } Screen;
@@ -83,5 +86,15 @@ void unloadBackground(Screen* s);
  * Function to load a background.
  */
 void loadBackground(Screen* s, char* backgroundPath);
+
+/**
+ * Function to save the current screen.
+ */
+void saveCurrScreen(Screen* s);
+
+/**
+ * Function to restore the previous screen.
+ */
+void restorePrevScreen(Screen* s);
 	
 #endif 

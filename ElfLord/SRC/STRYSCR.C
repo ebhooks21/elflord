@@ -14,34 +14,36 @@
 /**
  * Function to initialize the story screen.
  */
-StoryScreen* initStoryScreen() {
-	StoryScreen* s = malloc(sizeof *s);
-	s->page = 1;
+StoryScreen* initStoryScreen(Screen* s) {
+	StoryScreen* ss = malloc(sizeof *ss);
 
-	return s;
+	//Load the screen background
+    ss->background = GrCreateContext(s->width, s->height, NULL, NULL);
+    GrLoadContextFromPnm(ss->background, "ASSET\\paper.ppm");
+
+	ss->page = 1;
+
+	return ss;
 }
 
 /**
  * Function to destory the story screen.
  */
 void destoryStoryScreen(StoryScreen* s) {
+	//Destory the background
+    GrDestroyContext(s->background);
 	free(s);
 }
 
 /**
  * Function to render the story screen.
  */
-void renderStoryScreen(Screen* s, Game* g) {
-    if(s->background == NULL) {
-        //Load the background image into memory
-        loadBackground(s, "ASSET\\paper.ppm");
-    }
-
+void renderStoryScreen(StoryScreen* ss, Screen* s, Game* g) {
     //Write the background image
-    GrBitBlt(s->frame, 0, 0, s->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+    GrBitBlt(s->frame, 0, 0, ss->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
 
     //Write the text to the screen
-	if(((StoryScreen*)s->currScreen)->page == 1) {
+	if(ss->page == 1) {
 		renderScreenText("50 years ago, the Elves turned on the other races", 7, 10, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
 		renderScreenText("in an attempt to please their dark god Veldor.", 7, 19, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
 		renderScreenText("They started a dark and bloody war that lasted", 7, 27, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);

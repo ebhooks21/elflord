@@ -54,34 +54,51 @@ void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
  */
 void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 	switch(key) {
-			case GrKey_Up:
-			case 'w':
-			case 'W':
-				movePlayer(g, (g->p)->moveSpeed);
-				break;
+		case GrKey_Up:
+		case 'w':
+		case 'W':
+			movePlayer(g, (g->p)->moveSpeed);
+			break;
 
-			case GrKey_Down:
-			case 's':
-			case 'S':
-				movePlayer(g, -((g->p)->moveSpeed));
-				break;
+		case GrKey_Down:
+		case 's':
+		case 'S':
+			movePlayer(g, -((g->p)->moveSpeed));
+			break;
 
-			case GrKey_Left:
-			case 'a':
-			case 'A':
-				rotatePlayer(g->p, -((g->p)->rotSpeed));
-				break;
+		case GrKey_Left:
+		case 'a':
+		case 'A':
+			rotatePlayer(g->p, -((g->p)->rotSpeed));
+			break;
 
-			case GrKey_Right:
-			case 'd':
-			case 'D':
-				rotatePlayer(g->p, (g->p)->rotSpeed);
-				break;
+		case GrKey_Right:
+		case 'd':
+		case 'D':
+			rotatePlayer(g->p, (g->p)->rotSpeed);
+			break;
 
-			case GrKey_Escape:
-				g->state = EXIT_GAME;
-				break;
-		}	
+		case 'c':
+			//Need to swap to the character screen
+			g->state = CHARACTER_SCREEN_INIT;
+			break;
+
+		case GrKey_Escape:
+			g->state = EXIT_GAME;
+			break;
+	}	
+}
+
+/**
+ * Function to handle the character screen input.
+ */
+void handleCharacterScreenKeyInput(Game*g, GrKeyType key) {
+	switch(key) {
+		case GrKey_Escape:
+			//Restore the gameplay screen
+			g->state = GAMEPLAY_SCREEN_RESTORE;
+			break;
+	}	
 }
 
 /**
@@ -104,6 +121,10 @@ void processKeyInput(Game* g) {
 
 			case GAMEPLAY:
 				handleGameplayScreenKeyInput(g, key);
+				break;
+
+			case CHARACTER_SCREEN:
+				handleCharacterScreenKeyInput(g, key);
 				break;
 
 			default:

@@ -25,10 +25,6 @@ TitleScreen* initTitleScreen(Screen* s) {
 	//Create the menu options
 	createTitleScreenMenuOptions(t, s);
 
-	//Set the text
-	t->newGameText = "New Game";
-	t->continueGameText = "Continue Game";
-	t->returnToDosText = "Return to DOS";
 	t->menuOption = 0;
 }
 

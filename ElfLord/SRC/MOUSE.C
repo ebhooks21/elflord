@@ -195,6 +195,7 @@
 
 	switch(g->state) {
 		case TITLE:
+		case CHARACTER_SCREEN:
 			//Calculate the number of points
 			numPoints = (sizeof(cursor) / sizeof(cursor[0]));
 

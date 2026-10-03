@@ -12,15 +12,6 @@
 #define TITLESCR_H
 
 typedef struct {
-	//Variable for the new game text
-	char* newGameText;
-
-	//Variable for the continue game text
-	char* continueGameText;
-
-	//Variable for the return to dos text
-	char* returnToDosText;
-
 	//Variable for the title screen background
 	GrContext* background;
 

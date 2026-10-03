@@ -5,11 +5,15 @@
  */
 
 #include "SCREEN.H"
+#include <GRX20.H>
 
 #ifndef STRYSCR_H
 #define STRYSCR_H
 
 typedef struct {
+	//Variable for the screen background
+	GrContext* background;
+
 	//Variable for the story screen page
 	int page;
 } StoryScreen;
@@ -17,7 +21,7 @@ typedef struct {
 /**
  * Function to initialize the story screen.
  */
-StoryScreen* initStoryScreen();
+StoryScreen* initStoryScreen(Screen* s);
 
 /**
  * Function to destory the story screen.
@@ -27,7 +31,7 @@ void destoryStoryScreen(StoryScreen* s);
 /**
  * Function to render the story screen.
  */
-void renderStoryScreen(Screen* s, Game* g);
+void renderStoryScreen(StoryScreen* ss, Screen* s, Game* g);
 
 /**
  * Function to handle story screen mouse left button input.
