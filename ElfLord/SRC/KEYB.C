@@ -9,6 +9,7 @@
  #include "HEADER/SCREEN.H"
  #include "HEADER/STRYSCR.H"
  #include "HEADER/TITLESCR.H"
+ #include "HEADER/CHARSCR.H"
  #include <GRXKEYS.H>
  #include <stdlib.h>
  
@@ -93,7 +94,19 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
  * Function to handle the character screen input.
  */
 void handleCharacterScreenKeyInput(Game*g, GrKeyType key) {
+	CharacterScreen* cs = (CharacterScreen*)(g->screen)->currScreen;
+
 	switch(key) {
+		case GrKey_Tab:
+			//Cycle between the character screen views
+			if(cs->state < 3) {
+				cs->state++;
+			}
+
+			else {
+				cs->state = CHARACTER_SHEET;
+			}
+			break;
 		case GrKey_Escape:
 			//Restore the gameplay screen
 			g->state = GAMEPLAY_SCREEN_RESTORE;

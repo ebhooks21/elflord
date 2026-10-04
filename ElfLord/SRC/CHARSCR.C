@@ -21,6 +21,9 @@ CharacterScreen* initCharacterScreen(Screen* s) {
 	c->background = GrCreateContext(s->width, s->height, NULL, NULL);
 	GrLoadContextFromPnm(c->background, "ASSET\\paper.ppm");
 
+	//Create the active menu item color
+	c->actMenuColor = GrAllocColor(255, 0, 0);
+
 	//Create the character screen menu options
 	createCharacterScreenMenuOptions(c, s);
 
@@ -62,14 +65,16 @@ void renderCharacterScreen(CharacterScreen* c, Screen* s, Game* g) {
 	//Render the menu options
 	for(int i = 0; i < 4; i++) {
 		if(c->state == i) {
-			sprintf(tempText, "> %s <", c->mOpt[i]->text);
+			(c->mOpt[i])->to->txo_fgcolor.v = c->actMenuColor;
+			(c->mOpt[i])->to->txo_font = &GrFont_PC8x8;
 		}
 
 		else {
-			sprintf(tempText, "%s", c->mOpt[i]->text);
+			(c->mOpt[i])->to->txo_fgcolor.v = GrBlack();
+			(c->mOpt[i])->to->txo_font = &GrFont_PC6x8;
 		}
 
-		renderMenuOption(c->mOpt[i], tempText);
+		renderMenuOption(c->mOpt[i], NULL);
 	}
 
 	//Render the close button
@@ -102,13 +107,13 @@ void createCharacterScreenMenuOptions(CharacterScreen* c, Screen* s) {
 	c->mOpt[0] = initMenuOption("Character", 45, 8, options);
 
 	//Create the menu option for continue game
-	c->mOpt[1] = initMenuOption("Inventory", ((c->mOpt[0])->pos.x + ((c->mOpt[0]->width)) + 15), 8, options);
+	c->mOpt[1] = initMenuOption("Inventory", ((c->mOpt[0])->pos.x + ((c->mOpt[0]->width)) + 25), 8, options);
 
 	//Create the menu option for return to dos
-	c->mOpt[2] = initMenuOption("Equipment", ((c->mOpt[1])->pos.x + ((c->mOpt[1]->width)) + 15), 8, options);
+	c->mOpt[2] = initMenuOption("Equipment", ((c->mOpt[1])->pos.x + ((c->mOpt[1]->width)) + 25), 8, options);
 	
 	//Create the menu option for return to dos
-	c->mOpt[3] = initMenuOption("Spells", ((c->mOpt[2])->pos.x + ((c->mOpt[2]->width)) + 15), 8, options);
+	c->mOpt[3] = initMenuOption("Spells", ((c->mOpt[2])->pos.x + ((c->mOpt[2]->width)) + 10), 8, options);
 }
 
 /**
@@ -141,13 +146,25 @@ void handleCharacterScreenMouseMovement(CharacterScreen* c, Mouse* m, Game* g) {
  * Function to handle character screen mouse left button input.
  */
 void handleCharacterScreenMouseLeftButtonInput(CharacterScreen* c, Mouse* m, Game* g) {
+	MenuOption* mo = NULL; 
+
 	if(checkClosedClicked(c, m)) {
 		//Restore the gameplay screen
 		g->state = GAMEPLAY_SCREEN_RESTORE;
 	}
 
 	else {
-		handleCharacterScreenAction(c, g);
+		//handleCharacterScreenAction(c, g);
+
+		//Check to see which option might have been clicked
+		for(int i = CHARACTER_SHEET; i <= SPELLS; i++) {
+			mo = c->mOpt[i];
+
+			if((m->mPos.x >= mo->left) && (m->mPos.x <= mo->right) && (m->mPos.y >= mo->top) && (m->mPos.y <= mo->bottom)) {
+				c->state = i;
+				break;
+			}
+		}
 	}
 }
 

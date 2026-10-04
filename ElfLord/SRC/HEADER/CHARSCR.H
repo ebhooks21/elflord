@@ -16,6 +16,9 @@ typedef struct {
 	//Variable for the screen background
 	GrContext* background;
 
+	//Variable for the active menu item color
+	GrColor actMenuColor;
+
 	//Variable for the current page of the character screen
 	CharacterScreenState state;
 
