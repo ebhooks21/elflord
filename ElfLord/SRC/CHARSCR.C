@@ -19,11 +19,11 @@ CharacterScreen* initCharacterScreen(Screen* s) {
 	CharacterScreen* c = malloc(sizeof *c);
 
 	//Load the screen background
-	c->background = GrCreateContext(s->width, s->height, NULL, NULL);
-	GrLoadContextFromPnm(c->background, "ASSET\\paper.ppm");
+	c->background = createGameImage("ASSET\\paper.ppm", 0, 0);
+	loadGameImage(c->background);
 
 	//Load the chracter portrait
-	c->cPortrait = createGameImage("ASSET\\desryn.ppm", 0, NULL);
+	c->cPortrait = createGameImage("ASSET\\desryn.ppm", 0, 0);
 	loadGameImage(c->cPortrait);
 
 	//Create the active menu item color
@@ -45,7 +45,7 @@ CharacterScreen* initCharacterScreen(Screen* s) {
  */
 void destroyCharacterScreen(CharacterScreen* c) {
 	//Destroy the background
-	GrDestroyContext(c->background);
+	destroyGameImage(c->background);
 
 	//Destroy the character portrait
 	destroyGameImage(c->cPortrait);
@@ -67,7 +67,7 @@ void renderCharacterScreen(CharacterScreen* c, Screen* s, Game* g) {
 	char tempText[25];
 
 	//Write the background image
-    GrBitBlt(s->frame, 0, 0, c->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
+    GrBitBlt(s->frame, 0, 0, (c->background)->image, 0, 0, ((c->background)->width - 1), ((c->background)->height - 1), GrWRITE);
 
 	//Render elements that are always on the screen, no matter the state
 	//Render the menu options

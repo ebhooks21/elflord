@@ -15,7 +15,7 @@
 
 typedef struct {
 	//Variable for the screen background
-	GrContext* background;
+	GameImage* background;
 
 	//Variable for the character portrait
 	GameImage* cPortrait;

@@ -22,7 +22,7 @@ GameImage* createGameImage(char* p, int t, GrColor tc) {
 	}
 
 	else {
-		i->tColor = NULL;
+		i->tColor = 0;
 	}
 
 	return i;
