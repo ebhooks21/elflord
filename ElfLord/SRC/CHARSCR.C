@@ -21,6 +21,10 @@ CharacterScreen* initCharacterScreen(Screen* s) {
 	c->background = GrCreateContext(s->width, s->height, NULL, NULL);
 	GrLoadContextFromPnm(c->background, "ASSET\\paper.ppm");
 
+	//Load the chracter portrait
+	c->cPortrait = GrCreateContext(70, 70, NULL, NULL);
+	GrLoadContextFromPnm(c->cPortrait, "ASSET\\desryn.ppm");
+
 	//Create the active menu item color
 	c->actMenuColor = GrAllocColor(255, 0, 0);
 
@@ -41,6 +45,9 @@ CharacterScreen* initCharacterScreen(Screen* s) {
 void destroyCharacterScreen(CharacterScreen* c) {
 	//Destroy the background
 	GrDestroyContext(c->background);
+
+	//Destroy the character portrait
+	GrDestroyContext(c->cPortrait);
 
 	//Destroy the menu options
 	for(int i = 0; i < 4; i++) {
@@ -83,7 +90,8 @@ void renderCharacterScreen(CharacterScreen* c, Screen* s, Game* g) {
 	//Render the subscreen based upon the state
 	switch(c->state) {
 		case CHARACTER_SHEET:
-			renderScreenText("Character Sheet", (int)(s->width / 2), 20, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC8x16);
+			//Render the character portrait
+			GrBitBlt(s->frame, 20, 30, c->cPortrait, 0, 0, 69, 69, GrWRITE);
 			break;
 	}
 }
