@@ -7,6 +7,7 @@
 #include "SCREEN.H"
 #include "MENUOPT.H"
 #include "CSCRST.H"
+#include "GIMAGE.H"
 #include <GRX20.H>
 
 #ifndef CHARSCR_H
@@ -17,7 +18,7 @@ typedef struct {
 	GrContext* background;
 
 	//Variable for the character portrait
-	GrContext* cPortrait;
+	GameImage* cPortrait;
 
 	//Variable for the active menu item color
 	GrColor actMenuColor;

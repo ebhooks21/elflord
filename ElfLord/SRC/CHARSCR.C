@@ -7,6 +7,7 @@
 #include "HEADER/GAME.H"
 #include "HEADER/SCREEN.H"
 #include "HEADER/MENUOPT.H"
+#include "HEADER/GIMAGE.H"
 #include <GRX20.H>
 #include <stdlib.h>
 #include <stdio.h>
@@ -22,8 +23,8 @@ CharacterScreen* initCharacterScreen(Screen* s) {
 	GrLoadContextFromPnm(c->background, "ASSET\\paper.ppm");
 
 	//Load the chracter portrait
-	c->cPortrait = GrCreateContext(70, 70, NULL, NULL);
-	GrLoadContextFromPnm(c->cPortrait, "ASSET\\desryn.ppm");
+	c->cPortrait = createGameImage("ASSET\\desryn.ppm", 0, NULL);
+	loadGameImage(c->cPortrait);
 
 	//Create the active menu item color
 	c->actMenuColor = GrAllocColor(255, 0, 0);
@@ -47,7 +48,7 @@ void destroyCharacterScreen(CharacterScreen* c) {
 	GrDestroyContext(c->background);
 
 	//Destroy the character portrait
-	GrDestroyContext(c->cPortrait);
+	destroyGameImage(c->cPortrait);
 
 	//Destroy the menu options
 	for(int i = 0; i < 4; i++) {
@@ -91,7 +92,7 @@ void renderCharacterScreen(CharacterScreen* c, Screen* s, Game* g) {
 	switch(c->state) {
 		case CHARACTER_SHEET:
 			//Render the character portrait
-			GrBitBlt(s->frame, 20, 30, c->cPortrait, 0, 0, 69, 69, GrWRITE);
+			GrBitBlt(s->frame, 20, 30, (c->cPortrait)->image, 0, 0, ((c->cPortrait)->width - 1), ((c->cPortrait)->height - 1), GrWRITE);
 			break;
 	}
 }
