@@ -6,6 +6,7 @@
 
 #include "INV.H"
 #include "GAME.H"
+#include "STATS.H"
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -32,6 +33,9 @@ typedef struct {
 
 	//Variable for the player's gold
 	int gold;
+
+	//Variable for the player's stats
+	Stats stat;
 
 	//Variable for the player's inventory
 	Inventory* inv;

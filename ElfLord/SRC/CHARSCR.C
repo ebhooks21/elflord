@@ -93,6 +93,38 @@ void renderCharacterScreen(CharacterScreen* c, Screen* s, Game* g) {
 		case CHARACTER_SHEET:
 			//Render the character portrait
 			GrBitBlt(s->frame, 20, 30, (c->cPortrait)->image, 0, 0, ((c->cPortrait)->width - 1), ((c->cPortrait)->height - 1), GrWRITE);
+
+			//Render player information
+			Player* p = g->p;
+
+			renderScreenText(p->name, 100, 30, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+
+			sprintf(tempText, "Level: %d", p->level);
+			renderScreenText(tempText, 100, 40, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+
+			sprintf(tempText, "Strength: %d", (p->stat).str);
+			renderScreenText(tempText, 100, 50, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+			
+			sprintf(tempText, "Intelligence: %d", (p->stat).intel);
+			renderScreenText(tempText, 100, 60, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+			
+			sprintf(tempText, "Dexterity: %d", (p->stat).dex);
+			renderScreenText(tempText, 100, 70, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+			
+			sprintf(tempText, "Constitution: %d", (p->stat).con);
+			renderScreenText(tempText, 100, 80, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+			
+			sprintf(tempText, "Luck: %d", (p->stat).luck);
+			renderScreenText(tempText, 100, 90, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+			
+			sprintf(tempText, "Current Exp: %d", (p->stat).currExp);
+			renderScreenText(tempText, 100, 100, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+			
+			sprintf(tempText, "Next Exp: %d", (p->stat).nextExp);
+			renderScreenText(tempText, 100, 110, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
+			
+			sprintf(tempText, "Total Exp: %d", (p->stat).totalExp);
+			renderScreenText(tempText, 100, 120, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC8x8);
 			break;
 	}
 }
