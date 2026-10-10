@@ -29,24 +29,10 @@ Player* initPlayer() {
 	p->moveSpeed = .15f;
 	p->rotSpeed = .1f;
 	p->fov = M_PI / 3;	
-	p->gold = 35;
-	p->level = 1;
 
 	srand(time(NULL));
 
-	(p->stat).currExp = 0;
-	(p->stat).str = (rand() % 10) + 1;
-	(p->stat).con = (rand() % 10) + 1;
-	(p->stat).dex = (rand() % 10) + 1;
-	(p->stat).luck = (rand() % 10) + 1;
-	(p->stat).intel = (rand() % 10) + 1;
-	(p->stat).nextExp = (int)floor(50 + (p->level * 0.10f));
-	(p->stat).totalExp = 0;
-
-	p->maxHP = 30 + (4 * (p->stat).con) + (5 * (p->level - 1));
-	p->currHP = p->maxHP >= 50 ? p->maxHP : 50;
-	p->maxMP = 10 + (2 * (p->stat).intel) + (3 * (p->level -1));
-	p->currMP = p->maxMP >= 20 ? p->maxMP : 20;
+	calculatePlayerStats(p);	
 
 	return p;
 }
@@ -93,4 +79,25 @@ void rotatePlayer(Player* p, double amount) {
 	else if(p->angle >= M_PI * 2.0) {
 		p->angle -= M_PI * 2.0;
 	}
+}
+
+/**
+ * Function to calculate the player stats.
+ */
+void calculatePlayerStats(Player* p) {
+	p->gold = 35;
+	p->level = 1;
+	(p->stat).currExp = 0;
+	(p->stat).str = (rand() % 10) + 1;
+	(p->stat).con = (rand() % 10) + 1;
+	(p->stat).dex = (rand() % 10) + 1;
+	(p->stat).luck = (rand() % 10) + 1;
+	(p->stat).intel = (rand() % 10) + 1;
+	(p->stat).nextExp = (int)floor(50 + (p->level * 0.10f));
+	(p->stat).totalExp = 0;
+
+	p->maxHP = 30 + (4 * (p->stat).con) + (5 * (p->level - 1));
+	p->currHP = p->maxHP >= 50 ? p->maxHP : 50;
+	p->maxMP = 10 + (2 * (p->stat).intel) + (3 * (p->level -1));
+	p->currMP = p->maxMP >= 20 ? p->maxMP : 20;
 }

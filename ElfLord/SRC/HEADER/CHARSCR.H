@@ -78,4 +78,9 @@ void handleCharacterScreenAction(CharacterScreen* c, Game* g);
  */
 int checkClosedClicked(CharacterScreen* c, Mouse* m);
 
+/**
+ * Function to display the character sheet screen.
+ */
+void renderCharacterSheetScreen(CharacterScreen* c, Screen* s, Game* g);
+
 #endif

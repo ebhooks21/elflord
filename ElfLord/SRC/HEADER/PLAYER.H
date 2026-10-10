@@ -79,4 +79,9 @@ void movePlayer(Game* g, float mAmnt);
  */
 void rotatePlayer(Player* p, double amount);
 
+/**
+ * Function to calculate the player stats.
+ */
+void calculatePlayerStats(Player* p);
+
 #endif
