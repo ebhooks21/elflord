@@ -21,9 +21,6 @@
 	//Destroy the game
 	destroyGame(g);
 
-	//Release memory
-	free(g);
-
 	//Output thank you message
 	freopen("CON", "w", stderr);
 	fprintf(stderr, "Thank you for playing.\n");

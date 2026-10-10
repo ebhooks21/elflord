@@ -97,7 +97,18 @@ void calculatePlayerStats(Player* p) {
 	(p->stat).totalExp = 0;
 
 	p->maxHP = 30 + (4 * (p->stat).con) + (5 * (p->level - 1));
-	p->currHP = p->maxHP >= 50 ? p->maxHP : 50;
+
+	if(p->maxHP < 50) {
+		p->maxHP = 50;
+	}
+
+	p->currHP = p->maxHP;
+
 	p->maxMP = 10 + (2 * (p->stat).intel) + (3 * (p->level -1));
-	p->currMP = p->maxMP >= 20 ? p->maxMP : 20;
+
+	if(p->maxMP < 20) {
+		p->maxMP = 20;
+	}
+
+	p->currMP = p->maxMP;
 }

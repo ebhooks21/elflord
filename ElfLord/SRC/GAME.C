@@ -41,17 +41,23 @@ void startGame(Game* g) {
  * Function to destroy the game.
  */
 void destroyGame(Game* g) {
-	//Destroy the screen
-	destroyScreen(g->screen);
+	if(g->screen != NULL) {
+		//Destroy the screen
+		destroyScreen(g->screen);
+	}
 
-	//Destroy the current map
-	destroyMap(g->currMap);
+	if(g->currMap != NULL) {
+		//Destroy the current map
+		destroyMap(g->currMap);
+	}
 
-	//Destory the player
-	destroyPlayer(g->p);
+	if(g->p != NULL) {
+		//Destory the player
+		destroyPlayer(g->p);
+	}
 
-	//Release dynamic memory
-	free(g->screen);
+	//Release the game
+	free(g);
 }
 
 /**

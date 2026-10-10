@@ -15,6 +15,7 @@
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /**
  * Function to initialize the screen.
@@ -68,6 +69,9 @@ void destroyScreen(Screen* s) {
 
 	//Reset the video mode
     GrSetMode(GR_default_text);
+
+    //Free the screen
+    free(s);
 }
 
 /**
