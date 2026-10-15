@@ -11,6 +11,7 @@
 #include "HEADER/STRYSCR.H"
 #include "HEADER/TITLESCR.H"
 #include "HEADER/GPSCR.H"
+#include "HEADER/CHARSCR.H"
 #include "HEADER/MAPLO.H"
 #include "HEADER/MOUSE.H"
 
@@ -40,17 +41,23 @@ void startGame(Game* g) {
  * Function to destroy the game.
  */
 void destroyGame(Game* g) {
-	//Destroy the screen
-	destroyScreen(g->screen);
+	if(g->screen != NULL) {
+		//Destroy the screen
+		destroyScreen(g->screen);
+	}
 
-	//Destroy the current map
-	destroyMap(g->currMap);
+	if(g->currMap != NULL) {
+		//Destroy the current map
+		destroyMap(g->currMap);
+	}
 
-	//Destory the player
-	destroyPlayer(g->p);
+	if(g->p != NULL) {
+		//Destory the player
+		destroyPlayer(g->p);
+	}
 
-	//Release dynamic memory
-	free(g->screen);
+	//Release the game
+	free(g);
 }
 
 /**
@@ -82,7 +89,7 @@ Screen* createGameScreen(int width, int height) {
             g->state = STORY_SCREEN;
 
 			//Create a new story screen for rendering
-			s->currScreen = initStoryScreen(); 
+			s->currScreen = initStoryScreen(s); 
             break;
 
 		case INIT:
@@ -91,7 +98,6 @@ Screen* createGameScreen(int width, int height) {
 			g->state = GAMEPLAY;
 
 			//Delete the previous screen
-			unloadBackground(s);
 			destoryStoryScreen(s->currScreen);
 
 			//Create a new gameplay screen for rendering
@@ -100,6 +106,26 @@ Screen* createGameScreen(int width, int height) {
 			//Create the game map
 			//Initialize the map
 			g->currMap = loadMap("START");
+			break;
+
+		case CHARACTER_SCREEN_INIT:
+			//Init the character screen
+			saveCurrScreen(s);
+			s->currScreen = initCharacterScreen(s);
+
+			//Move to the character screen
+			g->state = CHARACTER_SCREEN;
+			break;
+
+		case GAMEPLAY_SCREEN_RESTORE:
+			//Destroy the character screen
+			destroyCharacterScreen(s->currScreen);
+
+			//Restore the gameplay screen
+			restorePrevScreen(s);
+
+			//Set the gameplay state
+			g->state = GAMEPLAY;
 			break;
 
         default:

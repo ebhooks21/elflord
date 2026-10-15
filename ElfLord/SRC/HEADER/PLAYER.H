@@ -6,6 +6,7 @@
 
 #include "INV.H"
 #include "GAME.H"
+#include "STATS.H"
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -32,6 +33,9 @@ typedef struct {
 
 	//Variable for the player's gold
 	int gold;
+
+	//Variable for the player's stats
+	Stats stat;
 
 	//Variable for the player's inventory
 	Inventory* inv;
@@ -74,5 +78,10 @@ void movePlayer(Game* g, float mAmnt);
  * Function to rotate the player.
  */
 void rotatePlayer(Player* p, double amount);
+
+/**
+ * Function to calculate the player stats.
+ */
+void calculatePlayerStats(Player* p);
 
 #endif

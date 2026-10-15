@@ -8,12 +8,14 @@
 #include "HEADER/GSTATE.H"
 #include "HEADER/STRYSCR.H"
 #include "HEADER/TITLESCR.H"
+#include "HEADER/CHARSCR.H"
 #include "HEADER/GPSCR.H"
 #include "HEADER/MOUSE.H"
 #include "HEADER/VEC2.H"
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /**
  * Function to initialize the screen.
@@ -67,6 +69,9 @@ void destroyScreen(Screen* s) {
 
 	//Reset the video mode
     GrSetMode(GR_default_text);
+
+    //Free the screen
+    free(s);
 }
 
 /**
@@ -127,11 +132,15 @@ void render(Screen* s, Game* g) {
             break;
 
         case STORY_SCREEN:
-            renderStoryScreen(s, g);
+            renderStoryScreen((StoryScreen*)s->currScreen, s, g);
             break;
         
         case GAMEPLAY:
             renderGameplayScreen(s, g);
+            break;
+
+        case CHARACTER_SCREEN:
+            renderCharacterScreen((CharacterScreen*)s->currScreen, s, g);
             break;
 
         default:
@@ -166,4 +175,23 @@ void loadBackground(Screen* s, char* backgroundPath) {
     //Load the background image into memory
     s->background = GrCreateContext(s->width, s->height, NULL, NULL);
     GrLoadContextFromPnm(s->background, backgroundPath);
+}
+
+/**
+ * Function to save the current screen.
+ */
+void saveCurrScreen(Screen* s) {
+    //Save the current screen pointer
+    s->prevScreen = s->currScreen;
+}
+
+/**
+ * Function to restore the previous screen.
+ */
+void restorePrevScreen(Screen* s) {
+    //Restore the previous screen pointer
+    s->currScreen = s->prevScreen;
+
+    //Clear the previous screen
+    s->prevScreen = NULL;
 }
