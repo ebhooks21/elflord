@@ -35,7 +35,12 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key);
 /**
  * Function to handle the character screen input.
  */
-void handleCharacterScreenKeyInput(Game*g, GrKeyType key);
+void handleCharacterScreenKeyInput(Game* g, GrKeyType key);
+
+/**
+ * Function to handle close confirmation screen input.
+ */
+void handleCloseConfirmationScreenKeyInput(Game* g, GrKeyType key);
 
 /**
  * Function to handle keypresses.

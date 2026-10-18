@@ -9,6 +9,6 @@
 - Equipment
 - Map building
 - Help Screen
-- Exit Confirmation
+- Exit Confirmation -- Done
 - Save Game
 - Load Game

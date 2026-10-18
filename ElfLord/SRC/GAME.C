@@ -14,6 +14,7 @@
 #include "HEADER/CHARSCR.H"
 #include "HEADER/MAPLO.H"
 #include "HEADER/MOUSE.H"
+#include "HEADER/CCSCR.H"
 
 /**
  * Function to start thhe game.
@@ -126,6 +127,25 @@ Screen* createGameScreen(int width, int height) {
 
 			//Set the gameplay state
 			g->state = GAMEPLAY;
+			break;
+
+		case EXIT_PROMPT_CLOSE:
+			//Destroy the close confirmation screen
+			destroyCloseConfirmationScreen(s->currScreen);
+
+			//Restore the gameplay screen
+			restorePrevScreen(s);
+
+			//Set the gameplay state
+			g->state = GAMEPLAY;
+			break;
+
+		case EXIT_PROMPT_INIT:
+			//Save the current screen
+			saveCurrScreen(s);
+			s->currScreen = initCloseConfirmScreen(s);
+
+			g->state = EXIT_PROMPT;
 			break;
 
         default:
