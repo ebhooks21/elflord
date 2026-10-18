@@ -10,6 +10,7 @@
  #include "HEADER/STRYSCR.H"
  #include "HEADER/TITLESCR.H"
  #include "HEADER/CHARSCR.H"
+ #include "HEADER/CCSCR.H"
  #include <GRXKEYS.H>
  #include <stdlib.h>
  
@@ -85,7 +86,8 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 			break;
 
 		case GrKey_Escape:
-			g->state = EXIT_GAME;
+			//Change to the close confirmation screen
+			g->state = EXIT_PROMPT_INIT;
 			break;
 	}	
 }
@@ -115,6 +117,29 @@ void handleCharacterScreenKeyInput(Game*g, GrKeyType key) {
 }
 
 /**
+ * Function to handle close confirmation screen input.
+ */
+void handleCloseConfirmationScreenKeyInput(Game* g, GrKeyType key) {
+	switch(key) {	
+		case 'y':
+		case 'Y':
+			g->state = EXIT_GAME;
+			break;
+
+		case 'n':
+		case 'N':
+			//Restore the gameplay screen
+			g->state = EXIT_PROMPT_CLOSE;
+			break;
+
+		case GrKey_Escape:
+			//Restore the gameplay screen
+			g->state = EXIT_PROMPT_CLOSE;
+			break;
+	}
+}
+
+/**
  * Function to handle keypresses.
  */
 void processKeyInput(Game* g) {
@@ -138,6 +163,10 @@ void processKeyInput(Game* g) {
 
 			case CHARACTER_SCREEN:
 				handleCharacterScreenKeyInput(g, key);
+				break;
+
+			case EXIT_PROMPT:
+				handleCloseConfirmationScreenKeyInput(g, key);
 				break;
 
 			default:

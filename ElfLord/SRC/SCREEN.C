@@ -12,6 +12,7 @@
 #include "HEADER/GPSCR.H"
 #include "HEADER/MOUSE.H"
 #include "HEADER/VEC2.H"
+#include "HEADER/CCSCR.H"
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
@@ -141,6 +142,10 @@ void render(Screen* s, Game* g) {
 
         case CHARACTER_SCREEN:
             renderCharacterScreen((CharacterScreen*)s->currScreen, s, g);
+            break;
+
+        case EXIT_PROMPT:
+            renderCloseConfirmationScreen((CloseConfirmScreen*)s->currScreen, s, g);
             break;
 
         default:
