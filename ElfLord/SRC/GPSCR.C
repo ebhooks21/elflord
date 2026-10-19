@@ -67,6 +67,17 @@ void destoryGPScr(GamePlayScreen* g) {
  * Function to render the game play screen.
  */
 void renderGameplayScreen(Screen* s, Game* g) {
+	//Render the gameplay area
+	renderGameplayArea(s, g);
+
+	//Draw the hud area
+	renderHudArea(s, g);
+}
+
+/**
+ * Function to render the game play area.
+ */
+void renderGameplayArea(Screen* s, Game* g) {
 	//Get the needed variables, so we don't have to do all of the arrow functions
 	Player* p = g->p;
 	Map* map = g->currMap;
@@ -300,16 +311,6 @@ void renderGameplayScreen(Screen* s, Game* g) {
 		//Draw the walls
 		GrVLine(col, start, end, wallColor);
 	}
-
-	//Draw the hud area
-	renderHudArea(s, g);
-}
-
-/**
- * Function to render the game play area.
- */
-void renderGameplayArea(Screen* s, Game* g) {
-
 }
 
 /**
