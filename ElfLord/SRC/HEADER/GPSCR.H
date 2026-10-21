@@ -6,6 +6,8 @@
 #include "SCREEN.H"
 #include "GAME.H"
 #include "MAP.H"
+#include "VEC2F.H"
+#include "VEC2.H"
 #include <GRX20.H>
 
 #ifndef GPSCR_H
@@ -23,6 +25,24 @@ typedef struct {
 
 	//Variable for the hud area height
 	int hAreaHeight;
+
+	//Variable for the render direction
+	Vec2f rDir;
+
+	//Variable for the player viewing plane
+	Vec2f pViewPlane;
+
+	//Variable for cell render locations
+	Vec2 cellPos;
+
+	//Variable for texture positions
+	Vec2 texPos;
+
+	//Variable for the hoizon line
+	int horLine;
+
+	//Variable for the camera height
+	float cHeight;
 
 	//Variable for the hud background
 	GrContext* hudBackground;
@@ -51,6 +71,11 @@ void destoryGPScr(GamePlayScreen* g);
  * Function to render the game play screen.
  */
 void renderGameplayScreen(Screen* s, Game* g);
+
+/**
+ * Function to render the floor.
+ */
+void renderFloor(Screen* s, Game* g, GamePlayScreen* gps);
 
 /**
  * Function to render the game play area.
