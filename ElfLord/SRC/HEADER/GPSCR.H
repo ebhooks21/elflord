@@ -5,7 +5,9 @@
  */
 #include "SCREEN.H"
 #include "GAME.H"
-#include "MAP.H"
+#include "VEC2F.H"
+#include "VEC2.H"
+#include "GIMAGE.H"
 #include <GRX20.H>
 
 #ifndef GPSCR_H
@@ -24,17 +26,42 @@ typedef struct {
 	//Variable for the hud area height
 	int hAreaHeight;
 
+	//Variable for the render direction
+	Vec2f rDir;
+
+	//Variable for the player viewing plane
+	Vec2f pViewPlane;
+
+	//Variable for the change in distance
+	Vec2f deltaDist;
+
+	//Variable for cell render locations
+	Vec2 cellPos;
+
+	//Variable for texture positions
+	Vec2 texPos;
+
+	//Variable for the hoizon line
+	int horLine;
+
+	//Variable for the camera height
+	float cHeight;
+
 	//Variable for the hud background
-	GrContext* hudBackground;
+	GameImage* hudBackground;
 
 	//Variable for the floor texture
-	GrContext* floorTexture;
+	GameImage* floorTexture;
 
 	//Variable for the ceiling texture
-	GrContext* ceilingTexture;
+	GameImage* ceilingTexture;
 
-	//Variable for teh scrolling floor scanline
+	//Variable for the wall texture
+	GameImage* wallTexture;
+
+	//Variables for the scrolling floor and ceiling scanlines
 	GrColor* floorScanline;
+	GrColor* ceilingScanline;
 } GamePlayScreen;
 
 /**
@@ -51,6 +78,21 @@ void destoryGPScr(GamePlayScreen* g);
  * Function to render the game play screen.
  */
 void renderGameplayScreen(Screen* s, Game* g);
+
+/**
+ * Function to render the floor.
+ */
+void renderFloor(Screen* s, Game* g, GamePlayScreen* gps);
+
+/**
+ * Function to render the ceiling.
+ */
+void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps);
+
+/**
+ * Function to render the walls.
+ */
+void renderWalls(Screen* s, Game* g, GamePlayScreen* gps);
 
 /**
  * Function to render the game play area.
