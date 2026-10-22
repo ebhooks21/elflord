@@ -7,6 +7,7 @@
 #include "GAME.H"
 #include "VEC2F.H"
 #include "VEC2.H"
+#include "GIMAGE.H"
 #include <GRX20.H>
 
 #ifndef GPSCR_H
@@ -47,13 +48,16 @@ typedef struct {
 	float cHeight;
 
 	//Variable for the hud background
-	GrContext* hudBackground;
+	GameImage* hudBackground;
 
 	//Variable for the floor texture
-	GrContext* floorTexture;
+	GameImage* floorTexture;
 
 	//Variable for the ceiling texture
-	GrContext* ceilingTexture;
+	GameImage* ceilingTexture;
+
+	//Variable for the wall texture
+	GameImage* wallTexture;
 
 	//Variables for the scrolling floor and ceiling scanlines
 	GrColor* floorScanline;

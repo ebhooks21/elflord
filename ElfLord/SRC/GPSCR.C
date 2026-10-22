@@ -10,6 +10,7 @@
  #include "HEADER/PLAYER.H"
  #include "HEADER/MAP.H"
  #include "HEADER/VEC2F.H"
+ #include "HEADER/GIMAGE.H"
  #include <GRX20.H>
  #include <stdlib.h>
  #include <stdio.h>
@@ -37,16 +38,20 @@ GamePlayScreen* initGPScr(Screen* s) {
 	gps->cHeight = (0.5 * (double)gps->gAreaHeight);
 
 	//Load the hud background
-	gps->hudBackground = GrCreateContext(gps->hAreaWidth, gps->hAreaHeight, NULL, NULL);
-    GrLoadContextFromPnm(gps->hudBackground, "ASSET\\hud.ppm");
+	gps->hudBackground = createGameImage("ASSET\\hud.ppm", 0, 0);
+	loadGameImage(gps->hudBackground);
 
 	//Load the floor texture 
-	gps->floorTexture = GrCreateContext(128, 128, NULL, NULL);
-    GrLoadContextFromPnm(gps->floorTexture, "ASSET\\stonef.ppm");
+	gps->floorTexture = createGameImage("ASSET\\stonef.ppm", 0, 0);
+	loadGameImage(gps->floorTexture);
 
 	//Load the ceiling texture 
-	gps->ceilingTexture = GrCreateContext(gps->gAreaWidth, (gps->gAreaHeight / 2), NULL, NULL);
-    GrLoadContextFromPnm(gps->ceilingTexture, "ASSET\\stonec.ppm");
+	gps->ceilingTexture = createGameImage("ASSET\\woodtex.ppm", 0, 0);
+	loadGameImage(gps->ceilingTexture);
+
+	//Load the wall texture
+	gps->wallTexture = createGameImage("ASSET\\cobstone.ppm", 0, 0);
+	loadGameImage(gps->wallTexture);
 
 	//Create the floor scanline
 	//This needs to store a color for each ray of the floor from X0 to X1
@@ -61,24 +66,14 @@ GamePlayScreen* initGPScr(Screen* s) {
  */
 void destoryGPScr(GamePlayScreen* g) {
 	//Destroy the textures
-	if(g->hudBackground != NULL) {
-		GrDestroyContext(g->hudBackground);
-	} 
-
-	if(g->floorTexture != NULL) {
-		GrDestroyContext(g->floorTexture);
-	}
-
-	if(g->ceilingTexture != NULL) {
-		GrDestroyContext(g->ceilingTexture);
-	}
+	destroyGameImage(g->hudBackground);
+	destroyGameImage(g->floorTexture);
+	destroyGameImage(g->ceilingTexture);
+	destroyGameImage(g->wallTexture);
 
 	//Free the contexts and scanline
-	free(g->ceilingTexture);
 	free(g->floorScanline);
 	free(g->ceilingScanline);
-	free(g->floorTexture);
-	free(g->hudBackground);
 
 	//Destroy the gameplay screen
 	free(g);
@@ -125,8 +120,8 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 	int x = 0; //X postion needed for floor casting	
 	
 	//Calculate the floor texture sizes
-	textureWidth = ((gps->floorTexture)->gc_xmax + 1);
-	textureHeight = ((gps->floorTexture)->gc_ymax + 1);
+	textureWidth = (gps->floorTexture)->width;
+	textureHeight = (gps->floorTexture)->height;
 
 	//Calculate the values for the left and right camera edges
 	leftRayDirX = gps->rDir.x - gps->pViewPlane.x;
@@ -185,7 +180,7 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				gps->floorScanline[x] = GrPixelC(gps->floorTexture, gps->texPos.x, gps->texPos.y);
+				gps->floorScanline[x] = GrPixelC((gps->floorTexture)->image, gps->texPos.x, gps->texPos.y);
 
 				//Increment the floor values
 				floorX += floorStepX;
@@ -228,8 +223,8 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 	int x = 0; //X postion needed for floor casting	
 	
 	//Calculate the floor texture sizes
-	textureWidth = ((gps->ceilingTexture)->gc_xmax + 1);
-	textureHeight = ((gps->ceilingTexture)->gc_ymax + 1);
+	textureWidth = (gps->ceilingTexture)->width;
+	textureHeight = (gps->ceilingTexture)->height;
 
 	//Calculate the values for the left and right camera edges
 	leftRayDirX = gps->rDir.x - gps->pViewPlane.x;
@@ -288,7 +283,7 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				gps->ceilingScanline[x] = GrPixelC(gps->ceilingTexture, gps->texPos.x, gps->texPos.y);
+				gps->ceilingScanline[x] = GrPixelC((gps->ceilingTexture)->image, gps->texPos.x, gps->texPos.y);
 
 				//Increment the floor values
 				floorX += floorStepX;
@@ -326,9 +321,17 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 	double wallHeight = 0.0;
 	int start = 0;
 	int end = 0;
-	int skyColor = GrAllocColor(0, 0, 135);
-	int wallColor = GrAllocColor(200, 200, 200);
 	int col = 0;
+
+	int textureWidth = (gps->wallTexture)->width;
+	int textureHeight = (gps->wallTexture)->height;
+	double wallX = 0.0;
+	double wallStep = 0.0;
+	double texPos = 0.0;
+	int y = 0;
+	int uncStart = 0;
+	gps->texPos.x = 0;
+	gps->texPos.y = 0;
 
 	//Cast and draw the walls
 	for(col = 0; col < gps->gAreaWidth; col++) {
@@ -394,27 +397,57 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 
 		if(side == 0) {
 			distance = (rayDirX == 0.0) ? 1e30 : (mapX - p->xLoc + (1 - stepX) / 2.0) / rayDirX;
+			wallX = p->yLoc + distance * rayDirY;
 		}
 
 		else {
 			distance = (rayDirY == 0.0) ? 1e30 : (mapY - p->yLoc + (1 - stepY) / 2.0) / rayDirY;
+			wallX = p->xLoc + distance * rayDirX;
 		}
 
 		wallHeight = (distance <= 0.0) ? 1e30 : (double)gps->gAreaHeight / distance;
+		wallX -= floor(wallX);
 
-		start = (int)((gps->gAreaHeight / 2.0) - (wallHeight / 2.0));
-		end = (int)((gps->gAreaHeight / 2.0) + (wallHeight / 2.0));
+		//Setup the texture column, flipping the wall when the ray is backwards
+		gps->texPos.x = (int)(wallX * textureWidth);
 
-		if(start < 0) {
-			start = 0;
+		if(((side == 0) && (rayDirX > 0)) || ((side == 1) && (rayDirY < 0))) {
+			gps->texPos.x = textureWidth - gps->texPos.x - 1;
 		}
+
+		if(gps->texPos.x < 0) {
+			gps->texPos.x = 0;
+		}
+
+		if(gps->texPos.x >= textureWidth) {
+			gps->texPos.x = textureWidth - 1;
+		}
+
+		//Setup unclipped start position so that the wall doesn't look funny
+		uncStart = (int)((gps->gAreaHeight / 2.0) - (wallHeight / 2.0));
+		wallStep = (double)(textureHeight / wallHeight);
+
+		start = (uncStart < 0) ? 0 : uncStart;
+		end = (int)((gps->gAreaHeight / 2.0) + (wallHeight / 2.0));
 
 		if(end >= gps->gAreaHeight) {
 			end = gps->gAreaHeight - 1;
 		}
 
+		texPos = (start - uncStart) * wallStep;
+
 		//Draw the walls
-		GrVLine(col, start, end, wallColor);
+		for(y = start; y <= end; y++) {
+			gps->texPos.y = (int)texPos;
+
+			if(gps->texPos.y >= textureHeight) {
+				gps->texPos.y = textureHeight - 1;
+			}
+
+			texPos += wallStep;
+
+			GrPlot(col, y, GrPixelC((gps->wallTexture)->image, gps->texPos.x, gps->texPos.y));
+		}
 	}
 }
 
@@ -470,7 +503,7 @@ void renderHudArea(Screen* s, Game* g) {
 	sprintf(goldText, "Gold: %d", p->gold);
 
 	//Draw the HUD background
-    GrBitBlt(s->frame, 0, gps->gAreaHeight, gps->hudBackground, 0, 0, (gps->hAreaWidth - 1), (gps->hAreaHeight - 1), GrWRITE);
+    GrBitBlt(s->frame, 0, gps->gAreaHeight, (gps->hudBackground)->image, 0, 0, (gps->hAreaWidth - 1), (gps->hAreaHeight - 1), GrWRITE);
 
 	//Write the player information to the HUD
 	renderScreenText(p->name, 4, gps->gAreaHeight + 4, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
