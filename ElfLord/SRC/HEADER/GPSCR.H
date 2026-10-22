@@ -5,7 +5,6 @@
  */
 #include "SCREEN.H"
 #include "GAME.H"
-#include "MAP.H"
 #include "VEC2F.H"
 #include "VEC2.H"
 #include <GRX20.H>
@@ -31,6 +30,9 @@ typedef struct {
 
 	//Variable for the player viewing plane
 	Vec2f pViewPlane;
+
+	//Variable for the change in distance
+	Vec2f deltaDist;
 
 	//Variable for cell render locations
 	Vec2 cellPos;
@@ -76,6 +78,16 @@ void renderGameplayScreen(Screen* s, Game* g);
  * Function to render the floor.
  */
 void renderFloor(Screen* s, Game* g, GamePlayScreen* gps);
+
+/**
+ * Function to render the ceiling.
+ */
+void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps);
+
+/**
+ * Function to render the walls.
+ */
+void renderWalls(Screen* s, Game* g, GamePlayScreen* gps);
 
 /**
  * Function to render the game play area.

@@ -189,30 +189,122 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 }
 
 /**
- * Function to render the game play area.
+ * Function to render the ceiling.
  */
-void renderGameplayArea(Screen* s, Game* g) {
+void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
+	Player* p = g->p;
+
+	//Variables needed for floor cells
+	gps->cellPos.x = 0;
+	gps->cellPos.y = 0;
+	gps->texPos.x = 0;
+	gps->texPos.y = 0;
+	int textureWidth = 0;
+	int textureHeight = 0;
+	double leftRayDirX = 0.0;
+	double leftRayDirY = 0.0;
+	double rightRayDirX = 0.0;
+	double rightRayDirY = 0.0;
+
+	double rowDistance = 0.0;
+	double floorStepX = 0.0;
+	double floorStepY = 0.0;
+	double floorX = 0.0;
+	double floorY = 0.0;
+	double fractionX = 0.0;
+	double fractionY = 0.0;
+
+	int row = 0; //Row needed for floor casting
+	int x = 0; //X postion needed for floor casting	
+	
+	//Calculate the floor texture sizes
+	textureWidth = ((gps->floorTexture)->gc_xmax + 1);
+	textureHeight = ((gps->floorTexture)->gc_ymax + 1);
+
+	//Calculate the values for the left and right camera edges
+	leftRayDirX = gps->rDir.x - gps->pViewPlane.x;
+	leftRayDirY = gps->rDir.y - gps->pViewPlane.y;
+	rightRayDirX = gps->rDir.x + gps->pViewPlane.x;
+	rightRayDirY = gps->rDir.y + gps->pViewPlane.y;
+
+	//Cast and draw the floor below the horizon
+	//Make sure we have the floor texture and sizes
+	if((gps->floorScanline != NULL) && (textureWidth > 0) && (textureHeight > 0)) {
+		//Loop through the row
+		for(row = 0; row <= gps->horLine; row++) {
+			/**
+			 * Calculate the distance from the camera to each screen row.
+			 * Rows get further away from the player as they approach the horizon
+			 */
+			rowDistance = (gps->cHeight / (double)(row - gps->horLine));
+
+			//Calculate row position based upon distance from the right and left
+			floorStepX = (rowDistance * (rightRayDirX - leftRayDirX)) / (double)gps->gAreaWidth;
+			floorStepY = (rowDistance * (rightRayDirY - leftRayDirY)) / (double)gps->gAreaWidth;
+
+			//Calculate pixel drawing postion for the raycasted row
+			floorX = (p->xLoc + rowDistance) * leftRayDirX;
+			floorY = (p->yLoc + rowDistance) * leftRayDirY;
+
+			//Calulcate the floor cast line based upon the cell location relative to the pixel location
+			for(x = 0; x < gps->gAreaWidth; x++) {
+				//Calculate cell x and y
+				gps->cellPos.x = (int)floor(floorX);
+				gps->cellPos.y = (int)floor(floorY);
+
+				//Calculate the fractional x and y
+				fractionX = floorX - (double)gps->cellPos.x;
+				fractionY = floorY - (double)gps->cellPos.y;
+
+				//Calculate the texture coordinates based upon the cell and fractional coordinates
+				gps->texPos.x = (int)(fractionX * textureWidth);
+				gps->texPos.y = (int)(fractionY * textureHeight);
+
+				//Make sure the texture coordinates are inside the texture
+				if(gps->texPos.x < 0) {
+					gps->texPos.x = 0;
+				}
+
+				else if(gps->texPos.x >= textureWidth) {
+					gps->texPos.x = textureWidth - 1;
+				}
+
+				if(gps->texPos.y < 0) {
+					gps->texPos.y = 0;
+				}
+
+				else if(gps->texPos.y >= textureHeight) {
+					gps->texPos.y = textureHeight - 1;
+				}
+
+				//Build the scanline X position
+				gps->floorScanline[x] = GrPixelC(gps->floorTexture, gps->texPos.x, gps->texPos.y);
+
+				//Increment the floor values
+				floorX += floorStepX;
+				floorY += floorStepY;
+			}
+
+			//Place the calculated scanline on the context
+			GrPutScanline(0, gps->gAreaWidth - 1, row, gps->floorScanline, GrWRITE);
+		}
+	}
+}
+
+
+/**
+ * Function to render the walls.
+ */
+void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 	//Get the needed variables, so we don't have to do all of the arrow functions
 	Player* p = g->p;
 	Map* map = g->currMap;
-	GamePlayScreen* gps = (GamePlayScreen*)(s->currScreen);
-
-	gps->rDir.x = 0.0;
-	gps->rDir.y = 0.0;
-
-	//Calculate player viewing direction and camera plane
-	gps->rDir.x = cos(p->angle);
-	gps->rDir.y = sin(p->angle);
-	gps->pViewPlane.x = -(gps->rDir.y) * tan(p->fov / 2.0);
-	gps->pViewPlane.y = gps->rDir.x * tan(p->fov / 2.0);
 
 	double cameraX = 0.0;
 	double rayDirX = 0.0;
 	double rayDirY = 0.0;	
 	int mapX = 0;
 	int mapY = 0;
-	double deltaDistX = 0.0;
-	double deltaDistY = 0.0;
 	int stepX = 0;
 	int stepY = 0;
 	double sideDistX = 0.0;
@@ -228,12 +320,6 @@ void renderGameplayArea(Screen* s, Game* g) {
 	int wallColor = GrAllocColor(200, 200, 200);
 	int col = 0;
 
-	//Draw the sky, with it going slightly past the horizon line
-	GrFilledBox(0, 0, (gps->gAreaWidth - 1), gps->horLine, skyColor);
-
-	//Render the floor
-	renderFloor(s, g, gps);
-
 	//Cast and draw the walls
 	for(col = 0; col < gps->gAreaWidth; col++) {
 		hit = 0;
@@ -246,38 +332,38 @@ void renderGameplayArea(Screen* s, Game* g) {
 		mapX = floor(p->xLoc);
 		mapY = floor(p->yLoc);
 
-		deltaDistX = (rayDirX == 0.0) ? 1e30 : fabs(1.0 / rayDirX);
-		deltaDistY = (rayDirY == 0.0) ? 1e30 : fabs(1.0 / rayDirY);
+		gps->deltaDist.x = (rayDirX == 0.0) ? 1e30 : fabs(1.0 / rayDirX);
+		gps->deltaDist.y = (rayDirY == 0.0) ? 1e30 : fabs(1.0 / rayDirY);
 
 		if(rayDirX < 0) {
 			stepX = -1;
-			sideDistX = ((p->xLoc - mapX) * deltaDistX);
+			sideDistX = ((p->xLoc - mapX) * gps->deltaDist.x);
 		}
 
 		else {
 			stepX = 1;
-			sideDistX = ((mapX + 1 - p->xLoc) * deltaDistX);
+			sideDistX = ((mapX + 1 - p->xLoc) * gps->deltaDist.x);
 		}
 
 		if(rayDirY < 0) {
 			stepY = -1;
-			sideDistY = ((p->yLoc - mapY) * deltaDistY);
+			sideDistY = ((p->yLoc - mapY) * gps->deltaDist.y);
 		}
 		
 		else {
 			stepY = 1;
-			sideDistY = ((mapY + 1 - p->yLoc) * deltaDistY);
+			sideDistY = ((mapY + 1 - p->yLoc) * gps->deltaDist.y);
 		}
 
 		while(hit == 0) {
 			if(sideDistX < sideDistY) {
-				sideDistX += deltaDistX;
+				sideDistX += gps->deltaDist.x;
 				mapX += stepX;
 				side = 0;
 			}
 
 			else {
-				sideDistY += deltaDistY;
+				sideDistY += gps->deltaDist.y;
 				mapY += stepY;
 				side = 1;
 			}
@@ -285,6 +371,7 @@ void renderGameplayArea(Screen* s, Game* g) {
 			if(mapX < 0 || mapX >= map->mapCols || mapY < 0 || mapY >= map->mapRows) {
 				hit = 1;
 			}
+
 			else if(map->mapData[mapY][mapX] > 0) {
 				hit = 1;
 				wallHit = 1;
@@ -319,6 +406,41 @@ void renderGameplayArea(Screen* s, Game* g) {
 		//Draw the walls
 		GrVLine(col, start, end, wallColor);
 	}
+}
+
+/**
+ * Function to render the game play area.
+ */
+void renderGameplayArea(Screen* s, Game* g) {
+	//Get the needed variables, so we don't have to do all of the arrow functions
+	Player* p = g->p;
+	Map* map = g->currMap;
+	GamePlayScreen* gps = (GamePlayScreen*)(s->currScreen);
+
+	gps->rDir.x = 0.0;
+	gps->rDir.y = 0.0;
+	gps->deltaDist.x = 0.0;
+	gps->deltaDist.y = 0.0;
+
+	//Calculate player viewing direction and camera plane
+	gps->rDir.x = cos(p->angle);
+	gps->rDir.y = sin(p->angle);
+	gps->pViewPlane.x = -(gps->rDir.y) * tan(p->fov / 2.0);
+	gps->pViewPlane.y = gps->rDir.x * tan(p->fov / 2.0);
+
+	int skyColor = GrAllocColor(0, 0, 135);
+
+	//Draw the sky, with it going slightly past the horizon line
+	//GrFilledBox(0, 0, (gps->gAreaWidth - 1), gps->horLine, skyColor);
+
+	//Render the ceiling
+	renderCeiling(s, g, gps);
+
+	//Render the floor
+	renderFloor(s, g, gps);
+
+	//Render the walls
+	renderWalls(s, g, gps);
 }
 
 /**
