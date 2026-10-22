@@ -40,13 +40,18 @@ GamePlayScreen* initGPScr(Screen* s) {
 	gps->hudBackground = GrCreateContext(gps->hAreaWidth, gps->hAreaHeight, NULL, NULL);
     GrLoadContextFromPnm(gps->hudBackground, "ASSET\\hud.ppm");
 
-	//Load the ceiling texture 
-	gps->floorTexture = GrCreateContext(gps->gAreaWidth, (gps->gAreaHeight / 2), NULL, NULL);
+	//Load the floor texture 
+	gps->floorTexture = GrCreateContext(128, 128, NULL, NULL);
     GrLoadContextFromPnm(gps->floorTexture, "ASSET\\stonef.ppm");
+
+	//Load the ceiling texture 
+	gps->ceilingTexture = GrCreateContext(gps->gAreaWidth, (gps->gAreaHeight / 2), NULL, NULL);
+    GrLoadContextFromPnm(gps->ceilingTexture, "ASSET\\stonec.ppm");
 
 	//Create the floor scanline
 	//This needs to store a color for each ray of the floor from X0 to X1
 	gps->floorScanline = malloc(sizeof(GrColor) * gps->gAreaWidth);
+	gps->ceilingScanline = malloc(sizeof(GrColor) * gps->gAreaWidth);
 
 	return gps;
 }
@@ -64,9 +69,14 @@ void destoryGPScr(GamePlayScreen* g) {
 		GrDestroyContext(g->floorTexture);
 	}
 
+	if(g->ceilingTexture != NULL) {
+		GrDestroyContext(g->ceilingTexture);
+	}
+
 	//Free the contexts and scanline
 	free(g->ceilingTexture);
 	free(g->floorScanline);
+	free(g->ceilingScanline);
 	free(g->floorTexture);
 	free(g->hudBackground);
 
@@ -218,8 +228,8 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 	int x = 0; //X postion needed for floor casting	
 	
 	//Calculate the floor texture sizes
-	textureWidth = ((gps->floorTexture)->gc_xmax + 1);
-	textureHeight = ((gps->floorTexture)->gc_ymax + 1);
+	textureWidth = ((gps->ceilingTexture)->gc_xmax + 1);
+	textureHeight = ((gps->ceilingTexture)->gc_ymax + 1);
 
 	//Calculate the values for the left and right camera edges
 	leftRayDirX = gps->rDir.x - gps->pViewPlane.x;
@@ -278,7 +288,7 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				gps->floorScanline[x] = GrPixelC(gps->floorTexture, gps->texPos.x, gps->texPos.y);
+				gps->ceilingScanline[x] = GrPixelC(gps->ceilingTexture, gps->texPos.x, gps->texPos.y);
 
 				//Increment the floor values
 				floorX += floorStepX;
@@ -286,7 +296,7 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 			}
 
 			//Place the calculated scanline on the context
-			GrPutScanline(0, gps->gAreaWidth - 1, row, gps->floorScanline, GrWRITE);
+			GrPutScanline(0, gps->gAreaWidth - 1, row, gps->ceilingScanline, GrWRITE);
 		}
 	}
 }
