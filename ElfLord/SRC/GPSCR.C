@@ -53,10 +53,8 @@ GamePlayScreen* initGPScr(Screen* s) {
 	gps->wallTexture = createGameImage("ASSET\\cobstone.ppm", 0, 0);
 	loadGameImage(gps->wallTexture);
 
-	//Create the floor scanline
-	//This needs to store a color for each ray of the floor from X0 to X1
-	gps->floorScanline = malloc(sizeof(GrColor) * gps->gAreaWidth);
-	gps->ceilingScanline = malloc(sizeof(GrColor) * gps->gAreaWidth);
+	//Create the framebuffer
+	gps->frameBuffer = malloc(sizeof(GrColor) * gps->gAreaWidth * gps->gAreaHeight);
 
 	return gps;
 }
@@ -71,9 +69,8 @@ void destoryGPScr(GamePlayScreen* g) {
 	destroyGameImage(g->ceilingTexture);
 	destroyGameImage(g->wallTexture);
 
-	//Free the contexts and scanline
-	free(g->floorScanline);
-	free(g->ceilingScanline);
+	//Free the framebuffer
+	free(g->frameBuffer);
 
 	//Destroy the gameplay screen
 	free(g);
@@ -117,7 +114,10 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 	double fractionY = 0.0;
 
 	int row = 0; //Row needed for floor casting
-	int x = 0; //X postion needed for floor casting	
+	int x = 0; //X postion needed for floor casting
+
+	//Framebuffer line
+	GrColor* line;
 	
 	//Calculate the floor texture sizes
 	textureWidth = (gps->floorTexture)->width;
@@ -131,9 +131,11 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 
 	//Cast and draw the floor below the horizon
 	//Make sure we have the floor texture and sizes
-	if((gps->floorScanline != NULL) && (textureWidth > 0) && (textureHeight > 0)) {
+	if((gps->frameBuffer != NULL) && (textureWidth > 0) && (textureHeight > 0)) {
 		//Loop through the row
 		for(row = (gps->horLine + 1); row < gps->gAreaHeight; row++) {
+			line = &gps->frameBuffer[row * gps->gAreaWidth];
+			
 			/**
 			 * Calculate the distance from the camera to each screen row.
 			 * Rows get further away from the player as they approach the horizon
@@ -180,15 +182,12 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				gps->floorScanline[x] = GrPixelC((gps->floorTexture)->image, gps->texPos.x, gps->texPos.y);
+				line[x] = GrPixelC((gps->floorTexture)->image, gps->texPos.x, gps->texPos.y);
 
 				//Increment the floor values
 				floorX += floorStepX;
 				floorY += floorStepY;
 			}
-
-			//Place the calculated scanline on the context
-			GrPutScanline(0, gps->gAreaWidth - 1, row, gps->floorScanline, GrWRITE);
 		}
 	}
 }
@@ -219,6 +218,9 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 	double fractionX = 0.0;
 	double fractionY = 0.0;
 
+	//Frame buffer line
+	GrColor* line;
+
 	int row = 0; //Row needed for floor casting
 	int x = 0; //X postion needed for floor casting	
 	
@@ -234,9 +236,11 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 
 	//Cast and draw the floor below the horizon
 	//Make sure we have the floor texture and sizes
-	if((gps->floorScanline != NULL) && (textureWidth > 0) && (textureHeight > 0)) {
+	if((gps->frameBuffer != NULL) && (textureWidth > 0) && (textureHeight > 0)) {
 		//Loop through the row
 		for(row = 0; row <= gps->horLine; row++) {
+			line = &gps->frameBuffer[row * gps->gAreaWidth];
+			
 			/**
 			 * Calculate the distance from the camera to each screen row.
 			 * Rows get further away from the player as they approach the horizon
@@ -283,15 +287,12 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				gps->ceilingScanline[x] = GrPixelC((gps->ceilingTexture)->image, gps->texPos.x, gps->texPos.y);
+				line[x] = GrPixelC((gps->ceilingTexture)->image, gps->texPos.x, gps->texPos.y);
 
 				//Increment the floor values
 				floorX += floorStepX;
 				floorY += floorStepY;
 			}
-
-			//Place the calculated scanline on the context
-			GrPutScanline(0, gps->gAreaWidth - 1, row, gps->ceilingScanline, GrWRITE);
 		}
 	}
 }
@@ -446,7 +447,8 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 
 			texPos += wallStep;
 
-			GrPlot(col, y, GrPixelC((gps->wallTexture)->image, gps->texPos.x, gps->texPos.y));
+			//GrPlot(col, y, GrPixelC((gps->wallTexture)->image, gps->texPos.x, gps->texPos.y));
+			gps->frameBuffer[y * gps->gAreaWidth + col] = GrPixelC((gps->wallTexture)->image, gps->texPos.x, gps->texPos.y);
 		}
 	}
 }
@@ -484,6 +486,11 @@ void renderGameplayArea(Screen* s, Game* g) {
 
 	//Render the walls
 	renderWalls(s, g, gps);
+
+	//Write the framebuffer
+	for(int row = 0; row < gps->gAreaHeight; row++) {
+		GrPutScanline(0, (gps->gAreaWidth - 1), row, &gps->frameBuffer[row * gps->gAreaWidth], GrWRITE);
+	}
 }
 
 /**

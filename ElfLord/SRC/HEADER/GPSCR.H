@@ -59,9 +59,8 @@ typedef struct {
 	//Variable for the wall texture
 	GameImage* wallTexture;
 
-	//Variables for the scrolling floor and ceiling scanlines
-	GrColor* floorScanline;
-	GrColor* ceilingScanline;
+	//Variable for the frame buffer
+	GrColor* frameBuffer;
 } GamePlayScreen;
 
 /**

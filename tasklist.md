@@ -1,7 +1,7 @@
 # Remaining Tasks
 
-- Ceiling Textures
-- Wall Textures
+- Ceiling Textures -- Done
+- Wall Textures -- Done
 - Map entities
 - Melee Combat
 - Information panel
