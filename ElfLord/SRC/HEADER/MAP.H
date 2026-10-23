@@ -33,4 +33,9 @@
   */
  int isWalkable(Map* m, float x, float y);
 
+ /**
+  * Function to get the map cell object by id.
+  */
+ char* getMapCellObjById(int objId);
+
  #endif

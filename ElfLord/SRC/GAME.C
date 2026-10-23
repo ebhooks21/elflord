@@ -15,6 +15,7 @@
 #include "HEADER/MAPLO.H"
 #include "HEADER/MOUSE.H"
 #include "HEADER/CCSCR.H"
+#include "HEADER/MSGA.H"
 
 /**
  * Function to start thhe game.
@@ -27,6 +28,9 @@ void startGame(Game* g) {
 
 	//Preset the player
 	g->p = NULL;
+
+	//Set the number of messages to 0
+	g->msgA.numMsgs = 0;
 
 	//Initialize the screen
 	initScreen(g->screen);

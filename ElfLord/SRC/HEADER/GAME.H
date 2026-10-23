@@ -11,6 +11,7 @@
 #include "GSTATE.H"
 #include "PLAYER.H"
 #include "MAP.H"
+#include "MSGA.H"
 
 typedef struct game_t {
 	//Reference to the screen
@@ -24,6 +25,9 @@ typedef struct game_t {
 
 	//Variable for the current game map
 	Map* currMap;
+
+	//Variable for the message area
+	MessageArea msgA;
 } Game;
 
 /**

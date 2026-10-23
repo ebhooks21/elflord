@@ -52,14 +52,24 @@
 
  /**
   * Function to see if a map position is walkable.
+  * If it is walkable, it returns 0
+  * If it is unwalkable, it returns the id of the object in front of the player
   */
  int isWalkable(Map* m, float x, float y) {
 	int mapX = (int)floor(x);
 	int mapY = (int)floor(y);
 
 	if(mapX < 0 || mapX >= m->mapCols || mapY < 0 || mapY >= m->mapRows) {
-		return 0;
+		return 1;
 	}
 
-	return m->mapData[mapY][mapX] == 0;	
+	return m->mapData[mapY][mapX];
  }
+
+ /**
+  * Function to get the map cell object by id.
+  */
+ char* getMapCellObjById(int objId) {
+	 return "Wall";
+ }
+
