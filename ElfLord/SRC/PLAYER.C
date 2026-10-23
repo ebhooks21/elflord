@@ -7,7 +7,10 @@
 #include "HEADER/INV.H"
 #include "HEADER/MAP.H"
 #include "HEADER/STATS.H"
+#include "HEADER/VEC2.H"
+#include "HEADER/MSGA.H"
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include <time.h>
 
@@ -53,16 +56,33 @@ void destroyPlayer(Player* p) {
 void movePlayer(Game* g, float mAmnt) {
 	Player* p = g->p;
 
+	//Variable for the area the player is walking to
+	Vec2 walkStatus;
+	char status[30];
+
 	//Calculate the player's movement
 	float nextX = p->xLoc + (float)(cos(p->angle) * mAmnt);
 	float nextY = p->yLoc + (float)(sin(p->angle) * mAmnt);
 
-	if(isWalkable(g->currMap, nextX, p->yLoc)) {
+	walkStatus.x = isWalkable(g->currMap, nextX, p->yLoc);
+	if(walkStatus.x == 0) {
 		p->xLoc = nextX;
 	}
 
-	if(isWalkable(g->currMap, p->xLoc, nextY)) {
+	walkStatus.y = isWalkable(g->currMap, p->xLoc, nextY);
+	if(walkStatus.y == 0) {
 		p->yLoc = nextY;
+	}
+
+	//We didn't move
+	if(walkStatus.x != 0) {
+		sprintf(status, "You hit a %s.", getMapCellObjById(walkStatus.x));
+		addMessage(&g->msgA, status);
+	}
+
+	else if(walkStatus.y != 0) {
+		sprintf(status, "You hit a %s.", getMapCellObjById(walkStatus.y));
+		addMessage(&g->msgA, status);
 	}
 }
 

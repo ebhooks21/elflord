@@ -4,7 +4,7 @@
 - Wall Textures -- Done
 - Map entities
 - Melee Combat
-- Information panel
+- Information panel -- Done
 - Inventory
 - Equipment
 - Map building

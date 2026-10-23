@@ -517,4 +517,7 @@ void renderHudArea(Screen* s, Game* g) {
 	renderScreenText(healthText, 4, gps->gAreaHeight + 13, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 	renderScreenText(manaText, 4, gps->gAreaHeight + 21, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 	renderScreenText(goldText, 4, gps->gAreaHeight + 29, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+
+	//Render the message area
+	renderMessageArea(&g->msgA, s, gps);
 }

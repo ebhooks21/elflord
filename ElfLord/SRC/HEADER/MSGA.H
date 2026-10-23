@@ -5,6 +5,7 @@
  */
 
 #include "SCREEN.H"
+#include "GPSCR.H"
 
 #ifndef MSGA_H
 #define MSGA_H
@@ -25,6 +26,6 @@ void addMessage(MessageArea* m, char* msg);
 /**
  * Function to render the message area.
  */
-void renderMessageArea(MessageArea* m, Screen* s);
+void renderMessageArea(MessageArea* m, Screen* s, GamePlayScreen* gps);
 
 #endif
