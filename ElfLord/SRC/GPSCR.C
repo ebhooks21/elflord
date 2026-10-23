@@ -11,6 +11,7 @@
  #include "HEADER/MAP.H"
  #include "HEADER/VEC2F.H"
  #include "HEADER/GIMAGE.H"
+ #include "HEADER/GTEX.H"
  #include <GRX20.H>
  #include <stdlib.h>
  #include <stdio.h>
@@ -42,16 +43,16 @@ GamePlayScreen* initGPScr(Screen* s) {
 	loadGameImage(gps->hudBackground);
 
 	//Load the floor texture 
-	gps->floorTexture = createGameImage("ASSET\\stonef.ppm", 0, 0);
-	loadGameImage(gps->floorTexture);
+	gps->floorTexture = createGameTexture("ASSET\\stonef.ppm", 0, 0);
+	loadGameTexture(gps->floorTexture);
 
 	//Load the ceiling texture 
-	gps->ceilingTexture = createGameImage("ASSET\\woodtex.ppm", 0, 0);
-	loadGameImage(gps->ceilingTexture);
+	gps->ceilingTexture = createGameTexture("ASSET\\woodtex.ppm", 0, 0);
+	loadGameTexture(gps->ceilingTexture);
 
 	//Load the wall texture
-	gps->wallTexture = createGameImage("ASSET\\cobstone.ppm", 0, 0);
-	loadGameImage(gps->wallTexture);
+	gps->wallTexture = createGameTexture("ASSET\\cobstone.ppm", 0, 0);
+	loadGameTexture(gps->wallTexture);
 
 	//Create the framebuffer
 	gps->frameBuffer = malloc(sizeof(GrColor) * gps->gAreaWidth * gps->gAreaHeight);
@@ -65,9 +66,9 @@ GamePlayScreen* initGPScr(Screen* s) {
 void destoryGPScr(GamePlayScreen* g) {
 	//Destroy the textures
 	destroyGameImage(g->hudBackground);
-	destroyGameImage(g->floorTexture);
-	destroyGameImage(g->ceilingTexture);
-	destroyGameImage(g->wallTexture);
+	destroyGameTexture(g->floorTexture);
+	destroyGameTexture(g->ceilingTexture);
+	destroyGameTexture(g->wallTexture);
 
 	//Free the framebuffer
 	free(g->frameBuffer);
@@ -182,7 +183,8 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				line[x] = GrPixelC((gps->floorTexture)->image, gps->texPos.x, gps->texPos.y);
+				//line[x] = GrPixelC((gps->floorTexture)->image, gps->texPos.x, gps->texPos.y);
+				line[x] = (gps->floorTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 
 				//Increment the floor values
 				floorX += floorStepX;
@@ -287,7 +289,8 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				line[x] = GrPixelC((gps->ceilingTexture)->image, gps->texPos.x, gps->texPos.y);
+				//line[x] = GrPixelC((gps->ceilingTexture)->image, gps->texPos.x, gps->texPos.y);
+				line[x] = (gps->ceilingTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 
 				//Increment the floor values
 				floorX += floorStepX;
@@ -448,7 +451,7 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 			texPos += wallStep;
 
 			//GrPlot(col, y, GrPixelC((gps->wallTexture)->image, gps->texPos.x, gps->texPos.y));
-			gps->frameBuffer[y * gps->gAreaWidth + col] = GrPixelC((gps->wallTexture)->image, gps->texPos.x, gps->texPos.y);
+			gps->frameBuffer[y * gps->gAreaWidth + col] = (gps->wallTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 		}
 	}
 }
