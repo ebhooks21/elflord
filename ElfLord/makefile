@@ -1,6 +1,6 @@
 CC = gcc
-OBJECTS = BUILD\ElfLord.o BUILD\Msga.o BUILD\Keyb.o BUILD\Inv.o BUILD\Gimage.o BUILD\Player.o BUILD\Menuopt.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Charscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Ccscr.o BUILD\Item.o
-TOBJECTS = BUILD\Testm.o BUILD\Msga.o BUILD\Keyb.o BUILD\Inv.o BUILD\Gimage.o BUILD\Player.o BUILD\Menuopt.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Charscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Ccscr.o BUILD\Item.o
+OBJECTS = BUILD\ElfLord.o BUILD\Msga.o BUILD\Keyb.o BUILD\Inv.o BUILD\Gtex.o BUILD\Gimage.o BUILD\Player.o BUILD\Menuopt.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Charscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Ccscr.o BUILD\Item.o
+TOBJECTS = BUILD\Testm.o BUILD\Msga.o BUILD\Keyb.o BUILD\Inv.o BUILD\Gtex.o BUILD\Gimage.o BUILD\Player.o BUILD\Menuopt.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Charscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Ccscr.o BUILD\Item.o
 LIBS = -lgrx20
 
 clean:
@@ -71,6 +71,9 @@ BUILD\Keyb.o: SRC\Keyb.c
 
 BUILD\Player.o: SRC\Player.c
 	$(CC) -c SRC\Player.c -o BUILD\Player.o
+
+BUILD\Gtex.o: SRC\Gtex.c
+	$(CC) -c SRC\Gtex.c -o BUILD\Gtex.o
 
 BUILD\Gimage.o: SRC\Gimage.c
 	$(CC) -c SRC\Gimage.c -o BUILD\Gimage.o

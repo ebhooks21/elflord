@@ -8,6 +8,7 @@
 #include "VEC2F.H"
 #include "VEC2.H"
 #include "GIMAGE.H"
+#include "GTEX.H"
 #include <GRX20.H>
 
 #ifndef GPSCR_H
@@ -51,13 +52,13 @@ typedef struct {
 	GameImage* hudBackground;
 
 	//Variable for the floor texture
-	GameImage* floorTexture;
+	GameTex* floorTexture;
 
 	//Variable for the ceiling texture
-	GameImage* ceilingTexture;
+	GameTex* ceilingTexture;
 
 	//Variable for the wall texture
-	GameImage* wallTexture;
+	GameTex* wallTexture;
 
 	//Variable for the frame buffer
 	GrColor* frameBuffer;
