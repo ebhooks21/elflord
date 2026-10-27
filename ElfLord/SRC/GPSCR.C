@@ -12,6 +12,8 @@
  #include "HEADER/VEC2F.H"
  #include "HEADER/GIMAGE.H"
  #include "HEADER/GTEX.H"
+ #include "HEADER/MCELL.H"
+ #include "HEADER/MCELLTYP.H"
  #include <GRX20.H>
  #include <stdlib.h>
  #include <stdio.h>
@@ -325,13 +327,15 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 	int end = 0;
 	int col = 0;
 
-	int textureWidth = (gps->wallTexture)->width;
-	int textureHeight = (gps->wallTexture)->height;
+	GameTex* wallTex = NULL;
+	int textureWidth = 0;
+	int textureHeight = 0;
 	double wallX = 0.0;
 	double wallStep = 0.0;
 	double texPos = 0.0;
 	int y = 0;
 	int uncStart = 0;
+	MapCell* mc = NULL;
 	gps->texPos.x = 0;
 	gps->texPos.y = 0;
 
@@ -383,13 +387,25 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 				side = 1;
 			}
 
-			if(mapX < 0 || mapX >= map->mapCols || mapY < 0 || mapY >= map->mapRows) {
+			mc = getMapCell(map, mapX, mapY);
+			
+			//No cell here, so consider it a wall
+			if(mc == NULL) {
 				hit = 1;
 			}
 
-			else if(map->mapData[mapY][mapX] > 0) {
-				hit = 1;
-				wallHit = 1;
+			else if((map->mapData[mapY][mapX])->cType != M_CELL_EMPTY) {
+				switch((map->mapData[mapY][mapX])->cType) {
+					default:
+					case M_CELL_WALL:
+						hit = 1;
+						wallHit = 1;
+
+						//Set the texture
+						wallTex = gps->wallTexture;
+						textureHeight = wallTex->height;
+						textureWidth = wallTex->width;
+						break;
 			}
 		}
 

@@ -6,6 +6,8 @@
 
  #include "HEADER/MAPLO.H"
  #include "HEADER/MAP.H"
+ #include "HEADER/MCELL.H"
+ #include "HEADER/MCELLTYP.H"
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
@@ -124,7 +126,7 @@ void buildMapRow(Map* map, char* fBuffer, int currRow) {
 
 		//Make sure there is data
 		if(tChar != NULL) {
-			map->mapData[currRow][i] = atoi(tChar);	
+			map->mapData[currRow][i] = initMapCell(atoi(tChar));
 		}
 	}
 }
