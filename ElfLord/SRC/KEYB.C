@@ -11,6 +11,8 @@
  #include "HEADER/TITLESCR.H"
  #include "HEADER/CHARSCR.H"
  #include "HEADER/CCSCR.H"
+ #include "HEADER/MCELL.H"
+ #include "HEADER/MCELLTYP.H"
  #include <GRXKEYS.H>
  #include <stdlib.h>
  

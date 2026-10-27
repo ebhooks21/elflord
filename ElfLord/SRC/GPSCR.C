@@ -12,6 +12,8 @@
  #include "HEADER/VEC2F.H"
  #include "HEADER/GIMAGE.H"
  #include "HEADER/GTEX.H"
+ #include "HEADER/MCELL.H"
+ #include "HEADER/MCELLTYP.H"
  #include <GRX20.H>
  #include <stdlib.h>
  #include <stdio.h>
@@ -20,7 +22,7 @@
 /**
  * Function to initialize the gameplay screen.
  */
-GamePlayScreen* initGPScr(Screen* s) {
+GamePlayScreen* initGPScr(Screen* s, Map* map) {
 	GamePlayScreen* gps = malloc(sizeof *gps);
 
 	gps->hAreaWidth = s->width;
@@ -43,15 +45,15 @@ GamePlayScreen* initGPScr(Screen* s) {
 	loadGameImage(gps->hudBackground);
 
 	//Load the floor texture 
-	gps->floorTexture = createGameTexture("ASSET\\stonef.ppm", 0, 0);
+	gps->floorTexture = createGameTexture(map->fTexPath, 0, 0);
 	loadGameTexture(gps->floorTexture);
 
 	//Load the ceiling texture 
-	gps->ceilingTexture = createGameTexture("ASSET\\woodtex.ppm", 0, 0);
+	gps->ceilingTexture = createGameTexture(map->cTexPath, 0, 0);
 	loadGameTexture(gps->ceilingTexture);
 
 	//Load the wall texture
-	gps->wallTexture = createGameTexture("ASSET\\cobstone.ppm", 0, 0);
+	gps->wallTexture = createGameTexture(map->wTexPath, 0, 0);
 	loadGameTexture(gps->wallTexture);
 
 	//Create the framebuffer
@@ -148,8 +150,8 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 			floorStepY = (rowDistance * (rightRayDirY - leftRayDirY)) / (double)gps->gAreaWidth;
 
 			//Calculate pixel drawing postion for the raycasted row
-			floorX = (p->xLoc + rowDistance) * leftRayDirX;
-			floorY = (p->yLoc + rowDistance) * leftRayDirY;
+			floorX = p->xLoc + rowDistance * leftRayDirX;
+			floorY = p->yLoc + rowDistance * leftRayDirY;
 
 			//Calulcate the floor cast line based upon the cell location relative to the pixel location
 			for(x = 0; x < gps->gAreaWidth; x++) {
@@ -183,7 +185,6 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				//line[x] = GrPixelC((gps->floorTexture)->image, gps->texPos.x, gps->texPos.y);
 				line[x] = (gps->floorTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 
 				//Increment the floor values
@@ -254,8 +255,8 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 			floorStepY = (rowDistance * (rightRayDirY - leftRayDirY)) / (double)gps->gAreaWidth;
 
 			//Calculate pixel drawing postion for the raycasted row
-			floorX = (p->xLoc + rowDistance) * leftRayDirX;
-			floorY = (p->yLoc + rowDistance) * leftRayDirY;
+			floorX = p->xLoc + rowDistance * leftRayDirX;
+			floorY = p->yLoc + rowDistance * leftRayDirY;
 
 			//Calulcate the floor cast line based upon the cell location relative to the pixel location
 			for(x = 0; x < gps->gAreaWidth; x++) {
@@ -289,7 +290,6 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				//line[x] = GrPixelC((gps->ceilingTexture)->image, gps->texPos.x, gps->texPos.y);
 				line[x] = (gps->ceilingTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 
 				//Increment the floor values
@@ -327,13 +327,15 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 	int end = 0;
 	int col = 0;
 
-	int textureWidth = (gps->wallTexture)->width;
-	int textureHeight = (gps->wallTexture)->height;
+	GameTex* wallTex = NULL;
+	int textureWidth = 0;
+	int textureHeight = 0;
 	double wallX = 0.0;
 	double wallStep = 0.0;
 	double texPos = 0.0;
 	int y = 0;
 	int uncStart = 0;
+	MapCell* mc = NULL;
 	gps->texPos.x = 0;
 	gps->texPos.y = 0;
 
@@ -385,13 +387,25 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 				side = 1;
 			}
 
-			if(mapX < 0 || mapX >= map->mapCols || mapY < 0 || mapY >= map->mapRows) {
+			mc = getMapCell(map, mapX, mapY);
+			
+			//No cell here, so consider it a wall
+			if(mc == NULL) {
 				hit = 1;
 			}
 
-			else if(map->mapData[mapY][mapX] > 0) {
-				hit = 1;
-				wallHit = 1;
+			else if((map->mapData[mapY][mapX])->cType != M_CELL_EMPTY) {
+				switch((map->mapData[mapY][mapX])->cType) {
+					default:
+					case M_CELL_WALL:
+						hit = 1;
+						wallHit = 1;
+
+						//Set the texture
+						wallTex = gps->wallTexture;
+						textureHeight = wallTex->height;
+						textureWidth = wallTex->width;
+						break;
 			}
 		}
 
@@ -450,7 +464,6 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 
 			texPos += wallStep;
 
-			//GrPlot(col, y, GrPixelC((gps->wallTexture)->image, gps->texPos.x, gps->texPos.y));
 			gps->frameBuffer[y * gps->gAreaWidth + col] = (gps->wallTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 		}
 	}

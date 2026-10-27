@@ -24,4 +24,9 @@ void parseMapWidthHeight(char* fBuffer, int* width, int* height);
  */
 void buildMapRow(Map* map, char* fBuffer, int currRow);
 
+/**
+ * Function to duplicate a string.
+ */
+char* dupStr(char* s);
+
  #endif
