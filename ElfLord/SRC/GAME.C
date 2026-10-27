@@ -107,6 +107,7 @@ Screen* createGameScreen(int width, int height) {
 
 			//Initialize the map
 			g->currMap = loadMap("START");
+			loadMapTextures(g->currMap);
 
 			//Create a new gameplay screen for rendering
 			s->currScreen = initGPScr(s, g->currMap);	

@@ -81,6 +81,13 @@ Map* loadMap(char* mapName) {
 			//Load the wall texture path
 			lMap->wTexPath = dupStr(fBuffer);
 		}
+
+		if(line == ((lMap->mapRows) + 7)) {
+			fBuffer[strcspn(fBuffer, "\n")] = '\0';
+
+			//Load the wall texture path
+			lMap->dTexPath = dupStr(fBuffer);
+		}
 	}
 
 	//Return the map

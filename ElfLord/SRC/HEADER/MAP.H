@@ -6,11 +6,12 @@
 
  #include "MCELL.H"
  #include "MCELLTYP.H"
+ #include "TEXPROV.H"
 
  #ifndef MAP_H
  #define MAP_H
 
- typedef struct {
+ typedef struct map_t {
 	//Variable for the map rows
 	int mapRows;
 
@@ -28,6 +29,12 @@
 
     //Variable for the wall texture path
     char* wTexPath;
+
+	//Variable for the door texture path
+	char* dTexPath;
+
+	//Variable for the TextureProvider
+	TextureProvider* texP;
  } Map;
 
  /**
@@ -54,5 +61,10 @@
  * Function to get a map cell.
  */
  MapCell* getMapCell(Map* m, float x, float y);
+
+/**
+ * Function to load the map textures.
+ */
+void loadMapTextures(Map* m);
 
  #endif

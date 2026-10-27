@@ -38,6 +38,11 @@ void convertIntRep(MapCell* m) {
 			strcpy(m->mapCellName, "Wall\0");
 			break;
 
+		case 2:
+			m->cType = M_CELL_DOOR;
+			strcpy(m->mapCellName, "Door\0");
+			break;
+
 		case 0:
 		default:
 			m->cType = M_CELL_EMPTY;

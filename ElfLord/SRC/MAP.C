@@ -35,9 +35,12 @@
 		}
 	}
 
+	m->texP = NULL;
+
 	m->cTexPath = NULL;
 	m->fTexPath = NULL;
 	m->wTexPath = NULL;
+	m->dTexPath = NULL;
 
 	return m;
  }
@@ -97,3 +100,11 @@
 
 	return m->mapData[mapY][mapX];
  }
+
+/**
+ * Function to load the map textures.
+ */
+void loadMapTextures(Map* m) {
+	m->texP = initTexProv(m);
+	loadTextures(m->texP, m);
+}
