@@ -20,7 +20,7 @@
 /**
  * Function to initialize the gameplay screen.
  */
-GamePlayScreen* initGPScr(Screen* s) {
+GamePlayScreen* initGPScr(Screen* s, Map* map) {
 	GamePlayScreen* gps = malloc(sizeof *gps);
 
 	gps->hAreaWidth = s->width;
@@ -43,15 +43,15 @@ GamePlayScreen* initGPScr(Screen* s) {
 	loadGameImage(gps->hudBackground);
 
 	//Load the floor texture 
-	gps->floorTexture = createGameTexture("ASSET\\stonef.ppm", 0, 0);
+	gps->floorTexture = createGameTexture(map->fTexPath, 0, 0);
 	loadGameTexture(gps->floorTexture);
 
 	//Load the ceiling texture 
-	gps->ceilingTexture = createGameTexture("ASSET\\woodtex.ppm", 0, 0);
+	gps->ceilingTexture = createGameTexture(map->cTexPath, 0, 0);
 	loadGameTexture(gps->ceilingTexture);
 
 	//Load the wall texture
-	gps->wallTexture = createGameTexture("ASSET\\cobstone.ppm", 0, 0);
+	gps->wallTexture = createGameTexture(map->wTexPath, 0, 0);
 	loadGameTexture(gps->wallTexture);
 
 	//Create the framebuffer
@@ -148,8 +148,8 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 			floorStepY = (rowDistance * (rightRayDirY - leftRayDirY)) / (double)gps->gAreaWidth;
 
 			//Calculate pixel drawing postion for the raycasted row
-			floorX = (p->xLoc + rowDistance) * leftRayDirX;
-			floorY = (p->yLoc + rowDistance) * leftRayDirY;
+			floorX = p->xLoc + rowDistance * leftRayDirX;
+			floorY = p->yLoc + rowDistance * leftRayDirY;
 
 			//Calulcate the floor cast line based upon the cell location relative to the pixel location
 			for(x = 0; x < gps->gAreaWidth; x++) {
@@ -254,8 +254,8 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 			floorStepY = (rowDistance * (rightRayDirY - leftRayDirY)) / (double)gps->gAreaWidth;
 
 			//Calculate pixel drawing postion for the raycasted row
-			floorX = (p->xLoc + rowDistance) * leftRayDirX;
-			floorY = (p->yLoc + rowDistance) * leftRayDirY;
+			floorX = p->xLoc + rowDistance * leftRayDirX;
+			floorY = p->yLoc + rowDistance * leftRayDirY;
 
 			//Calulcate the floor cast line based upon the cell location relative to the pixel location
 			for(x = 0; x < gps->gAreaWidth; x++) {

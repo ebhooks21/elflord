@@ -105,12 +105,11 @@ Screen* createGameScreen(int width, int height) {
 			//Delete the previous screen
 			destoryStoryScreen(s->currScreen);
 
-			//Create a new gameplay screen for rendering
-			s->currScreen = initGPScr(s);
-
-			//Create the game map
 			//Initialize the map
 			g->currMap = loadMap("START");
+
+			//Create a new gameplay screen for rendering
+			s->currScreen = initGPScr(s, g->currMap);	
 			break;
 
 		case CHARACTER_SCREEN_INIT:

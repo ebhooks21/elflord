@@ -33,6 +33,10 @@
 		}
 	}
 
+	m->cTexPath = NULL;
+	m->fTexPath = NULL;
+	m->wTexPath = NULL;
+
 	return m;
  }
 

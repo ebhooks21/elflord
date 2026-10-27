@@ -16,6 +16,15 @@
 
 	//Variable for the map data
 	int** mapData;
+
+    //Variable for the floor texture path
+    char* fTexPath;
+
+    //Variable for the ceiling texture path
+    char* cTexPath;
+
+    //Variable for the wall texture path
+    char* wTexPath;
  } Map;
 
  /**

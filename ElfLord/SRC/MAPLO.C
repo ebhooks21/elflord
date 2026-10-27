@@ -58,6 +58,27 @@ Map* loadMap(char* mapName) {
 			//Increment the current map row
 			currMapRow++;
 		}
+
+		if(line == ((lMap->mapRows) + 4)) {
+			fBuffer[strcspn(fBuffer, "\n")] = '\0';
+
+			//Load the floor texture path
+			lMap->fTexPath = dupStr(fBuffer);
+		}
+
+		if(line == ((lMap->mapRows) + 5)) {
+			fBuffer[strcspn(fBuffer, "\n")] = '\0';
+
+			//Load the ceiling texture path
+			lMap->cTexPath = dupStr(fBuffer);
+		}
+		
+		if(line == ((lMap->mapRows) + 6)) {
+			fBuffer[strcspn(fBuffer, "\n")] = '\0';
+
+			//Load the wall texture path
+			lMap->wTexPath = dupStr(fBuffer);
+		}
 	}
 
 	//Return the map
@@ -106,4 +127,25 @@ void buildMapRow(Map* map, char* fBuffer, int currRow) {
 			map->mapData[currRow][i] = atoi(tChar);	
 		}
 	}
+}
+
+/**
+ * Function to duplicate a string.
+ */
+char* dupStr(char* s) {
+	int length = 0;
+	char* ns;
+
+	if(s == NULL) {
+		return s;
+	}
+
+	length = strlen(s) + 1;
+	ns = malloc(length);
+
+	if(ns != NULL) {
+		memcpy(ns, s, length);
+	}
+
+	return ns;
 }
