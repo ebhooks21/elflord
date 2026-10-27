@@ -183,7 +183,6 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				//line[x] = GrPixelC((gps->floorTexture)->image, gps->texPos.x, gps->texPos.y);
 				line[x] = (gps->floorTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 
 				//Increment the floor values
@@ -289,7 +288,6 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 				}
 
 				//Build the scanline X position
-				//line[x] = GrPixelC((gps->ceilingTexture)->image, gps->texPos.x, gps->texPos.y);
 				line[x] = (gps->ceilingTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 
 				//Increment the floor values
@@ -450,7 +448,6 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 
 			texPos += wallStep;
 
-			//GrPlot(col, y, GrPixelC((gps->wallTexture)->image, gps->texPos.x, gps->texPos.y));
 			gps->frameBuffer[y * gps->gAreaWidth + col] = (gps->wallTexture)->tex[gps->texPos.x * textureHeight + gps->texPos.y];
 		}
 	}
