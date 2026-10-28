@@ -26,6 +26,9 @@ void startGame(Game* g) {
 	//Set the game state
 	g->state = TITLE;
 
+	//Preset the map
+	g->currMap = NULL;
+
 	//Preset the player
 	g->p = NULL;
 
@@ -60,9 +63,6 @@ void destroyGame(Game* g) {
 		//Destory the player
 		destroyPlayer(g->p);
 	}
-
-	//Release the game
-	free(g);
 }
 
 /**
