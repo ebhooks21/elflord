@@ -12,7 +12,7 @@
 /**
  * Function to create a new map cell.
  */
-MapCell* initMapCell(int cRep) {
+MapCell* initMapCell(char cRep) {
 	MapCell* m = malloc(sizeof *m);
 
 	m->rep = cRep;
@@ -33,17 +33,17 @@ void destroyMapCell(MapCell* m) {
  */
 void convertIntRep(MapCell* m) {
 	switch(m->rep) {
-		case 1:
+		case '#':
 			m->cType = M_CELL_WALL;
 			strcpy(m->mapCellName, "Wall\0");
 			break;
 
-		case 2:
+		case 'd':
 			m->cType = M_CELL_DOOR;
 			strcpy(m->mapCellName, "Door\0");
 			break;
 
-		case 0:
+		case '.':
 		default:
 			m->cType = M_CELL_EMPTY;
 			strcpy(m->mapCellName, "Empty\0");

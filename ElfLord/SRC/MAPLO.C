@@ -133,7 +133,13 @@ void buildMapRow(Map* map, char* fBuffer, int currRow) {
 
 		//Make sure there is data
 		if(tChar != NULL) {
-			map->mapData[currRow][i] = initMapCell(atoi(tChar));
+			if(*tChar == '@') {
+				//Player starting position
+				map->pStart.x = i;
+				map->pStart.y = currRow;
+			}
+
+			map->mapData[currRow][i] = initMapCell(*tChar);
 		}
 	}
 }

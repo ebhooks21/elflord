@@ -11,7 +11,7 @@
 
 typedef struct {
 	//Variable for the integer representation
-	int rep;
+	char rep;
 
 	//Variable for the map cell type
 	MapCellType cType;
@@ -23,7 +23,7 @@ typedef struct {
 /**
  * Function to create a new map cell.
  */
-MapCell* initMapCell(int cRep);
+MapCell* initMapCell(char cRep);
 
 /**
  * Function to destroy a map cell.

@@ -7,6 +7,7 @@
  #include "MCELL.H"
  #include "MCELLTYP.H"
  #include "TEXPROV.H"
+ #include "VEC2.H"
 
  #ifndef MAP_H
  #define MAP_H
@@ -20,6 +21,9 @@
 
 	//Variable for the map data
 	MapCell*** mapData;
+
+	//Variable for the player start position
+	Vec2 pStart;
 
     //Variable for the floor texture path
     char* fTexPath;
