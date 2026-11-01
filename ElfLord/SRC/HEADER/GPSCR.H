@@ -9,6 +9,7 @@
 #include "VEC2.H"
 #include "GIMAGE.H"
 #include "GTEX.H"
+#include "MAP.H"
 #include <GRX20.H>
 
 #ifndef GPSCR_H
@@ -51,15 +52,6 @@ typedef struct {
 	//Variable for the hud background
 	GameImage* hudBackground;
 
-	//Variable for the floor texture
-	GameTex* floorTexture;
-
-	//Variable for the ceiling texture
-	GameTex* ceilingTexture;
-
-	//Variable for the wall texture
-	GameTex* wallTexture;
-
 	//Variable for the frame buffer
 	GrColor* frameBuffer;
 } GamePlayScreen;
@@ -67,7 +59,7 @@ typedef struct {
 /**
  * Function to initialize the gameplay screen.
  */
-GamePlayScreen* initGPScr(Screen* s);
+GamePlayScreen* initGPScr(Screen* s, Map* map);
 
 /**
  * Function to destroy the gameplay screen.

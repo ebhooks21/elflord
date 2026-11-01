@@ -5,6 +5,8 @@
  */
 
  #include "HEADER/MAP.H"
+ #include "HEADER/MCELL.H"
+ #include "HEADER/MCELLTYP.H"
  #include "HEADER/GAME.H"
  #include <stdlib.h>
  #include <math.h>
@@ -19,19 +21,26 @@
 	m->mapCols = cols;
 
 	//Initialize the rows of the map
-	m->mapData = (int **)malloc((m->mapRows * sizeof(int *)));
+	m->mapData = (MapCell ***)malloc((m->mapRows * sizeof(MapCell **)));
 
 	//Initialize the columns of the map
 	for(int i = 0; i < m->mapRows; i++) {
-		m->mapData[i] = (int *)malloc((m->mapCols * sizeof(int)));
+		m->mapData[i] = (MapCell **)malloc((m->mapCols * sizeof(MapCell *)));
 	}
 
 	//Pre-initialize all spots to 0
 	for(int i = 0; i < m->mapRows; i++) {
 		for(int j = 0; j < m->mapCols; j++) {
-			m->mapData[i][j] = 0;
+			m->mapData[i][j] = NULL;
 		}
 	}
+
+	m->texP = NULL;
+
+	m->cTexPath = NULL;
+	m->fTexPath = NULL;
+	m->wTexPath = NULL;
+	m->dTexPath = NULL;
 
 	return m;
  }
@@ -42,6 +51,11 @@
  void destroyMap(Map* m) {
 	//Destory each row and column
 	for(int i = 0; i < m->mapRows; i++) {
+		for(int y = 0; y < m->mapCols; y++) {
+			//Clear the cols
+			destroyMapCell(m->mapData[i][y]);
+		}
+
 		//Clear the rows
 		free(m->mapData[i]);
 	}
@@ -55,15 +69,15 @@
   * If it is walkable, it returns 0
   * If it is unwalkable, it returns the id of the object in front of the player
   */
- int isWalkable(Map* m, float x, float y) {
+ MapCellType getMapCellType(Map* m, float x, float y) {
 	int mapX = (int)floor(x);
 	int mapY = (int)floor(y);
 
 	if(mapX < 0 || mapX >= m->mapCols || mapY < 0 || mapY >= m->mapRows) {
-		return 1;
+		return M_CELL_WALL;
 	}
 
-	return m->mapData[mapY][mapX];
+	return (m->mapData[mapY][mapX])->cType;
  }
 
  /**
@@ -73,3 +87,24 @@
 	 return "Wall";
  }
 
+/**
+ * Function to get a map cell.
+ */
+ MapCell* getMapCell(Map* m, float x, float y) {
+	int mapX = (int)floor(x);
+	int mapY = (int)floor(y);
+
+	if(mapX < 0 || mapX >= m->mapCols || mapY < 0 || mapY >= m->mapRows) {
+		return NULL;
+	}
+
+	return m->mapData[mapY][mapX];
+ }
+
+/**
+ * Function to load the map textures.
+ */
+void loadMapTextures(Map* m) {
+	m->texP = initTexProv(m);
+	loadTextures(m->texP, m);
+}

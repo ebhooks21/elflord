@@ -26,6 +26,9 @@ void startGame(Game* g) {
 	//Set the game state
 	g->state = TITLE;
 
+	//Preset the map
+	g->currMap = NULL;
+
 	//Preset the player
 	g->p = NULL;
 
@@ -60,9 +63,6 @@ void destroyGame(Game* g) {
 		//Destory the player
 		destroyPlayer(g->p);
 	}
-
-	//Release the game
-	free(g);
 }
 
 /**
@@ -105,12 +105,16 @@ Screen* createGameScreen(int width, int height) {
 			//Delete the previous screen
 			destoryStoryScreen(s->currScreen);
 
-			//Create a new gameplay screen for rendering
-			s->currScreen = initGPScr(s);
-
-			//Create the game map
 			//Initialize the map
 			g->currMap = loadMap("START");
+			loadMapTextures(g->currMap);
+
+			//Set the player's starting location
+			(g->p)->xLoc = (g->currMap)->pStart.x;
+			(g->p)->yLoc = (g->currMap)->pStart.y;
+
+			//Create a new gameplay screen for rendering
+			s->currScreen = initGPScr(s, g->currMap);	
 			break;
 
 		case CHARACTER_SCREEN_INIT:

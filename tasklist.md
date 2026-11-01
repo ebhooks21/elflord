@@ -12,3 +12,5 @@
 - Exit Confirmation -- Done
 - Save Game
 - Load Game
+- Temporary Win Screen
+- Death Screen

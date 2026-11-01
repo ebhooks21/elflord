@@ -13,13 +13,13 @@
   */
  int main() {
 	//Create a game reference
-	Game* g = malloc(sizeof *g);
+	Game g;
 
 	//Start the game
-	startGame(g);
+	startGame(&g);
 
 	//Destroy the game
-	destroyGame(g);
+	destroyGame(&g);
 
 	//Output thank you message
 	freopen("CON", "w", stderr);
