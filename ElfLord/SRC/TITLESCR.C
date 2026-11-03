@@ -26,6 +26,8 @@ TitleScreen* initTitleScreen(Screen* s) {
 	createTitleScreenMenuOptions(t, s);
 
 	t->menuOption = 0;
+	
+	return t;
 }
 
 /**
