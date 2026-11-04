@@ -5,7 +5,6 @@
  */
 
 #include "STATS.H"
-#include "VEC2F.H"
 #include "GAME.H"
 
 #ifndef ENEMY_H
@@ -36,29 +35,17 @@ typedef struct {
 
 	//Variable for the enemy's stats
 	Stats stat;
-
-	//Variable for the enemy's angle
-	float angle;
-
-	//Variable for the enemy's movement speed
-	float moveSpeed;
-
-	//Variable for the enemy's rotation speed
-	float rotSpeed;
-
-	//Variable for the enemy's field of view
-	float fov;
 } Enemy;
 
 /**
  * Function to initialize the enemy.
  */
-Enemy* initEnemy();
+Enemy* initEnemy(char* name);
 
 /**
  * Function to destroy the enemy.
  */
-void destroyEnemy(Enemy* p);
+void destroyEnemy(Enemy* e);
 
 /**
  * Function to move the enemy.
@@ -68,11 +55,11 @@ void moveEnemy(Game* g, float mAmnt);
 /**
  * Function to rotate the enemy.
  */
-void rotateEnemy(Enemy* p, double amount);
+void rotateEnemy(Enemy* e, double amount);
 
 /**
  * Function to calculate the enemy stats.
  */
-void calculateEnemyStats(Enemy* p);
+void calculateEnemyStats(Enemy* e);
 
 #endif

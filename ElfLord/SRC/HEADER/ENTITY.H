@@ -19,7 +19,7 @@ typedef struct {
 	//Variable for the entity's height
 	float height;
 
-	//Variable for the sprite idea in the entities sprite array
+	//Variable for the sprite id in the entities sprite array
 	int spriteId;
 
 	//Variable for if the entity is active on the map
@@ -37,5 +37,15 @@ typedef struct {
 		Item* item;
 	} ent;
 } Entity;
+
+/**
+ * Function to initialize the entity.
+ */
+Entity* initEntity(EntityType t, float xPos, float yPos, float height);
+
+/**
+ * Function to destroy the entity.
+ */
+void destroyEntity(Entity* e);
 
 #endif
