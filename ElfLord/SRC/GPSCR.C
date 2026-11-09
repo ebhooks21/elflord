@@ -489,11 +489,6 @@ void renderGameplayArea(Screen* s, Game* g) {
 	gps->pViewPlane.x = -(gps->rDir.y) * tan(p->fov / 2.0);
 	gps->pViewPlane.y = gps->rDir.x * tan(p->fov / 2.0);
 
-	int skyColor = GrAllocColor(0, 0, 135);
-
-	//Draw the sky, with it going slightly past the horizon line
-	//GrFilledBox(0, 0, (gps->gAreaWidth - 1), gps->horLine, skyColor);
-
 	//Render the ceiling
 	renderCeiling(s, g, gps);
 
