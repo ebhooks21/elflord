@@ -8,6 +8,7 @@ clean: clean-assets
 	del BUILD\ELFLORD.EXE
 
 clean-assets:
+	del BUILD\ASSET\ITEM\*.*
 	del BUILD\ASSET\CEIL\*.*
 	del BUILD\ASSET\CHARS\*.*
 	del BUILD\ASSET\DOORS\*.*
@@ -21,6 +22,7 @@ clean-assets:
 	rmdir BUILD\ASSET\DOORS
 	rmdir BUILD\ASSET\FLOORS
 	rmdir BUILD\ASSET\WALLS
+	rmdir BUILD\ASSET\ITEM
 	rmdir BUILD\ASSET
 
 clean-obj:
@@ -48,6 +50,7 @@ assets: clean-assets
 	mkdir BUILD\ASSET\DOORS
 	mkdir BUILD\ASSET\FLOORS
 	mkdir BUILD\ASSET\WALLS
+	mkdir BUILD\ASSET\ITEM
 	copy ASSET\*.* BUILD\ASSET
 	copy ASSET\MAPS\*.* BUILD\ASSET\MAPS
 	copy ASSET\CEIL\*.* BUILD\ASSET\CEIL
@@ -55,6 +58,7 @@ assets: clean-assets
 	copy ASSET\DOORS\*.* BUILD\ASSET\DOORS
 	copy ASSET\FLOORS\*.* BUILD\ASSET\FLOORS
 	copy ASSET\WALLS\*.* BUILD\ASSET\WALLS
+	copy ASSET\ITEM\*.* BUILD\ASSET\ITEM
 
 BUILD\TESTM.EXE: $(TOBJECTS) assets
 	$(CC) -o BUILD\TESTM.EXE $(TOBJECTS) $(LIBS)

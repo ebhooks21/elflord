@@ -8,6 +8,8 @@
  #include "HEADER/MCELL.H"
  #include "HEADER/MCELLTYP.H"
  #include "HEADER/GAME.H"
+ #include "HEADER/ENTITY.H"
+ #include "HEADER/ENTTYP.H"
  #include <stdlib.h>
  #include <math.h>
 
@@ -42,6 +44,13 @@
 	m->wTexPath = NULL;
 	m->dTexPath = NULL;
 
+	//Setup the entity storage
+	for(int i = 0; i < MAX_MAP_ENT; i++) {
+		m->entities[i] = NULL;
+	}
+
+	m->numEntites = 0;
+
 	return m;
  }
 
@@ -58,6 +67,13 @@
 
 		//Clear the rows
 		free(m->mapData[i]);
+	}
+
+	//Destroy all entities
+	for(int i = 0; i < MAX_MAP_ENT; i++) {
+		if(m->entities[i] != NULL) {
+			destroyEntity(m->entities[i]);
+		}
 	}
 
 	//Free the map
@@ -106,5 +122,14 @@
  */
 void loadMapTextures(Map* m) {
 	m->texP = initTexProv(m);
-	loadTextures(m->texP, m);
+}
+
+/**
+ * Function to add an entity to the map.
+ */
+void addEntityToMap(Map* m, Entity* e) {
+	if(m->numEntites < MAX_MAP_ENT) {
+		m->entities[(m->numEntites + 1)] = e;
+		m->numEntites++;
+	}
 }

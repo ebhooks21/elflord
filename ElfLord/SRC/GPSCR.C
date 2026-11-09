@@ -48,6 +48,9 @@ GamePlayScreen* initGPScr(Screen* s, Map* map) {
 	//Create the framebuffer
 	gps->frameBuffer = malloc(sizeof(GrColor) * gps->gAreaWidth * gps->gAreaHeight);
 
+	//Create the z-buffer
+	gps->zBuffer = malloc(sizeof(double) * gps->gAreaWidth);
+
 	return gps;
 }
 
@@ -60,6 +63,9 @@ void destoryGPScr(GamePlayScreen* g) {
 
 	//Free the framebuffer
 	free(g->frameBuffer);
+
+	//Free the z-buffer
+	free(g->zBuffer);
 
 	//Destroy the gameplay screen
 	free(g);
@@ -330,6 +336,8 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 
 	//Cast and draw the walls
 	for(col = 0; col < gps->gAreaWidth; col++) {
+		//Set the z-buffer for this column to the maximum value
+		gps->zBuffer[col] = MAX_COL_HEIGHT; 
 		hit = 0;
 		wallHit = 0;
 
@@ -340,8 +348,8 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 		mapX = floor(p->xLoc);
 		mapY = floor(p->yLoc);
 
-		gps->deltaDist.x = (rayDirX == 0.0) ? 1e30 : fabs(1.0 / rayDirX);
-		gps->deltaDist.y = (rayDirY == 0.0) ? 1e30 : fabs(1.0 / rayDirY);
+		gps->deltaDist.x = (rayDirX == 0.0) ? MAX_COL_HEIGHT : fabs(1.0 / rayDirX);
+		gps->deltaDist.y = (rayDirY == 0.0) ? MAX_COL_HEIGHT : fabs(1.0 / rayDirY);
 
 		if(rayDirX < 0) {
 			stepX = -1;
@@ -423,7 +431,10 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 			wallX = p->xLoc + distance * rayDirX;
 		}
 
-		wallHeight = (distance <= 0.0) ? 1e30 : (double)gps->gAreaHeight / distance;
+		//Set the distance for the z-buffer for this column
+		gps->zBuffer[col] = distance;
+
+		wallHeight = (distance <= 0.0) ? MAX_COL_HEIGHT : (double)gps->gAreaHeight / distance;
 		wallX -= floor(wallX);
 
 		//Setup the texture column, flipping the wall when the ray is backwards

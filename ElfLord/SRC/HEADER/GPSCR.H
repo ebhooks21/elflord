@@ -15,6 +15,8 @@
 #ifndef GPSCR_H
 #define GPSCR_H
 
+#define MAX_COL_HEIGHT 1e30
+
 typedef struct {
 	//Variable for the game area width
 	int gAreaWidth;
@@ -54,6 +56,9 @@ typedef struct {
 
 	//Variable for the frame buffer
 	GrColor* frameBuffer;
+
+	//Variable for the z-buffer values
+	double* zBuffer;
 } GamePlayScreen;
 
 /**

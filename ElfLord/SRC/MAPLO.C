@@ -8,6 +8,9 @@
  #include "HEADER/MAP.H"
  #include "HEADER/MCELL.H"
  #include "HEADER/MCELLTYP.H"
+ #include "HEADER/ENTITY.H"
+ #include "HEADER/ENTTYP.H"
+ #include "HEADER/ESPRITET.H"
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
@@ -137,6 +140,11 @@ void buildMapRow(Map* map, char* fBuffer, int currRow) {
 				//Player starting position
 				map->pStart.x = i;
 				map->pStart.y = currRow;
+			}
+
+			if(*tChar == 'G') {
+				//Gold on the map
+				addEntityToMap(map, initEntity(E_ITEM, (currRow + 0.5f), (i + 0.5f), 0, I_GOLD));
 			}
 
 			map->mapData[currRow][i] = initMapCell(*tChar);

@@ -7,12 +7,13 @@
 #include "HEADER/ITEM.H"
 #include "HEADER/ENEMY.H"
 #include "HEADER/ENTTYP.H"
+#include "HEADER/ESPRITET.H"
 #include <stdlib.h>
 
 /**
  * Function to initialize the entity.
  */
-Entity* initEntity(EntityType t, float xPos, float yPos, float height) {
+Entity* initEntity(EntityType t, float xPos, float yPos, float height, EntitySpriteType est) {
 	Entity * e = malloc(sizeof *e);
 
 	//Set the values
@@ -22,7 +23,7 @@ Entity* initEntity(EntityType t, float xPos, float yPos, float height) {
 	e->height = height;
 	
 	//Preset the sprite id, as we won't have this yet
-	e->spriteId = 0;
+	e->spriteType = est;
 
 	return e;
 }
@@ -33,11 +34,11 @@ Entity* initEntity(EntityType t, float xPos, float yPos, float height) {
 void destroyEntity(Entity* e) {
 	//Determine the type of entity to destroy
 	switch(e->type) {
-		case ENEMY:
+		case E_ENEMY:
 			destroyEnemy(e->ent.enemy);
 			break;
 
-		case ITEM:
+		case E_ITEM:
 			//Items are only destoryed if they are still contained by the entity
 			if(e->ent.item != NULL) {
 				destroyItem(e->ent.item);

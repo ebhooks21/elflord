@@ -7,6 +7,7 @@
 #include "ITEM.H"
 #include "ENEMY.H"
 #include "ENTTYP.H"
+#include "ESPRITET.H"
 #include "VEC2F.H"
 
 #ifndef ENTITY_H
@@ -20,7 +21,7 @@ typedef struct {
 	float height;
 
 	//Variable for the sprite id in the entities sprite array
-	int spriteId;
+	EntitySpriteType spriteType;
 
 	//Variable for if the entity is active on the map
 	int active;
@@ -41,7 +42,7 @@ typedef struct {
 /**
  * Function to initialize the entity.
  */
-Entity* initEntity(EntityType t, float xPos, float yPos, float height);
+Entity* initEntity(EntityType t, float xPos, float yPos, float height, EntitySpriteType est);
 
 /**
  * Function to destroy the entity.

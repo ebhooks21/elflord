@@ -8,8 +8,8 @@
 #define ENTTYP_H
 
 typedef enum {
-	ENEMY,
-	ITEM
+	E_ENEMY,
+	E_ITEM
 } EntityType;
 
 #endif
