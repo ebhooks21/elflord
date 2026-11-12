@@ -9,7 +9,6 @@
  #include "HEADER/MCELLTYP.H"
  #include "HEADER/GAME.H"
  #include "HEADER/ENTITY.H"
- #include "HEADER/ENTTYP.H"
  #include <stdlib.h>
  #include <math.h>
 
@@ -132,4 +131,30 @@ void addEntityToMap(Map* m, Entity* e) {
 		m->entities[m->numEntites] = e;
 		m->numEntites++;
 	}
+}
+
+/**
+ * Function to check entity/player proximity.
+ */
+Entity* checkPlayerProximity(Map* m, Player* p) {
+	Vec2f distance;
+	Entity* currEntity = NULL;
+	int radius = 1;
+
+	//Loop through the entities and check proximity to the player
+	for(int i = 0; i < m->numEntites; i++) {
+		if(m->entities[i]->active) {
+			currEntity = m->entities[i];
+
+			//Only check active entities
+			distance.x = fabsf((currEntity->ePos).x - p->pPos.x);
+			distance.y = fabsf((currEntity->ePos).y - p->pPos.y); 
+
+			if((distance.x * distance.x + distance.y * distance.y) <= (radius * radius)) {
+				return currEntity;
+			}
+		}
+	}
+
+	return NULL;
 }

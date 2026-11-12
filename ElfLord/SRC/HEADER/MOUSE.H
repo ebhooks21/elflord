@@ -6,6 +6,7 @@
 
  #include <GRX20.H>
  #include "VEC2.H"
+ #include "ENTITY.H"
 
  //Forward declare the screen structure
  typedef struct screen_t Screen;
@@ -60,5 +61,20 @@
   * Function to render the mouse cursor.
   */
  void renderMouseCursor(Mouse*m, Game* g, Screen* s);
+
+ /**
+  * Function to render the pointer cursor.
+  */
+ void renderPointer(Mouse* m, Game* g, Screen* s);
+
+ /**
+  * Function to render the crosshair cursor.
+  */
+ void renderCrosshair(Mouse* m, Game* g, Screen* s);
+
+ /**
+  * Function to render the pickup cursor.
+  */
+ void renderPickup(Mouse* m, Game* g, Screen* s, Entity* e);
 
  #endif

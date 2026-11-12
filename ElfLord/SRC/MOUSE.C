@@ -11,8 +11,11 @@
  #include "HEADER/TITLESCR.H"
  #include "HEADER/STRYSCR.H"
  #include "HEADER/CHARSCR.H"
+ #include "HEADER/MAP.H"
+ #include "HEADER/ENTITY.H"
  #include <GRX20.H>
  #include <stdlib.h>
+ #include <stdio.h>
 
  /**
   * Function to initialize the mouse.
@@ -182,9 +185,45 @@
   * Function to render the mouse cursor.
   */
  void renderMouseCursor(Mouse*m, Game* g, Screen* s) {
-	//Get the locations for easy access
+	Entity* e;
+
+	switch(g->state) {
+		case TITLE:
+		case CHARACTER_SCREEN:
+			renderPointer(m, g, s);	
+			break;
+
+		case GAMEPLAY:
+			//Check to see if an interactable entity is nearby
+			e = checkPlayerProximity(g->currMap, g->p);
+
+			if(e != NULL) {
+				switch(e->type) {
+					case E_ITEM:
+						renderPickup(m, g, s, e);
+						break; 
+
+					default:
+						renderCrosshair(m, g, s);
+						break;
+				}
+			}
+
+			else {
+				renderCrosshair(m, g, s);
+			}
+			break;
+	}
+
+ }
+
+ /**
+  * Function to render the pointer cursor.
+  */
+ void renderPointer(Mouse* m, Game* g, Screen* s) {
+	//Get cursor location
 	int x = m->mPos.x;
-	int y = m->mPos.y;	
+	int y = m->mPos.y;
 	int numPoints = 0;
 
 	//Create the cursor
@@ -198,27 +237,38 @@
 		{x + 7, y + 6}
 	};
 
-	switch(g->state) {
-		case TITLE:
-		case CHARACTER_SCREEN:
-			//Calculate the number of points
-			numPoints = (sizeof(cursor) / sizeof(cursor[0]));
+	//Calculate the number of points
+	numPoints = (sizeof(cursor) / sizeof(cursor[0]));
 
-			//Draw the cursor in the location
-			GrFilledPolygon(numPoints, cursor, GrWhite());
-			GrPolygon(numPoints, cursor, GrBlack());
-			break;
+	//Draw the cursor in the location
+	GrFilledPolygon(numPoints, cursor, GrWhite());
+	GrPolygon(numPoints, cursor, GrBlack());
+ }
 
-		case GAMEPLAY:
-			x = (s->width / 2);
-			y = (s->height / 2);
+ /**
+  * Function to render the crosshair cursor.
+  */
+ void renderCrosshair(Mouse* m, Game* g, Screen* s) {
+	//Get cursor location
+	int x = (s->width / 2);
+	int y = (s->height / 2);
 
-			/* Small crosshair with a one-pixel center gap */
-			GrLine(x - 3, y, x - 1, y, GrWhite());
-			GrLine(x + 1, y, x + 3, y, GrWhite());
-			GrLine(x, y - 3, x, y - 1, GrWhite());
-			GrLine(x, y + 1, x, y + 3, GrWhite());
-			break;
-	}
+	GrLine(x - 3, y, x - 1, y, GrWhite());
+	GrLine(x + 1, y, x + 3, y, GrWhite());
+	GrLine(x, y - 3, x, y - 1, GrWhite());
+	GrLine(x, y + 1, x, y + 3, GrWhite());
+ }
 
+ /**
+  * Function to render the pickup cursor.
+  */
+ void renderPickup(Mouse* m, Game* g, Screen* s, Entity* e) {
+	//Get cursor location
+	int x = (s->width / 2);
+	int y = (s->height / 2);
+	char text[30];
+
+	sprintf(text, "Pickup %s", (e->ent.item)->name);
+
+	renderScreenText(text, x, y, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
  }

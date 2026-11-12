@@ -9,6 +9,7 @@
  #include "TEXPROV.H"
  #include "VEC2.H"
  #include "ENTITY.H"
+ #include "PLAYER.H"
 
  #ifndef MAP_H
  #define MAP_H
@@ -82,5 +83,10 @@ void loadMapTextures(Map* m);
  * Function to add an entity to the map.
  */
 void addEntityToMap(Map* m, Entity* e);
+
+/**
+ * Function to check entity/player proximity.
+ */
+Entity* checkPlayerProximity(Map* m, Player* p);
 
  #endif

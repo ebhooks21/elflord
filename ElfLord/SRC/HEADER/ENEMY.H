@@ -5,7 +5,9 @@
  */
 
 #include "STATS.H"
-#include "GAME.H"
+
+//Forward delcare the Game structure
+typedef struct game_t Game;
 
 #ifndef ENEMY_H
 #define ENEMY_H
