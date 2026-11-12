@@ -129,7 +129,7 @@ void loadMapTextures(Map* m) {
  */
 void addEntityToMap(Map* m, Entity* e) {
 	if(m->numEntites < MAX_MAP_ENT) {
-		m->entities[(m->numEntites + 1)] = e;
+		m->entities[m->numEntites] = e;
 		m->numEntites++;
 	}
 }

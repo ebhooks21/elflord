@@ -294,6 +294,57 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 	}
 }
 
+/**
+ * Function to render the entities.
+ */
+void renderEntities(Screen *s, Game *g, GamePlayScreen* gps) {
+	//Get the needed variables, so we don't have to do all of the arrow functions
+	Player* p = g->p;
+	Map* map = g->currMap;
+	TextureProvider* tp = map->texP;
+
+	//Variables for sprite rendering
+	double sDistance[MAX_MAP_ENT];
+	int sOrder[MAX_MAP_ENT];
+	int sCount = 0;
+	int index = 0;
+
+	double rDeterminate = 0.0;
+	Vec2f relPos;
+	Vec2f transPos;
+	double spriteStep = 0.0;
+	double spritePos = 0.0;
+	double spriteY = 0.0;
+	int spriteHeight = 0;
+	int spriteWidth = 0;
+	Vec2f startPos;
+	Vec2f endPos;
+	Vec2f texPos;
+	int x = 0;
+	int y = 0;
+	int c = 0;
+	int j = 0;
+
+	//Calculate sprite distances
+	for(int i = 0; i < map->numEntites; i++) {
+		if((map->entities[i] != NULL) && ((map->entities[i]).active)) {
+			//Get the distance from the player on both x and y
+			relPos.x = (map->entities[i]->ePos).x - p->xLoc;
+			relPos.y = (map->entities[i]->ePos).y - p->yLoc;
+			sOrder[sCount] = i;
+
+			//Calculate the relative distance from the player
+			sDistance[i] = (relPos.x * relPos.x) + (relPos.y * relPos.y);
+			sCount++;
+		}
+	}
+
+	//Sort the sprites
+	for(int i = 1; i < sCount; i++) {
+
+	}
+}
+
 
 /**
  * Function to render the walls.
@@ -508,6 +559,9 @@ void renderGameplayArea(Screen* s, Game* g) {
 
 	//Render the walls
 	renderWalls(s, g, gps);
+
+	//Render the entities
+	renderEntities(s, g, gps);
 
 	//Write the framebuffer
 	for(int row = 0; row < gps->gAreaHeight; row++) {

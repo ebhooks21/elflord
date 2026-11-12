@@ -92,6 +92,11 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps);
 void renderWalls(Screen* s, Game* g, GamePlayScreen* gps);
 
 /**
+ * Function to render the entities.
+ */
+void renderEntities(Screen* s, Game* g, GamePlayScreen* gps);
+
+/**
  * Function to render the game play area.
  */
 void renderGameplayArea(Screen* s, Game* g);

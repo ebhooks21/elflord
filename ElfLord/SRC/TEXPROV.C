@@ -59,6 +59,9 @@ void loadTextures(TextureProvider* tp, Map* m) {
 	//Load the door texture
 	tp->doorTexture = createGameTexture(m->dTexPath, 0, 0);
 	loadGameTexture(tp->doorTexture);
+
+	//Load the entity sprite textures
+	loadEntitySpriteTextures(tp, m);
 }
 
 /**
