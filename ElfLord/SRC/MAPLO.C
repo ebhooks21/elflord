@@ -144,7 +144,7 @@ void buildMapRow(Map* map, char* fBuffer, int currRow) {
 
 			if(*tChar == 'G') {
 				//Gold on the map
-				addEntityToMap(map, initEntity(E_ITEM, (currRow + 0.5f), (i + 0.5f), 0, I_GOLD));
+				addEntityToMap(map, initEntity(E_ITEM, (i + 0.5f), (currRow + 0.5f), 0.5, I_GOLD));
 			}
 
 			map->mapData[currRow][i] = initMapCell(*tChar);

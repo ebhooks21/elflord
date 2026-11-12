@@ -7,7 +7,7 @@
 #include "HEADER/INV.H"
 #include "HEADER/MAP.H"
 #include "HEADER/STATS.H"
-#include "HEADER/VEC2.H"
+#include "HEADER/VEC2F.H"
 #include "HEADER/MSGA.H"
 #include "HEADER/MCELLTYP.H"
 #include <stdlib.h>
@@ -27,8 +27,8 @@ Player* initPlayer() {
 
 	//Set initial player values
 	p->name = "Desryn\0";
-	p->xLoc = 3.5;
-	p->yLoc = 3.5;
+	p->pPos.x = 3.5;
+	p->pPos.y = 3.5;
 	p->angle = 0;
 	p->moveSpeed = .15f;
 	p->rotSpeed = .1f;
@@ -63,17 +63,17 @@ void movePlayer(Game* g, float mAmnt) {
 	char status[30];
 
 	//Calculate the player's movement
-	float nextX = p->xLoc + (float)(cos(p->angle) * mAmnt);
-	float nextY = p->yLoc + (float)(sin(p->angle) * mAmnt);
+	float nextX = p->pPos.x + (float)(cos(p->angle) * mAmnt);
+	float nextY = p->pPos.y + (float)(sin(p->angle) * mAmnt);
 
-	mcX = getMapCell(g->currMap, nextX, p->yLoc);
+	mcX = getMapCell(g->currMap, nextX, p->pPos.y);
 	if(mcX->cType == M_CELL_EMPTY) {
-		p->xLoc = nextX;
+		p->pPos.x = nextX;
 	}
 
-	mcY = getMapCell(g->currMap, p->xLoc, nextY);
+	mcY = getMapCell(g->currMap, p->pPos.x, nextY);
 	if(mcY->cType == M_CELL_EMPTY) {
-		p->yLoc = nextY;
+		p->pPos.y = nextY;
 	}
 
 	//We didn't move

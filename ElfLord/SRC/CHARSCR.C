@@ -23,7 +23,7 @@ CharacterScreen* initCharacterScreen(Screen* s) {
 	loadGameImage(c->background);
 
 	//Load the chracter portrait
-	c->cPortrait = createGameImage("ASSET\\desryn.ppm", 0, 0);
+	c->cPortrait = createGameImage("ASSET\\CHARS\\desryn.ppm", 0, 0);
 	loadGameImage(c->cPortrait);
 
 	//Create the active menu item color

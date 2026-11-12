@@ -110,8 +110,8 @@ Screen* createGameScreen(int width, int height) {
 			loadMapTextures(g->currMap);
 
 			//Set the player's starting location
-			(g->p)->xLoc = (g->currMap)->pStart.x;
-			(g->p)->yLoc = (g->currMap)->pStart.y;
+			(g->p)->pPos.x = (g->currMap)->pStart.x;
+			(g->p)->pPos.y = (g->currMap)->pStart.y;
 
 			//Create a new gameplay screen for rendering
 			s->currScreen = initGPScr(s, g->currMap);	

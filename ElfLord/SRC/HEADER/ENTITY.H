@@ -45,6 +45,11 @@ typedef struct {
 Entity* initEntity(EntityType t, float xPos, float yPos, float height, EntitySpriteType est);
 
 /**
+ * Function to build the entity.
+ */
+void buildEntity(Entity* e);
+
+/**
  * Function to destroy the entity.
  */
 void destroyEntity(Entity* e);

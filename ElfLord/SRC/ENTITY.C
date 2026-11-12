@@ -21,11 +21,32 @@ Entity* initEntity(EntityType t, float xPos, float yPos, float height, EntitySpr
 	e->ePos.y = yPos;
 	e->type = t;
 	e->height = height;
+	e->active = 1;
 	
-	//Preset the sprite id, as we won't have this yet
+	//Set sprite type
 	e->spriteType = est;
 
+	buildEntity(e);
+
 	return e;
+}
+
+/**
+ * Function to build the entity.
+ */
+void buildEntity(Entity* e) {
+	switch(e->spriteType) {
+		case I_GOLD:
+			e->ent.enemy = NULL;
+			e->ent.item = initItem();
+			(e->ent.item)->name = "Gold";
+			break;
+
+		default:
+			e->ent.enemy = NULL;
+			e->ent.item = NULL;
+			break;
+	}
 }
 
 /**
