@@ -13,6 +13,11 @@
  #include "HEADER/CCSCR.H"
  #include "HEADER/MCELL.H"
  #include "HEADER/MCELLTYP.H"
+ #include "HEADER/MAP.H"
+ #include "HEADER/ENTTYP.H"
+ #include "HEADER/ENTITY.H"
+ #include "HEADER/ENEMY.H"
+ #include "HEADER/ITEM.H"
  #include <GRXKEYS.H>
  #include <stdlib.h>
  
@@ -57,6 +62,10 @@ void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
  * Function to handle the game play screen input.
  */
 void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
+	Entity* e = NULL;
+	Item* item = NULL;
+	Enemy* enemy = NULL;
+
 	switch(key) {
 		case GrKey_Up:
 		case 'w':
@@ -85,6 +94,29 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 		case 'c':
 			//Need to swap to the character screen
 			g->state = CHARACTER_SCREEN_INIT;
+			break;
+
+		case 'e':
+			//Find out if teh player is near an entity
+			e = checkPlayerProximity(g->currMap, g->p);
+
+			if(e != NULL) {
+				switch(e->type) {
+					case E_ITEM:
+						//Get the item
+						item = e->ent.item;
+
+						//Give item to the player
+						givePlayerItem(g->p, g, item);
+
+						//Mark the entity as inactive
+						e->active = 0;
+						break;
+
+					default:
+						break;
+				}
+			}
 			break;
 
 		case GrKey_Escape:

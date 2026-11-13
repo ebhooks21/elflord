@@ -8,9 +8,13 @@
  #include "MCELLTYP.H"
  #include "TEXPROV.H"
  #include "VEC2.H"
+ #include "ENTITY.H"
+ #include "PLAYER.H"
 
  #ifndef MAP_H
  #define MAP_H
+
+ #define MAX_MAP_ENT 64
 
  typedef struct map_t {
 	//Variable for the map rows
@@ -21,6 +25,10 @@
 
 	//Variable for the map data
 	MapCell*** mapData;
+
+    //Variables for a list of map entities
+    Entity* entities[MAX_MAP_ENT];
+    int numEntites;
 
 	//Variable for the player start position
 	Vec2 pStart;
@@ -70,5 +78,15 @@
  * Function to load the map textures.
  */
 void loadMapTextures(Map* m);
+
+/**
+ * Function to add an entity to the map.
+ */
+void addEntityToMap(Map* m, Entity* e);
+
+/**
+ * Function to check entity/player proximity.
+ */
+Entity* checkPlayerProximity(Map* m, Player* p);
 
  #endif

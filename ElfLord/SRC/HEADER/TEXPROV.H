@@ -12,6 +12,8 @@ typedef struct map_t Map;
 #ifndef TEXPROV_H
 #define TEXPROV_H
 
+#define MAX_SPRITE_TEX 30
+
 typedef struct{
 	//Variable for the ceiling texture
 	GameTex* ceilingTexture;
@@ -24,6 +26,9 @@ typedef struct{
 
 	//Variable for the door texture
 	GameTex* doorTexture;
+
+	//Variable for entity sprites
+	GameTex* entitySprites[MAX_SPRITE_TEX];
 }TextureProvider;
 
 /**
@@ -40,5 +45,10 @@ void destroyTextureProvider(TextureProvider* tp);
  * Function to load the textures.
  */
 void loadTextures(TextureProvider* tp, Map* m);
+
+/**
+ * Function to load the sprite textures.
+ */
+void loadEntitySpriteTextures(TextureProvider* tp, Map* m);
 
 #endif

@@ -9,13 +9,13 @@
 #,.,.,#,#,.,#,.,.,#,.,.,.,#
 #,.,.,#,#,.,#,.,.,.,.,.,.,#
 #,.,.,.,.,.,.,.,.,#,.,.,.,#
-#,#,#,#,.,#,#,#,#,#,.,.,.,#
+#,#,#,#,.,#,#,#,#,#,.,G,.,#
 #,.,.,.,.,.,.,.,.,#,.,.,.,#
 #,.,.,.,.,.,.,.,.,#,.,.,.,#
 #,.,.,.,.,.,@,.,.,.,.,.,.,#
 #,#,#,#,#,#,d,#,#,#,#,#,#,#
 
-ASSET\stonef.ppm
-ASSET\dceil.ppm
-ASSET\dwall.ppm
-ASSET\ddoor.ppm
+ASSET\FLOORS\stonef.ppm
+ASSET\CEIL\dceil.ppm
+ASSET\WALLS\dwall.ppm
+ASSET\DOORS\ddoor.ppm

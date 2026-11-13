@@ -7,6 +7,8 @@
 #include "INV.H"
 #include "GAME.H"
 #include "STATS.H"
+#include "VEC2F.H"
+#include "ITEM.H"
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -40,11 +42,8 @@ typedef struct {
 	//Variable for the player's inventory
 	Inventory* inv;
 
-	//Variable for the player's x location
-	float xLoc;
-
-	//Variable for the player's y location
-	float yLoc;
+	//Variable for player's position
+	Vec2f pPos;
 
 	//Variable for the player's angle
 	float angle;
@@ -83,5 +82,10 @@ void rotatePlayer(Player* p, double amount);
  * Function to calculate the player stats.
  */
 void calculatePlayerStats(Player* p);
+
+/**
+ * Function to give a player an item.
+ */
+void givePlayerItem(Player* p, Game* g, Item* item);
 
 #endif

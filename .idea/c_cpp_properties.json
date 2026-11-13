@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "CLion",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/ehooks/DOS/DJGPP/INCLUDE/",
+                "/home/ehooks/DOS/DJGPP/LIB/"
+            ],
+            "cStandard": "c99"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/ehooks/DOS/DJGPP/INCLUDE/",
+                "/home/ehooks/DOS/DJGPP/LIB/"
+            ],
+            "cStandard": "c99"
+        }
+    ],
+    "version": 4
+}

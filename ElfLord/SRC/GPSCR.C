@@ -48,6 +48,9 @@ GamePlayScreen* initGPScr(Screen* s, Map* map) {
 	//Create the framebuffer
 	gps->frameBuffer = malloc(sizeof(GrColor) * gps->gAreaWidth * gps->gAreaHeight);
 
+	//Create the z-buffer
+	gps->zBuffer = malloc(sizeof(double) * gps->gAreaWidth);
+
 	return gps;
 }
 
@@ -60,6 +63,9 @@ void destoryGPScr(GamePlayScreen* g) {
 
 	//Free the framebuffer
 	free(g->frameBuffer);
+
+	//Free the z-buffer
+	free(g->zBuffer);
 
 	//Destroy the gameplay screen
 	free(g);
@@ -137,8 +143,8 @@ void renderFloor(Screen* s, Game* g, GamePlayScreen* gps) {
 			floorStepY = (rowDistance * (rightRayDirY - leftRayDirY)) / (double)gps->gAreaWidth;
 
 			//Calculate pixel drawing postion for the raycasted row
-			floorX = p->xLoc + rowDistance * leftRayDirX;
-			floorY = p->yLoc + rowDistance * leftRayDirY;
+			floorX = p->pPos.x + rowDistance * leftRayDirX;
+			floorY = p->pPos.y + rowDistance * leftRayDirY;
 
 			//Calulcate the floor cast line based upon the cell location relative to the pixel location
 			for(x = 0; x < gps->gAreaWidth; x++) {
@@ -243,8 +249,8 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 			floorStepY = (rowDistance * (rightRayDirY - leftRayDirY)) / (double)gps->gAreaWidth;
 
 			//Calculate pixel drawing postion for the raycasted row
-			floorX = p->xLoc + rowDistance * leftRayDirX;
-			floorY = p->yLoc + rowDistance * leftRayDirY;
+			floorX = p->pPos.x + rowDistance * leftRayDirX;
+			floorY = p->pPos.y + rowDistance * leftRayDirY;
 
 			//Calulcate the floor cast line based upon the cell location relative to the pixel location
 			for(x = 0; x < gps->gAreaWidth; x++) {
@@ -283,6 +289,151 @@ void renderCeiling(Screen* s, Game* g, GamePlayScreen* gps) {
 				//Increment the floor values
 				floorX += floorStepX;
 				floorY += floorStepY;
+			}
+		}
+	}
+}
+
+/**
+ * Function to render the entities.
+ */
+void renderEntities(Screen *s, Game *g, GamePlayScreen* gps) {
+	//Get the needed variables, so we don't have to do all of the arrow functions
+	Player* p = g->p;
+	Map* map = g->currMap;
+	TextureProvider* tp = map->texP;
+	Entity* currEntity = NULL;
+
+	//Variables for sprite rendering
+	double sDistance[MAX_MAP_ENT];
+	int sOrder[MAX_MAP_ENT];
+	int sCount = 0;
+	int sIndex = 0;
+	GameTex* entTex = NULL;
+
+	double rDeterminate = 0.0;
+	Vec2f relPos;
+	Vec2f transPos;
+	double spriteStep = 0.0;
+	int spritePos = 0;
+	int spriteY = 0;
+	double texPos = 0.0;
+	int spriteHeight = 0;
+	int spriteWidth = 0;
+	Vec2f startDrawPos;
+	Vec2f endDrawPos;
+	Vec2f startPos;
+	Vec2f endPos;
+	int color = 0;
+	int j = 0;
+
+	//Calculate sprite distances
+	for(int i = 0; i < map->numEntites; i++) {
+		currEntity = map->entities[i];
+
+		if((currEntity != NULL) && (currEntity->active)) {
+			//Get the distance from the player on both x and y
+			relPos.x = (currEntity->ePos).x - p->pPos.x;
+			relPos.y = (currEntity->ePos).y - p->pPos.y;
+			sOrder[sCount] = i;
+
+			//Calculate the relative distance from the player
+			sDistance[i] = (relPos.x * relPos.x) + (relPos.y * relPos.y);
+			sCount++;
+		}
+	}
+
+	//Sort the sprites
+	for(int i = 1; i < sCount; i++) {
+		sIndex = sOrder[i];
+		j = (i - 1);
+
+		while((j >= 0) && sDistance[sOrder[j]] < sDistance[sIndex]) {
+			sOrder[(j + 1)] = sOrder[j];
+			j--;
+		}
+
+		sOrder[(j + 1)] = sIndex;
+	}
+
+	//Calculate the render determiniate
+	rDeterminate = 1.0f / (gps->pViewPlane.x * gps->rDir.y - gps->rDir.x * gps->pViewPlane.y);
+
+	//Render the entities
+	for(int i = 0; i < sCount; i++) {
+		currEntity = map->entities[sOrder[i]];
+		entTex = tp->entitySprites[currEntity->spriteType];
+
+		if(entTex != NULL) {
+			//Get the distance from the player on both x and y
+			relPos.x = (currEntity->ePos).x - p->pPos.x;
+			relPos.y = (currEntity->ePos).y - p->pPos.y;
+
+			//Calculate transforms
+			transPos.x = rDeterminate * (gps->rDir.y * relPos.x - gps->rDir.x * relPos.y);
+			transPos.y = rDeterminate * (-gps->pViewPlane.y * relPos.x + gps->pViewPlane.x * relPos.y);
+
+			//Make sure we have a y value
+			if(transPos.y > 0.1f) {
+				spritePos = (int)(((gps->gAreaWidth - 1) / 2.0f) * (1 + transPos.x / transPos.y));
+
+				spriteHeight = (int)(currEntity->height * gps->gAreaHeight / transPos.y);
+
+				if(spriteHeight > 0) {
+					spriteWidth = spriteHeight * entTex->width / entTex->height;
+
+					spriteY = (int)(gps->horLine + gps->gAreaHeight / (2.0 * transPos.y));
+					startDrawPos.y = spriteY - spriteHeight;
+					endDrawPos.y = spriteY;
+					startDrawPos.x = spritePos - spriteWidth / 2;
+					endDrawPos.x = startDrawPos.x + spriteWidth;
+
+					//Clip the values if needed
+					startPos.x = (startDrawPos.x < 0) ? 0 : startDrawPos.x;
+					startPos.y = (startDrawPos.y < 0) ? 0 : startDrawPos.y;
+					endPos.x = (endDrawPos.x > gps->gAreaWidth) ? gps->gAreaWidth : endDrawPos.x;
+					endPos.y = (endDrawPos.y > gps->gAreaHeight) ? gps->gAreaHeight : endDrawPos.y;
+
+					spriteStep = (double)entTex->height / spriteHeight;
+
+					//Loop through the columns and render
+					for(int x = startPos.x; x < endPos.x; x++) {
+						if(transPos.y < gps->zBuffer[x]) {
+							gps->texPos.x = (x - startDrawPos.x) * entTex->width / spriteWidth;
+
+							if(gps->texPos.x < 0) {
+								gps->texPos.x = 0;
+							}
+
+							else if(gps->texPos.x > (entTex->width - 1)) {
+								gps->texPos.x = (entTex->width - 1);
+							}
+
+							texPos = (startPos.y - startDrawPos.y) * spriteStep;
+
+							//Loop through the rows
+							for(int y = startPos.y; y < endPos.y; y++) {
+								gps->texPos.y = (int)texPos;
+
+								if(gps->texPos.y < 0) {
+									gps->texPos.y = 0;
+								}
+
+								else if(gps->texPos.y > (entTex->height - 1)) {
+									gps->texPos.y = (entTex->height - 1);
+								}
+
+								texPos += spriteStep;
+
+								color = entTex->tex[gps->texPos.x * entTex->height + gps->texPos.y];
+
+								if(color != entTex->tColor) {
+									gps->frameBuffer[y * gps->gAreaWidth + x] = color;
+								}
+							}	
+						}
+					}
+				}
 			}
 		}
 	}
@@ -330,6 +481,8 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 
 	//Cast and draw the walls
 	for(col = 0; col < gps->gAreaWidth; col++) {
+		//Set the z-buffer for this column to the maximum value
+		gps->zBuffer[col] = MAX_COL_HEIGHT; 
 		hit = 0;
 		wallHit = 0;
 
@@ -337,30 +490,30 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 		rayDirX = (gps->rDir.x) + gps->pViewPlane.x * cameraX;
 		rayDirY = (gps->rDir.y) + gps->pViewPlane.y * cameraX;
 
-		mapX = floor(p->xLoc);
-		mapY = floor(p->yLoc);
+		mapX = floor(p->pPos.x);
+		mapY = floor(p->pPos.y);
 
-		gps->deltaDist.x = (rayDirX == 0.0) ? 1e30 : fabs(1.0 / rayDirX);
-		gps->deltaDist.y = (rayDirY == 0.0) ? 1e30 : fabs(1.0 / rayDirY);
+		gps->deltaDist.x = (rayDirX == 0.0) ? MAX_COL_HEIGHT : fabs(1.0 / rayDirX);
+		gps->deltaDist.y = (rayDirY == 0.0) ? MAX_COL_HEIGHT : fabs(1.0 / rayDirY);
 
 		if(rayDirX < 0) {
 			stepX = -1;
-			sideDistX = ((p->xLoc - mapX) * gps->deltaDist.x);
+			sideDistX = ((p->pPos.x - mapX) * gps->deltaDist.x);
 		}
 
 		else {
 			stepX = 1;
-			sideDistX = ((mapX + 1 - p->xLoc) * gps->deltaDist.x);
+			sideDistX = ((mapX + 1 - p->pPos.x) * gps->deltaDist.x);
 		}
 
 		if(rayDirY < 0) {
 			stepY = -1;
-			sideDistY = ((p->yLoc - mapY) * gps->deltaDist.y);
+			sideDistY = ((p->pPos.y - mapY) * gps->deltaDist.y);
 		}
 		
 		else {
 			stepY = 1;
-			sideDistY = ((mapY + 1 - p->yLoc) * gps->deltaDist.y);
+			sideDistY = ((mapY + 1 - p->pPos.y) * gps->deltaDist.y);
 		}
 
 		while(hit == 0) {
@@ -414,16 +567,19 @@ void renderWalls(Screen *s, Game *g, GamePlayScreen* gps) {
 		}
 
 		if(side == 0) {
-			distance = (rayDirX == 0.0) ? 1e30 : (mapX - p->xLoc + (1 - stepX) / 2.0) / rayDirX;
-			wallX = p->yLoc + distance * rayDirY;
+			distance = (rayDirX == 0.0) ? 1e30 : (mapX - p->pPos.x + (1 - stepX) / 2.0) / rayDirX;
+			wallX = p->pPos.y + distance * rayDirY;
 		}
 
 		else {
-			distance = (rayDirY == 0.0) ? 1e30 : (mapY - p->yLoc + (1 - stepY) / 2.0) / rayDirY;
-			wallX = p->xLoc + distance * rayDirX;
+			distance = (rayDirY == 0.0) ? 1e30 : (mapY - p->pPos.y + (1 - stepY) / 2.0) / rayDirY;
+			wallX = p->pPos.x + distance * rayDirX;
 		}
 
-		wallHeight = (distance <= 0.0) ? 1e30 : (double)gps->gAreaHeight / distance;
+		//Set the distance for the z-buffer for this column
+		gps->zBuffer[col] = distance;
+
+		wallHeight = (distance <= 0.0) ? MAX_COL_HEIGHT : (double)gps->gAreaHeight / distance;
 		wallX -= floor(wallX);
 
 		//Setup the texture column, flipping the wall when the ray is backwards
@@ -489,11 +645,6 @@ void renderGameplayArea(Screen* s, Game* g) {
 	gps->pViewPlane.x = -(gps->rDir.y) * tan(p->fov / 2.0);
 	gps->pViewPlane.y = gps->rDir.x * tan(p->fov / 2.0);
 
-	int skyColor = GrAllocColor(0, 0, 135);
-
-	//Draw the sky, with it going slightly past the horizon line
-	//GrFilledBox(0, 0, (gps->gAreaWidth - 1), gps->horLine, skyColor);
-
 	//Render the ceiling
 	renderCeiling(s, g, gps);
 
@@ -502,6 +653,9 @@ void renderGameplayArea(Screen* s, Game* g) {
 
 	//Render the walls
 	renderWalls(s, g, gps);
+
+	//Render the entities
+	renderEntities(s, g, gps);
 
 	//Write the framebuffer
 	for(int row = 0; row < gps->gAreaHeight; row++) {

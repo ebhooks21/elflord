@@ -8,6 +8,7 @@
  #include "HEADER/MCELL.H"
  #include "HEADER/MCELLTYP.H"
  #include "HEADER/GAME.H"
+ #include "HEADER/ENTITY.H"
  #include <stdlib.h>
  #include <math.h>
 
@@ -42,6 +43,13 @@
 	m->wTexPath = NULL;
 	m->dTexPath = NULL;
 
+	//Setup the entity storage
+	for(int i = 0; i < MAX_MAP_ENT; i++) {
+		m->entities[i] = NULL;
+	}
+
+	m->numEntites = 0;
+
 	return m;
  }
 
@@ -58,6 +66,13 @@
 
 		//Clear the rows
 		free(m->mapData[i]);
+	}
+
+	//Destroy all entities
+	for(int i = 0; i < MAX_MAP_ENT; i++) {
+		if(m->entities[i] != NULL) {
+			destroyEntity(m->entities[i]);
+		}
 	}
 
 	//Free the map
@@ -106,5 +121,40 @@
  */
 void loadMapTextures(Map* m) {
 	m->texP = initTexProv(m);
-	loadTextures(m->texP, m);
+}
+
+/**
+ * Function to add an entity to the map.
+ */
+void addEntityToMap(Map* m, Entity* e) {
+	if(m->numEntites < MAX_MAP_ENT) {
+		m->entities[m->numEntites] = e;
+		m->numEntites++;
+	}
+}
+
+/**
+ * Function to check entity/player proximity.
+ */
+Entity* checkPlayerProximity(Map* m, Player* p) {
+	Vec2f distance;
+	Entity* currEntity = NULL;
+	int radius = 1;
+
+	//Loop through the entities and check proximity to the player
+	for(int i = 0; i < m->numEntites; i++) {
+		if(m->entities[i]->active) {
+			currEntity = m->entities[i];
+
+			//Only check active entities
+			distance.x = fabsf((currEntity->ePos).x - p->pPos.x);
+			distance.y = fabsf((currEntity->ePos).y - p->pPos.y); 
+
+			if((distance.x * distance.x + distance.y * distance.y) <= (radius * radius)) {
+				return currEntity;
+			}
+		}
+	}
+
+	return NULL;
 }
