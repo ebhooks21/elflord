@@ -13,6 +13,8 @@
 Item* initItem() {
 	Item* i = malloc(sizeof *i);
 
+	i->concrete = 1;
+
 	return i;
 }
 

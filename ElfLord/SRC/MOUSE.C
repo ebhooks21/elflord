@@ -270,5 +270,6 @@
 
 	sprintf(text, "Pickup %s", (e->ent.item)->name);
 
+	renderScreenText("E", x, (y - 9), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 	renderScreenText(text, x, y, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
  }

@@ -134,3 +134,28 @@ void calculatePlayerStats(Player* p) {
 
 	p->currMP = p->maxMP;
 }
+
+/**
+ * Function to give a player an item.
+ */
+void givePlayerItem(Player* p, Game* g, Item* item) {
+	char status[30];
+
+	//Check to see if the item is concrete
+	if(item->concrete) {
+		//Add the item to the player's inventory
+		addItemToInventory(p->inv, item);
+
+		sprintf(status, "You got a %s.", item->name);
+		addMessage(&g->msgA, status);
+	}
+
+	else {
+		//Give the player the item's value
+		p->gold += item->price;
+
+		//Display the amount
+		sprintf(status, "You got %d gold.", item->price);
+		addMessage(&g->msgA, status);
+	}
+}

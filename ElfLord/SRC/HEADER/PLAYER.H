@@ -8,6 +8,7 @@
 #include "GAME.H"
 #include "STATS.H"
 #include "VEC2F.H"
+#include "ITEM.H"
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -81,5 +82,10 @@ void rotatePlayer(Player* p, double amount);
  * Function to calculate the player stats.
  */
 void calculatePlayerStats(Player* p);
+
+/**
+ * Function to give a player an item.
+ */
+void givePlayerItem(Player* p, Game* g, Item* item);
 
 #endif

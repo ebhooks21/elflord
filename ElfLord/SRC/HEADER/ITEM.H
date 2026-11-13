@@ -26,6 +26,9 @@ typedef struct {
 
     //Variable for the item's damage amount
     int dmg;
+
+	//Variable for if the item is concrete(the player gets teh item instead of its worth)
+	int concrete;
 } Item;
 
 /**
