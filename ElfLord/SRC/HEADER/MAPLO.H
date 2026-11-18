@@ -29,4 +29,9 @@ void buildMapRow(Map* map, char* fBuffer, int currRow);
  */
 char* dupStr(char* s);
 
+/**
+ * Add random entities to the map.
+ */
+void addRandomEntities(Map* map);
+
  #endif

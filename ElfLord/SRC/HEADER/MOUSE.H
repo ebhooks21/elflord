@@ -73,8 +73,18 @@
  void renderCrosshair(Mouse* m, Game* g, Screen* s);
 
  /**
+  * Function to render the enemy crosshair cursor.
+  */
+ void renderEnemyCrosshair(Mouse* m, Game* g, Screen* s, Entity* e);
+
+ /**
   * Function to render the pickup cursor.
   */
  void renderPickup(Mouse* m, Game* g, Screen* s, Entity* e);
+
+ /**
+  * Function to render the interaction cursor.
+  */
+ void renderInteraction(Mouse* m, Game* g, Screen* s, char* msg);
 
  #endif

@@ -158,3 +158,28 @@ Entity* checkPlayerProximity(Map* m, Player* p) {
 
 	return NULL;
 }
+
+/**
+ * Function to check what the player is looking at.
+ */
+MapCell* checkPlayerLookingAt(Map* m, Player* p) {
+	//Variable for the area the player is walking to
+	MapCell* mc;
+	float reach = 1.0;
+
+	//Calculate the player's movement
+	float nextX = p->pPos.x + (float)(cos(p->angle) * reach);
+	float nextY = p->pPos.y + (float)(sin(p->angle) * reach);
+
+	mc = getMapCell(m, nextX, p->pPos.y);
+	if(mc->cType != M_CELL_EMPTY) {
+		return mc;
+	}
+
+	mc = getMapCell(m, p->pPos.x, nextY);
+	if(mc->cType != M_CELL_EMPTY) {
+		return mc;
+	}
+
+	return NULL;
+}

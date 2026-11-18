@@ -63,6 +63,7 @@ void handleStoryScreenKeyInput(Game* g, GrKeyType key) {
  */
 void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 	Entity* e = NULL;
+	MapCell* mc = NULL;
 	Item* item = NULL;
 	Enemy* enemy = NULL;
 
@@ -97,7 +98,7 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 			break;
 
 		case 'e':
-			//Find out if teh player is near an entity
+			//Find out if the player is near an entity
 			e = checkPlayerProximity(g->currMap, g->p);
 
 			if(e != NULL) {
@@ -115,6 +116,23 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 
 					default:
 						break;
+				}
+			}
+
+			else {
+				//Check to see what they are looking at
+				mc = checkPlayerLookingAt(g->currMap, g->p);
+
+				if(mc != NULL) {
+					switch(mc->cType) {
+						case M_CELL_DOOR:
+							//The player is leaving the dungeon
+							g->state = EXIT_GAME;
+							break;
+
+						default:
+							break;
+					}
 				}
 			}
 			break;

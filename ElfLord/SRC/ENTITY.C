@@ -9,7 +9,6 @@
 #include "HEADER/ENTTYP.H"
 #include "HEADER/ESPRITET.H"
 #include <stdlib.h>
-#include <time.h>
 
 /**
  * Function to initialize the entity.
@@ -29,9 +28,6 @@ Entity* initEntity(EntityType t, float xPos, float yPos, float height, EntitySpr
 
 	buildEntity(e);
 
-	//Setup a random seed
-	srand(time(NULL));
-
 	return e;
 }
 
@@ -41,11 +37,14 @@ Entity* initEntity(EntityType t, float xPos, float yPos, float height, EntitySpr
 void buildEntity(Entity* e) {
 	switch(e->spriteType) {
 		case I_GOLD:
-			e->ent.enemy = NULL;
 			e->ent.item = initItem();
 			(e->ent.item)->name = "Gold";
 			(e->ent.item)->concrete = 0;
 			(e->ent.item)->price = (rand() % 50) + 1;
+			break;
+
+		case E_SKELETON:
+			e->ent.enemy = initEnemy("Skeleton");
 			break;
 
 		default:

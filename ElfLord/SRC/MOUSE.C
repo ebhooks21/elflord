@@ -13,6 +13,8 @@
  #include "HEADER/CHARSCR.H"
  #include "HEADER/MAP.H"
  #include "HEADER/ENTITY.H"
+ #include "HEADER/MCELL.H"
+ #include "HEADER/MCELLTYP.H"
  #include <GRX20.H>
  #include <stdlib.h>
  #include <stdio.h>
@@ -94,6 +96,7 @@
 	int mouseMoved = 0;
 	int mDeltaX = 0;
 	int mDeltaY = 0;
+	Entity* e;
 
 	//Check to see if the mouse is enabled
 	if(m->enabled == 0) {
@@ -128,6 +131,14 @@
 
 				case CHARACTER_SCREEN:
 					handleCharacterScreenMouseLeftButtonInput((CharacterScreen*)(g->screen)->currScreen, m, g);
+					break;
+
+				case GAMEPLAY:
+					e = checkPlayerProximity(g->currMap, g->p);
+
+					if(e != NULL) {
+
+					}
 					break;
 			}
 		}
@@ -186,6 +197,7 @@
   */
  void renderMouseCursor(Mouse*m, Game* g, Screen* s) {
 	Entity* e;
+	MapCell* mc;
 
 	switch(g->state) {
 		case TITLE:
@@ -203,6 +215,10 @@
 						renderPickup(m, g, s, e);
 						break; 
 
+					case E_ENEMY:
+						renderEnemyCrosshair(m, g, s, e);
+						break;
+
 					default:
 						renderCrosshair(m, g, s);
 						break;
@@ -210,7 +226,27 @@
 			}
 
 			else {
-				renderCrosshair(m, g, s);
+				//Check to see what is in front of the character
+				mc = checkPlayerLookingAt(g->currMap, g->p);
+
+				if(mc != NULL) {
+					switch(mc->cType) {
+						case M_CELL_DOOR:
+							renderInteraction(m, g, s, "Open Door");
+							break;
+
+						case M_CELL_GATE:
+							renderInteraction(m, g, s, "Open Gate");
+							break;
+
+						default:
+							renderCrosshair(m, g, s);
+					}
+				}
+
+				else {
+					renderCrosshair(m, g, s);
+				}
 			}
 			break;
 	}
@@ -259,6 +295,21 @@
 	GrLine(x, y + 1, x, y + 3, GrWhite());
  }
 
+/**
+  * Function to render the enemy crosshair cursor.
+  */
+ void renderEnemyCrosshair(Mouse* m, Game* g, Screen* s, Entity* e) {
+	//Get cursor location
+	int x = (s->width / 2);
+	int y = (s->height / 2);
+
+	//Render the normal crosshair
+	renderCrosshair(m, g, s);
+
+	//Render the enemy name
+	renderScreenText((e->ent.enemy)->name, x, (y + 4), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+ }
+
  /**
   * Function to render the pickup cursor.
   */
@@ -272,4 +323,17 @@
 
 	renderScreenText("E", x, (y - 9), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 	renderScreenText(text, x, y, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+ }
+
+ /**
+  * Function to render the interaction cursor.
+  */
+ void renderInteraction(Mouse* m, Game* g, Screen* s, char* msg) {
+	//Get cursor location
+	int x = (s->width / 2);
+	int y = (s->height / 2);
+
+
+	renderScreenText("E", x, (y - 9), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText(msg, x, y, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
  }

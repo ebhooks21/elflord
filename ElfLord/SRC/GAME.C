@@ -16,6 +16,8 @@
 #include "HEADER/MOUSE.H"
 #include "HEADER/CCSCR.H"
 #include "HEADER/MSGA.H"
+#include <time.h>
+#include <stdlib.h>
 
 /**
  * Function to start thhe game.
@@ -35,6 +37,9 @@ void startGame(Game* g) {
 	//Set the number of messages to 0
 	g->msgA.numMsgs = 0;
 
+	//Create a seed for random numbers
+	srand(time(NULL));
+
 	//Initialize the screen
 	initScreen(g->screen);
 
@@ -42,7 +47,7 @@ void startGame(Game* g) {
 	(g->screen)->currScreen = initTitleScreen(g->screen);
 
 	//Start the game loop
-	startGameLoop(g);	
+	startGameLoop(g);
 }
 
 /**
