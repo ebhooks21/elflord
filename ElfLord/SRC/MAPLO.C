@@ -197,34 +197,35 @@ void addRandomEntities(Map* map) {
 			ePos.x = (rand() % map->mapCols);
 			ePos.y = (rand() % map->mapRows);
 
-			if((map->mapData[ePos.y][ePos.x])->cType == M_CELL_EMPTY) {
-				//The random cell is an empty cell, check for an entity
-				for(int j = 0; j < map->numEntites; j++) {
-					e = map->entities[j];
+			if((((ePos.x <= (map->pStart.x + 2)) && (ePos.y <= (map->pStart.y + 2))))) {
+				if((map->mapData[ePos.y][ePos.x])->cType == M_CELL_EMPTY) {
+					//The random cell is an empty cell, check for an entity
+					for(int j = 0; j < map->numEntites; j++) {
+						e = map->entities[j];
 
-					if(e != NULL) {
-						if((((e->ePos.x - 0.5f) == ePos.x) && ((e->ePos.y - 0.5f) == ePos.y))
-							|| (((ePos.x == map->pStart.x) && (ePos.y == map->pStart.y)))) {
-							entityFound = 1;
-							break;
+						if(e != NULL) {
+							if((((e->ePos.x - 0.5f) == ePos.x) && ((e->ePos.y - 0.5f) == ePos.y))) {
+								entityFound = 1;
+								break;
+							}
 						}
 					}
-				}
 
-				if(!entityFound) {
-					//Determine the type of entity
-					eType = (rand() % 10);
-					
-					if(eType < 5) {
-						addEntityToMap(map, initEntity(E_ITEM, (ePos.x + 0.5f), (ePos.y + 0.5f), 0.5, I_GOLD));
-					}
+					if(!entityFound) {
+						//Determine the type of entity
+						eType = (rand() % 10);
+						
+						if(eType < 5) {
+							addEntityToMap(map, initEntity(E_ITEM, (ePos.x + 0.5f), (ePos.y + 0.5f), 0.5, I_GOLD));
+						}
 
-					else {
-						addEntityToMap(map, initEntity(E_ENEMY, (ePos.x + 0.5f), (ePos.y + 0.5f), 0.7, E_SKELETON));
+						else {
+							addEntityToMap(map, initEntity(E_ENEMY, (ePos.x + 0.5f), (ePos.y + 0.5f), 0.7, E_SKELETON));
+						}
+						makingEntity = 0;
 					}
-					makingEntity = 0;
-				}
-			}	
+				}	
+			}
 		}
 	}
 }
