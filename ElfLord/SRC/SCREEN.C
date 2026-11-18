@@ -13,6 +13,7 @@
 #include "HEADER/MOUSE.H"
 #include "HEADER/VEC2.H"
 #include "HEADER/CCSCR.H"
+#include "HEADER/SUCESSSR.H"
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
@@ -146,6 +147,10 @@ void render(Screen* s, Game* g) {
 
         case EXIT_PROMPT:
             renderCloseConfirmationScreen((CloseConfirmScreen*)s->currScreen, s, g);
+            break;
+
+        case SUCCESS_SCREEN:
+            renderSuccessScreen((SuccessScreen*)s->currScreen, s, g);
             break;
 
         default:

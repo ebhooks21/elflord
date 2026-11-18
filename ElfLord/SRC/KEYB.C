@@ -127,7 +127,7 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 					switch(mc->cType) {
 						case M_CELL_DOOR:
 							//The player is leaving the dungeon
-							g->state = EXIT_GAME;
+							g->state = SUCCESS_SCREEN_INIT;
 							break;
 
 						default:

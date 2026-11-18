@@ -16,6 +16,7 @@
 #include "HEADER/MOUSE.H"
 #include "HEADER/CCSCR.H"
 #include "HEADER/MSGA.H"
+#include "HEADER/SUCESSSR.H"
 #include <time.h>
 #include <stdlib.h>
 
@@ -159,6 +160,14 @@ Screen* createGameScreen(int width, int height) {
 			s->currScreen = initCloseConfirmScreen(s);
 
 			g->state = EXIT_PROMPT;
+			break;
+
+		case SUCCESS_SCREEN_INIT:
+			//Save the current screen
+			saveCurrScreen(s);
+			s->currScreen = initSuccessScreen(s);
+
+			g->state = SUCCESS_SCREEN;
 			break;
 
         default:
