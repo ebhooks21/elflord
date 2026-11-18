@@ -2,7 +2,7 @@
 
 - Ceiling Textures -- Done
 - Wall Textures -- Done
-- Map entities
+- Map entities -- Done
 - Melee Combat
 - Information panel -- Done
 - Inventory

@@ -14,6 +14,7 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
+ #include <time.h>
 
 /**
  * Function for loading a map.
@@ -93,6 +94,10 @@ Map* loadMap(char* mapName) {
 		}
 	}
 
+	//Add random entities to map
+	//Remove this after the game jam
+	addRandomEntities(lMap);
+
 	//Return the map
 	return lMap;
 }
@@ -171,4 +176,55 @@ char* dupStr(char* s) {
 	}
 
 	return ns;
+}
+
+/**
+ * Add random entities to the map.
+ */
+void addRandomEntities(Map* map) {
+	Vec2 ePos;
+	Entity* e;
+	int maxEntitiesToPlace = 10;
+	int makingEntity = 1;
+	int entityFound = 0;
+	int eType = 0;
+
+	for(int i = maxEntitiesToPlace; i > 0; i--) {
+		//Loop until we create an entity
+		makingEntity = 1;
+		while(makingEntity) {
+			entityFound = 0;
+			ePos.x = (rand() % map->mapCols);
+			ePos.y = (rand() % map->mapRows);
+
+			if((map->mapData[ePos.y][ePos.x])->cType == M_CELL_EMPTY) {
+				//The random cell is an empty cell, check for an entity
+				for(int j = 0; j < map->numEntites; j++) {
+					e = map->entities[j];
+
+					if(e != NULL) {
+						if((((e->ePos.x - 0.5f) == ePos.x) && ((e->ePos.y - 0.5f) == ePos.y))
+							|| (((ePos.x == map->pStart.x) && (ePos.y == map->pStart.y)))) {
+							entityFound = 1;
+							break;
+						}
+					}
+				}
+
+				if(!entityFound) {
+					//Determine the type of entity
+					eType = (rand() % 10);
+					
+					if(eType < 5) {
+						addEntityToMap(map, initEntity(E_ITEM, (ePos.x + 0.5f), (ePos.y + 0.5f), 0.5, I_GOLD));
+					}
+
+					else {
+						addEntityToMap(map, initEntity(E_ENEMY, (ePos.x + 0.5f), (ePos.y + 0.5f), 0.7, E_SKELETON));
+					}
+					makingEntity = 0;
+				}
+			}	
+		}
+	}
 }

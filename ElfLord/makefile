@@ -14,6 +14,7 @@ clean-assets:
 	del BUILD\ASSET\DOORS\*.*
 	del BUILD\ASSET\FLOORS\*.*
 	del BuILD\ASSET\WALLS\*.*
+	del BuILD\ASSET\ENEM\*.*
 	del BUILD\ASSET\MAPS\*.*
 	del BUILD\ASSET\*.*
 	rmdir BUILD\MAPS
@@ -22,6 +23,7 @@ clean-assets:
 	rmdir BUILD\ASSET\DOORS
 	rmdir BUILD\ASSET\FLOORS
 	rmdir BUILD\ASSET\WALLS
+	rmdir BUILD\ASSET\ENEM
 	rmdir BUILD\ASSET\ITEM
 	rmdir BUILD\ASSET
 
@@ -50,6 +52,7 @@ assets: clean-assets
 	mkdir BUILD\ASSET\DOORS
 	mkdir BUILD\ASSET\FLOORS
 	mkdir BUILD\ASSET\WALLS
+	mkdir BUILD\ASSET\ENEM
 	mkdir BUILD\ASSET\ITEM
 	copy ASSET\*.* BUILD\ASSET
 	copy ASSET\MAPS\*.* BUILD\ASSET\MAPS
@@ -59,6 +62,7 @@ assets: clean-assets
 	copy ASSET\FLOORS\*.* BUILD\ASSET\FLOORS
 	copy ASSET\WALLS\*.* BUILD\ASSET\WALLS
 	copy ASSET\ITEM\*.* BUILD\ASSET\ITEM
+	copy ASSET\ENEM\*.* BUILD\ASSET\ENEM
 
 BUILD\TESTM.EXE: $(TOBJECTS) assets
 	$(CC) -o BUILD\TESTM.EXE $(TOBJECTS) $(LIBS)

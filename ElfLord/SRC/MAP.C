@@ -158,3 +158,10 @@ Entity* checkPlayerProximity(Map* m, Player* p) {
 
 	return NULL;
 }
+
+/**
+ * Function to check what the player is looking at.
+ */
+MapCell* checkPlayerLookingAt(Map* m, Player* p) {
+	
+}

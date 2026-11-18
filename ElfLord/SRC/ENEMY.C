@@ -5,9 +5,8 @@
  */
 #include "HEADER/ENEMY.H"
 #include "HEADER/STATS.H"
+#include "HEADER/MAPLO.H"
 #include <stdlib.h>
-#include <string.h>
-#include <time.h>
 #include <math.h>
 
 /**
@@ -18,9 +17,7 @@ Enemy* initEnemy(char* name) {
 	Enemy* e = malloc(sizeof *e);
 
 	//Set initial enemy values
-	strcpy(e->name, name);
-
-	srand(time(NULL));
+	e->name = dupStr(name);
 
 	calculateEnemyStats(e);	
 
@@ -31,6 +28,7 @@ Enemy* initEnemy(char* name) {
  * Function to destroy the enemy.
  */
 void destroyEnemy(Enemy* e) {
+	free(e->name);
 	free(e);
 }
 
