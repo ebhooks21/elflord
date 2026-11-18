@@ -192,6 +192,13 @@ void handleCloseConfirmationScreenKeyInput(Game* g, GrKeyType key) {
 }
 
 /**
+ * Function to handle success screen input.
+ */
+void handleSuccessScreenKeyInput(Game* g, GrKeyType key) {
+
+}
+
+/**
  * Function to handle keypresses.
  */
 void processKeyInput(Game* g) {
@@ -219,6 +226,10 @@ void processKeyInput(Game* g) {
 
 			case EXIT_PROMPT:
 				handleCloseConfirmationScreenKeyInput(g, key);
+				break;
+
+			case SUCCESS_SCREEN:
+				handleSuccessScreenKeyInput(g, key);
 				break;
 
 			default:
