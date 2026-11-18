@@ -227,8 +227,26 @@
 
 			else {
 				//Check to see what is in front of the character
+				mc = checkPlayerLookingAt(g->currMap, g->p);
 
-				renderCrosshair(m, g, s);
+				if(mc != NULL) {
+					switch(mc->cType) {
+						case M_CELL_DOOR:
+							renderInteraction(m, g, s, "Open Door");
+							break;
+
+						case M_CELL_GATE:
+							renderInteraction(m, g, s, "Open Gate");
+							break;
+
+						default:
+							renderCrosshair(m, g, s);
+					}
+				}
+
+				else {
+					renderCrosshair(m, g, s);
+				}
 			}
 			break;
 	}
@@ -305,4 +323,17 @@
 
 	renderScreenText("E", x, (y - 9), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 	renderScreenText(text, x, y, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+ }
+
+ /**
+  * Function to render the interaction cursor.
+  */
+ void renderInteraction(Mouse* m, Game* g, Screen* s, char* msg) {
+	//Get cursor location
+	int x = (s->width / 2);
+	int y = (s->height / 2);
+
+
+	renderScreenText("E", x, (y - 9), GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText(msg, x, y, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
  }
