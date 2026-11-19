@@ -216,6 +216,7 @@ void addRandomEntities(Map* map) {
 						eType = (rand() % 10);
 						
 						if(eType < 5) {
+							map->numGold++;
 							addEntityToMap(map, initEntity(E_ITEM, (ePos.x + 0.5f), (ePos.y + 0.5f), 0.5, I_GOLD));
 						}
 

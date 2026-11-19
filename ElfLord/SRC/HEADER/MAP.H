@@ -47,6 +47,9 @@
 
 	//Variable for the TextureProvider
 	TextureProvider* texP;
+
+    //Temporary variable for tracking the gold to collect
+	int numGold;
  } Map;
 
  /**
