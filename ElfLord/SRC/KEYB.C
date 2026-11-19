@@ -107,6 +107,9 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 						//Get the item
 						item = e->ent.item;
 
+						//Temporarily track the bags of gold
+						(g->currMap)->numGold--;
+
 						//Give item to the player
 						givePlayerItem(g->p, g, item);
 
@@ -126,8 +129,10 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 				if(mc != NULL) {
 					switch(mc->cType) {
 						case M_CELL_DOOR:
-							//The player is leaving the dungeon
-							g->state = SUCCESS_SCREEN_INIT;
+							if((g->currMap)->numGold <= 0) {
+								//The player is leaving the dungeon
+								g->state = SUCCESS_SCREEN_INIT;
+							}
 							break;
 
 						default:
@@ -195,7 +200,8 @@ void handleCloseConfirmationScreenKeyInput(Game* g, GrKeyType key) {
  * Function to handle success screen input.
  */
 void handleSuccessScreenKeyInput(Game* g, GrKeyType key) {
-
+	//Go immediately to exit
+	g->state = EXIT_GAME;
 }
 
 /**

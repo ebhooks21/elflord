@@ -49,6 +49,7 @@
 	}
 
 	m->numEntites = 0;
+	m->numGold = 0;
 
 	return m;
  }
