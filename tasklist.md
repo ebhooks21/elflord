@@ -5,12 +5,12 @@
 - Map entities -- Done
 - Melee Combat
 - Information panel -- Done
-- Inventory
-- Equipment
-- Map building
+- Inventory -- N/A
+- Equipment -- N/A
+- Map building -- N/A
 - Help Screen
 - Exit Confirmation -- Done
-- Save Game
-- Load Game
-- Temporary Win Screen
+- Save Game -- N/A
+- Load Game -- N/A
+- Temporary Win Screen -- Done
 - Death Screen
