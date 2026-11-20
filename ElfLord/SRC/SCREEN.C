@@ -14,6 +14,7 @@
 #include "HEADER/VEC2.H"
 #include "HEADER/CCSCR.H"
 #include "HEADER/SUCESSSR.H"
+#include "HEADER/HELPSCR.H"
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
@@ -151,6 +152,10 @@ void render(Screen* s, Game* g) {
 
         case SUCCESS_SCREEN:
             renderSuccessScreen((SuccessScreen*)s->currScreen, s, g);
+            break;
+
+        case HELP_SCREEN:
+            renderHelpScreen((HelpScreen*)s->currScreen, s, g);
             break;
 
         default:

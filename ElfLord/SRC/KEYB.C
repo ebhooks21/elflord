@@ -92,6 +92,11 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 			rotatePlayer(g->p, (g->p)->rotSpeed);
 			break;
 
+		case GrKey_F1:
+			//Help screen
+			g->state = HELP_SCREEN_INIT;
+			break;
+
 		case 'c':
 			//Need to swap to the character screen
 			g->state = CHARACTER_SCREEN_INIT;

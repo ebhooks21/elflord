@@ -170,6 +170,14 @@ Screen* createGameScreen(int width, int height) {
 			g->state = SUCCESS_SCREEN;
 			break;
 
+		case HELP_SCREEN_INIT:
+			//Save the current screen
+			saveCurrScreen(s);
+			s->currScreen = initHelpScreen(s);
+
+			g->state = HELP_SCREEN;
+			break;
+
         default:
             break;
     }
