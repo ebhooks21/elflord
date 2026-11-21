@@ -6,7 +6,9 @@
 #include "HEADER/ENEMY.H"
 #include "HEADER/STATS.H"
 #include "HEADER/MAPLO.H"
+#include "HEADER/PLAYER.H"
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 /**
@@ -115,4 +117,48 @@ void calculateEnemyStats(Enemy* e) {
 	}
 
 	e->currMP = e->maxMP;
+}
+
+/**
+ * Function to melee attack the player.
+ */
+void meleeAttackPlayer(Enemy* e, Game* g, Player* p) {
+	int hChance = (rand() % 10) + 1;
+	int dmg = 0;
+	char msg[30];
+
+	if(hChance < 5) {
+		//Miss
+		sprintf(msg, "%s missed you.", e->name);
+		addMessage(&g->msgA, msg);	
+	}
+
+	else {
+		//Hit
+		dmg = calculateEnemyMeleeHitDamage(e, p);
+		p->currHP -= dmg;
+
+		sprintf(msg, "You take %d damage.", dmg);
+		addMessage(&g->msgA, msg);
+
+		//Check to see if the player died
+		if(p->currHP <= 0) {
+			//Player died
+			//e->active = 0;
+		}
+	}
+}
+
+/**
+ * Function to calculate enemy melee hit damage.
+ */
+int calculateEnemyMeleeHitDamage(Enemy* e, Player* p) {
+	int dmg = 0;
+
+	//Take into account enemy armor, resistences, etc.
+
+	dmg += (rand() % 2) + 1;
+	dmg *= e->stat.str;
+
+	return dmg;
 }

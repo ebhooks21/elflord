@@ -39,6 +39,9 @@ void startGame(Game* g) {
 	//Set the number of messages to 0
 	g->msgA.numMsgs = 0;
 
+	//Set the number of ticks to 0
+	g->numTicks = 0;
+
 	//Create a seed for random numbers
 	srand(time(NULL));
 
@@ -89,6 +92,8 @@ Screen* createGameScreen(int width, int height) {
  * Function to define functionality that happens each time the game loop processes.
  */
  void tick(Screen* s, Game* g) {
+	g->numTicks++;
+
 	//Check the state and do any functionality that should be applied per that state
 	switch(g->state) {
         case GAME_START_NEW:
@@ -188,6 +193,15 @@ Screen* createGameScreen(int width, int height) {
 
 			//Set the gameplay state
 			g->state = GAMEPLAY;
+			break;
+
+		case GAMEPLAY:
+			if(g->numTicks >= 50) {
+				//Perform entity actions
+				performEntityActions(g->currMap, g, g->p);
+
+				g->numTicks = 0;
+			}
 			break;
 
         default:

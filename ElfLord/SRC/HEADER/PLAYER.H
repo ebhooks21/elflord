@@ -15,7 +15,7 @@
 #define PLAYER_H
 
 //Define the player structure
-typedef struct {
+typedef struct player_t {
 	//Variable for the player's name
 	char* name;
 

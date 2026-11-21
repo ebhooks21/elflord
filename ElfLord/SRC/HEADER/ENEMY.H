@@ -8,6 +8,7 @@
 
 //Forward delcare the Game structure
 typedef struct game_t Game;
+typedef struct player_t Player;
 
 #ifndef ENEMY_H
 #define ENEMY_H
@@ -63,5 +64,15 @@ void rotateEnemy(Enemy* e, double amount);
  * Function to calculate the enemy stats.
  */
 void calculateEnemyStats(Enemy* e);
+
+/**
+ * Function to melee attack the player.
+ */
+void meleeAttackPlayer(Enemy* e, Game* g, Player* p);
+
+/**
+ * Function to calculate enemy melee hit damage.
+ */
+int calculateEnemyMeleeHitDamage(Enemy* e, Player* p);
 
 #endif
