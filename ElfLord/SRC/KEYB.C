@@ -18,6 +18,7 @@
  #include "HEADER/ENTITY.H"
  #include "HEADER/ENEMY.H"
  #include "HEADER/ITEM.H"
+ #include "HEADER/HELPSCR.H"
  #include <GRXKEYS.H>
  #include <stdlib.h>
  
@@ -90,6 +91,11 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 		case 'd':
 		case 'D':
 			rotatePlayer(g->p, (g->p)->rotSpeed);
+			break;
+
+		case GrKey_F1:
+			//Help screen
+			g->state = HELP_SCREEN_INIT;
 			break;
 
 		case 'c':
@@ -205,6 +211,20 @@ void handleSuccessScreenKeyInput(Game* g, GrKeyType key) {
 }
 
 /**
+ * Function to handle help screen input.
+ */
+void handleHelpScreenKeyInput(Game* g, GrKeyType key) {
+	HelpScreen* cs = (HelpScreen*)(g->screen)->currScreen;
+
+	switch(key) {
+		case GrKey_Escape:
+			//Restore the gameplay screen
+			g->state = HELP_SCREEN_CLOSE;
+			break;
+	}
+}
+
+/**
  * Function to handle keypresses.
  */
 void processKeyInput(Game* g) {
@@ -236,6 +256,10 @@ void processKeyInput(Game* g) {
 
 			case SUCCESS_SCREEN:
 				handleSuccessScreenKeyInput(g, key);
+				break;
+
+			case HELP_SCREEN:
+				handleHelpScreenKeyInput(g, key);
 				break;
 
 			default:

@@ -17,6 +17,7 @@
 #include "HEADER/CCSCR.H"
 #include "HEADER/MSGA.H"
 #include "HEADER/SUCESSSR.H"
+#include "HEADER/HELPSCR.H"
 #include <time.h>
 #include <stdlib.h>
 
@@ -168,6 +169,25 @@ Screen* createGameScreen(int width, int height) {
 			s->currScreen = initSuccessScreen(s);
 
 			g->state = SUCCESS_SCREEN;
+			break;
+
+		case HELP_SCREEN_INIT:
+			//Save the current screen
+			saveCurrScreen(s);
+			s->currScreen = initHelpScreen(s);
+
+			g->state = HELP_SCREEN;
+			break;
+
+		case HELP_SCREEN_CLOSE:
+			//Destroy the help screen
+			destroyHelpScreen(s->currScreen);
+
+			//Restore the gameplay screen
+			restorePrevScreen(s);
+
+			//Set the gameplay state
+			g->state = GAMEPLAY;
 			break;
 
         default:

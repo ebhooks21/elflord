@@ -48,6 +48,11 @@ void handleCloseConfirmationScreenKeyInput(Game* g, GrKeyType key);
 void handleSuccessScreenKeyInput(Game* g, GrKeyType key);
 
 /**
+ * Function to handle help screen input.
+ */
+void handleHelpScreenKeyInput(Game* g, GrKeyType key);
+
+/**
  * Function to handle keypresses.
  */
 void processKeyInput(Game* g);
