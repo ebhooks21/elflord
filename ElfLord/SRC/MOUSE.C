@@ -15,6 +15,7 @@
  #include "HEADER/ENTITY.H"
  #include "HEADER/MCELL.H"
  #include "HEADER/MCELLTYP.H"
+ #include "HEADER/PLAYER.H"
  #include <GRX20.H>
  #include <stdlib.h>
  #include <stdio.h>
@@ -137,7 +138,7 @@
 					e = checkPlayerProximity(g->currMap, g->p);
 
 					if(e != NULL) {
-
+						meleeAttackEnemy(g->p, g, e);	
 					}
 					break;
 			}

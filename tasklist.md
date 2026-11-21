@@ -8,7 +8,7 @@
 - Inventory -- N/A
 - Equipment -- N/A
 - Map building -- N/A
-- Help Screen
+- Help Screen -- Done
 - Exit Confirmation -- Done
 - Save Game -- N/A
 - Load Game -- N/A

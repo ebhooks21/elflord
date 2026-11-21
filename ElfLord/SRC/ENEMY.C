@@ -100,10 +100,10 @@ void calculateEnemyStats(Enemy* e) {
 	(e->stat).nextExp = (int)floor(50 + (e->level * 0.10f));
 	(e->stat).totalExp = 0;
 
-	e->maxHP = 30 + (4 * (e->stat).con) + (5 * (e->level - 1));
+	e->maxHP = 10 + (4 * (e->stat).con) + (5 * (e->level - 1));
 
-	if(e->maxHP < 50) {
-		e->maxHP = 50;
+	if(e->maxHP < 30) {
+		e->maxHP = 30;
 	}
 
 	e->currHP = e->maxHP;
