@@ -9,6 +9,7 @@
 #include "STATS.H"
 #include "VEC2F.H"
 #include "ITEM.H"
+#include "ENTITY.H"
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -87,5 +88,15 @@ void calculatePlayerStats(Player* p);
  * Function to give a player an item.
  */
 void givePlayerItem(Player* p, Game* g, Item* item);
+
+/**
+ * Function to melee attack an enemy.
+ */
+void meleeAttackEnemy(Player* p, Game* g, Entity* e);
+
+/**
+ * Function to calculate player melee hit damage.
+ */
+int calculatePlayerMeleeHitDamage(Player* p, Entity* e);
 
 #endif

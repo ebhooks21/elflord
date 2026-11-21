@@ -675,9 +675,6 @@ void renderHudArea(Screen* s, Game* g) {
 	char goldText[20];
 	int fullBarWidth = 100;
 
-	//p->currHP = 20;
-	p->currMP = 10;
-
 	//Setup the health, mana, and gold text
 	sprintf(healthText, "%d/%d", p->currHP, p->maxHP);
 	sprintf(manaText, "%d/%d", p->currMP, p->maxMP);

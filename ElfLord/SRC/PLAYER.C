@@ -10,6 +10,8 @@
 #include "HEADER/VEC2F.H"
 #include "HEADER/MSGA.H"
 #include "HEADER/MCELLTYP.H"
+#include "HEADER/ENEMY.H"
+#include "HEADER/ENTITY.H"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -33,8 +35,6 @@ Player* initPlayer() {
 	p->moveSpeed = .15f;
 	p->rotSpeed = .1f;
 	p->fov = M_PI / 3;	
-
-	srand(time(NULL));
 
 	calculatePlayerStats(p);	
 
@@ -158,4 +158,49 @@ void givePlayerItem(Player* p, Game* g, Item* item) {
 		sprintf(status, "You got %d gold.", item->price);
 		addMessage(&g->msgA, status);
 	}
+}
+
+/**
+ * Function to melee attack an enemy.
+ */
+void meleeAttackEnemy(Player* p, Game* g, Entity* e) {
+	int hChance = (rand() % 10) + 1;
+	int dmg = 0;
+	char msg[30];
+
+	if(hChance < 5) {
+		//Miss
+		sprintf(msg, "You missed %s.", (e->ent.enemy)->name);
+		addMessage(&g->msgA, msg);	
+	}
+
+	else {
+		//Hit
+		dmg = calculatePlayerMeleeHitDamage(p, e);
+		(e->ent.enemy)->currHP -= dmg;
+
+		sprintf(msg, "You hit for %d damage.", dmg);
+		addMessage(&g->msgA, msg);
+
+		//Check to see if the enemy died
+		if((e->ent.enemy)->currHP <= 0) {
+			//Entity died
+			e->active = 0;
+		}
+	}
+}
+
+/**
+ * Function to calculate player melee hit damage.
+ */
+int calculatePlayerMeleeHitDamage(Player* p, Entity* e) {
+	Enemy* em = e->ent.enemy;
+	int dmg = 0;
+
+	//Take into account enemy armor, resistences, etc.
+
+	dmg += (rand() % 5) + 1;
+	dmg *= p->stat.str;
+
+	return dmg;
 }
