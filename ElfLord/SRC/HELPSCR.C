@@ -45,20 +45,22 @@ void renderHelpScreen(HelpScreen* ss, Screen* s, Game* g) {
     GrBitBlt(s->frame, 0, 0, ss->background, 0, 0, (s->width - 1), (s->height - 1), GrWRITE);
 
     //Write the text to the screen
-	if(ss->page == 1) {
-		renderScreenText("CONGRATULATIONS!", (s->width / 2), 10, GR_ALIGN_CENTER, redColor, GrNOCOLOR, &GrFont_PC8x14);
-		renderScreenText("You found the gold and cleared the dungeon!", (s->width /2), 30, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-		renderScreenText("This game was a demo, and is therefore incomplete.", 7, 50, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-		renderScreenText("I hope you enjoyed playing it as much as", (s->width / 2), 70, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-		renderScreenText("I enjoyed making it.", (s->width / 2), 90, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-		renderScreenText("If you did, please let me know. I hope to finish it", 7, 110, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-		renderScreenText("and have a full release of the game at some point.", 7, 130, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-		renderScreenText("Thanks for Playing!", (s->width / 2), 150, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
-	}
-	
-	if(((s->rCount / 120) % 2) == 0) {
-			renderScreenText("PRESS ANY KEY TO CONTINUE...", ((int)(s->width / 2) + 6), 180, GR_ALIGN_CENTER, s->red, GrNOCOLOR, &GrFont_PC8x14);
-	}
+	renderScreenText("HELP", (s->width / 2), 10, GR_ALIGN_CENTER, redColor, GrNOCOLOR, &GrFont_PC8x14);
+	renderScreenText("Legend", (s->width /2), 30, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("F1 -- Display Help", 7, 39, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("C -- Display Character Sheet", 7, 48, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("E -- Interact", 7, 56, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("Left Mouse Button -- Attack", 7, 64, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("W/Up Arrow -- Move Forward", 7, 72, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("S/Down Arrow -- Move Backward", 7, 80, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("A/Mouse -- Look Left", 7, 88, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("D/Mouse -- Look Right", 7, 96, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("ESC -- Exit to DOS", 7, 104, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+
+	renderScreenText("How to Play", (s->width / 2), 116, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("Collect all bags of gold and make it back to", (s->width / 2), 128, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("the door.", (s->width / 2), 136, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText("Dont Die!", (s->width / 2), 156, GR_ALIGN_CENTER, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
 }
 
 /**
