@@ -184,3 +184,32 @@ MapCell* checkPlayerLookingAt(Map* m, Player* p) {
 
 	return NULL;
 }
+
+/**
+ * Function to perform entity actions.
+ */
+void performEntityActions(Map* m, Game* g, Player* p) {
+	Entity* currEntity = NULL;
+	int canAct = 0;
+
+	//Loop through the entities and check if any can perform actions
+	for(int i = 0; i < m->numEntites; i++) {
+		if(m->entities[i]->active) {
+			currEntity = m->entities[i];
+
+			switch(currEntity->type) {
+				case E_ENEMY:
+					//Check to see if the player is near the enemy
+					canAct = checkEnemyPlayerProximity(currEntity, p);
+
+					if(canAct) {
+						meleeAttackPlayer(currEntity->ent.enemy, g, p);
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+}

@@ -28,6 +28,9 @@ typedef struct game_t {
 
 	//Variable for the message area
 	MessageArea msgA;
+
+	//Variable to track the number of ticks
+	int numTicks;
 } Game;
 
 /**

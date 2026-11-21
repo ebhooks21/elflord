@@ -97,4 +97,9 @@ Entity* checkPlayerProximity(Map* m, Player* p);
  */
 MapCell* checkPlayerLookingAt(Map* m, Player* p);
 
+/**
+ * Function to perform entity actions.
+ */
+void performEntityActions(Map* m, Game* g, Player* p);
+
  #endif

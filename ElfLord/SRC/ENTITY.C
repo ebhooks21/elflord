@@ -10,6 +10,7 @@
 #include "HEADER/ESPRITET.H"
 #include "HEADER/PLAYER.H"
 #include <stdlib.h>
+#include <math.h>
 
 /**
  * Function to initialize the entity.

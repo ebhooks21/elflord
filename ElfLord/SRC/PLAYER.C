@@ -184,6 +184,8 @@ void meleeAttackEnemy(Player* p, Game* g, Entity* e) {
 
 		//Check to see if the enemy died
 		if((e->ent.enemy)->currHP <= 0) {
+			p->currHP = p->maxHP;
+
 			//Entity died
 			e->active = 0;
 		}
