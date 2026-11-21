@@ -8,6 +8,7 @@
 
 //Forward delcare the Game structure
 typedef struct game_t Game;
+typedef struct player_t Player;
 
 #ifndef ENEMY_H
 #define ENEMY_H

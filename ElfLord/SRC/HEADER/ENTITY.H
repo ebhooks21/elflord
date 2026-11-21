@@ -10,6 +10,8 @@
 #include "ESPRITET.H"
 #include "VEC2F.H"
 
+struct Player;
+
 #ifndef ENTITY_H
 #define ENTITY_H
 
@@ -53,5 +55,10 @@ void buildEntity(Entity* e);
  * Function to destroy the entity.
  */
 void destroyEntity(Entity* e);
+
+/**
+ * Function to check entity/player proximity.
+ */
+int checkEnemyPlayerProximity(Entity* ent, Player* p);
 
 #endif

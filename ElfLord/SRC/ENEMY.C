@@ -8,6 +8,7 @@
 #include "HEADER/MAPLO.H"
 #include "HEADER/PLAYER.H"
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 /**

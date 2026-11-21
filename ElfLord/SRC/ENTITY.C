@@ -8,6 +8,7 @@
 #include "HEADER/ENEMY.H"
 #include "HEADER/ENTTYP.H"
 #include "HEADER/ESPRITET.H"
+#include "HEADER/PLAYER.H"
 #include <stdlib.h>
 
 /**
@@ -73,4 +74,22 @@ void destroyEntity(Entity* e) {
 	}
 
 	free(e);
+}
+
+/**
+ * Function to check entity/player proximity.
+ */
+int checkEnemyPlayerProximity(Entity* ent, Player* p) {
+	Vec2f distance;
+	int radius = 1;
+
+	//Check proximity to the player
+	distance.x = fabsf((ent->ePos).x - p->pPos.x);
+	distance.y = fabsf((ent->ePos).y - p->pPos.y); 
+
+	if((distance.x * distance.x + distance.y * distance.y) <= (radius * radius)) {
+		return 1;
+	}
+
+	return 0;
 }
