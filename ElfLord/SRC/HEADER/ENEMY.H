@@ -64,4 +64,14 @@ void rotateEnemy(Enemy* e, double amount);
  */
 void calculateEnemyStats(Enemy* e);
 
+/**
+ * Function to melee attack the player.
+ */
+void meleeAttackPlayer(Enemy* e, Game* g, Player* p);
+
+/**
+ * Function to calculate enemy melee hit damage.
+ */
+int calculateEnemyMeleeHitDamage(Enemy* e, Player* p);
+
 #endif
