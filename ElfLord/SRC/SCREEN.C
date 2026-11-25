@@ -159,6 +159,10 @@ void render(Screen* s, Game* g) {
             renderHelpScreen((HelpScreen*)s->currScreen, s, g);
             break;
 
+        case DEATH_SCREEN:
+            renderDeathScreen((DeathScreen*)s->currScreen, s, g);
+            break;
+
         default:
             GrClearScreen(GrBlack());
             break;

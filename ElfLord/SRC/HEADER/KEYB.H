@@ -53,6 +53,11 @@ void handleSuccessScreenKeyInput(Game* g, GrKeyType key);
 void handleHelpScreenKeyInput(Game* g, GrKeyType key);
 
 /**
+ * Function to handle death screen input.
+ */
+void handleDeathScreenKeyInput(Game* g, GrKeyType key);
+
+/**
  * Function to handle keypresses.
  */
 void processKeyInput(Game* g);
