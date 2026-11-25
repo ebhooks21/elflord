@@ -14,5 +14,5 @@
 - Load Game -- N/A
 - Temporary Win Screen -- Done
 - Death Screen -- Done
-- Enemy Health Drops
-- Health Icon
+- Enemy Health Drops -- Done
+- Health Icon -- Done

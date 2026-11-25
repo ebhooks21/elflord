@@ -38,52 +38,14 @@ void destroyEnemy(Enemy* e) {
  * Function to move the enemy.
  */
 void moveEnemy(Game* g, float mAmnt) {
-	/*Enemy* p = g->p;
-
-	//Variable for the area the enemy is walking to
-	MapCell* mcX;
-	MapCell* mcY;
-	char status[30];
-
-	//Calculate the enemy's movement
-	float nextX = p->xLoc + (float)(cos(p->angle) * mAmnt);
-	float nextY = p->yLoc + (float)(sin(p->angle) * mAmnt);
-
-	mcX = getMapCell(g->currMap, nextX, p->yLoc);
-	if(mcX->cType == M_CELL_EMPTY) {
-		p->xLoc = nextX;
-	}
-
-	mcY = getMapCell(g->currMap, p->xLoc, nextY);
-	if(mcY->cType == M_CELL_EMPTY) {
-		p->yLoc = nextY;
-	}
-
-	//We didn't move
-	if(mcX->cType != M_CELL_EMPTY) {
-		sprintf(status, "You hit a %s.", mcX->mapCellName);
-		addMessage(&g->msgA, status);
-	}
-
-	else if(mcY->cType != M_CELL_EMPTY) {
-		sprintf(status, "You hit a %s.", mcY->mapCellName);
-		addMessage(&g->msgA, status);
-	}*/
+	
 }
 
 /**
  * Function to rotate the enemy.
  */
 void rotateEnemy(Enemy* e, double amount) {
-	/*p->angle += amount;
-
-	if(p->angle < 0.0) {
-		p->angle += M_PI * 2.0;
-	}
-
-	else if(p->angle >= M_PI * 2.0) {
-		p->angle -= M_PI * 2.0;
-	}*/
+	
 }
 
 /**

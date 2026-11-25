@@ -12,7 +12,8 @@
 
 typedef enum {
 	E_SKELETON,
-	I_GOLD
+	I_GOLD,
+	I_HEALTH
 } EntitySpriteType;
 
 /**

@@ -54,6 +54,12 @@ typedef struct {
 	//Variable for the hud background
 	GameImage* hudBackground;
 
+	//Variable for the heart icon
+	GameImage* heartIcon;
+
+	//Variable for the magic icon
+	GameImage* magicIcon;
+
 	//Variable for the frame buffer
 	GrColor* frameBuffer;
 
