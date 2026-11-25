@@ -13,4 +13,6 @@
 - Save Game -- N/A
 - Load Game -- N/A
 - Temporary Win Screen -- Done
-- Death Screen
+- Death Screen -- Done
+- Enemy Health Drops
+- Health Icon
