@@ -80,7 +80,11 @@ void loadEntitySpriteTextures(TextureProvider* tp, Map* m) {
 	tp->entitySprites[I_GOLD] = createGameTexture("ASSET\\ITEM\\GOLD.PPM", 1, tColor);
 	loadGameTexture(tp->entitySprites[I_GOLD]);
 
-	//Load teh skeleton sprite for now
+	//Load the skeleton sprite for now
 	tp->entitySprites[E_SKELETON] = createGameTexture("ASSET\\ENEM\\SKEL.PPM", 1, tColor);
 	loadGameTexture(tp->entitySprites[E_SKELETON]);
+
+	//Load the health sprite for now
+	tp->entitySprites[I_HEALTH] = createGameTexture("ASSET\\ITEM\\HEART.PPM", 1, tColor);
+	loadGameTexture(tp->entitySprites[I_HEALTH]);
 }

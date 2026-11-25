@@ -12,6 +12,7 @@
 #include "HEADER/MCELLTYP.H"
 #include "HEADER/ENEMY.H"
 #include "HEADER/ENTITY.H"
+#include "HEADER/ITEM.H"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -184,10 +185,18 @@ void meleeAttackEnemy(Player* p, Game* g, Entity* e) {
 
 		//Check to see if the enemy died
 		if((e->ent.enemy)->currHP <= 0) {
-			p->currHP = p->maxHP;
-
 			//Entity died
 			e->active = 0;
+
+			//Swap out for health
+			if(((rand() % 10) + 1) >= 7) {
+				e->ent.enemy = NULL;
+				e->ent.item = initItem();
+				(e->ent.item)->name = "Health";
+				e->spriteType = I_HEALTH;
+				e->type = E_ITEM;
+				e->active = 1;
+			}
 		}
 	}
 }

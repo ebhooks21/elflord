@@ -110,17 +110,35 @@ void handleGameplayScreenKeyInput(Game* g, GrKeyType key) {
 			if(e != NULL) {
 				switch(e->type) {
 					case E_ITEM:
-						//Get the item
-						item = e->ent.item;
+						//Check the item type by sprite type(only for now)
+						switch(e->spriteType) {
+							case I_GOLD:
+								//Get the item
+								item = e->ent.item;
 
-						//Temporarily track the bags of gold
-						(g->currMap)->numGold--;
+								//Temporarily track the bags of gold
+								(g->currMap)->numGold--;
 
-						//Give item to the player
-						givePlayerItem(g->p, g, item);
+								//Give item to the player
+								givePlayerItem(g->p, g, item);
 
-						//Mark the entity as inactive
-						e->active = 0;
+								//Mark the entity as inactive
+								e->active = 0;
+								break;
+
+							case I_HEALTH:
+								(g->p)->currHP += 30;
+
+								if((g->p)->currHP > (g->p)->maxHP) {
+									(g->p)->currHP = (g->p)->maxHP;
+								}
+
+								e->active = 0;
+								break;
+
+							default:
+								break;
+						}
 						break;
 
 					default:
