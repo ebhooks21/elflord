@@ -18,6 +18,7 @@
 #include "HEADER/MSGA.H"
 #include "HEADER/SUCESSSR.H"
 #include "HEADER/HELPSCR.H"
+#include "HEADER/DSCREEN.H"
 #include <time.h>
 #include <stdlib.h>
 
@@ -193,6 +194,14 @@ Screen* createGameScreen(int width, int height) {
 
 			//Set the gameplay state
 			g->state = GAMEPLAY;
+			break;
+
+		case DEATH_SCREEN_INIT:
+			//Save the current screen
+			saveCurrScreen(s);
+			s->currScreen = initDeathScreen(s);
+
+			g->state = DEATH_SCREEN;
 			break;
 
 		case GAMEPLAY:

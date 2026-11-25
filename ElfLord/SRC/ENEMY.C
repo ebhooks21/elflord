@@ -144,7 +144,7 @@ void meleeAttackPlayer(Enemy* e, Game* g, Player* p) {
 		//Check to see if the player died
 		if(p->currHP <= 0) {
 			//Player died
-			//e->active = 0;
+			g->state = DEATH_SCREEN_INIT;
 		}
 	}
 }

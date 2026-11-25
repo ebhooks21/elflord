@@ -214,12 +214,22 @@ void handleSuccessScreenKeyInput(Game* g, GrKeyType key) {
  * Function to handle help screen input.
  */
 void handleHelpScreenKeyInput(Game* g, GrKeyType key) {
-	HelpScreen* cs = (HelpScreen*)(g->screen)->currScreen;
-
 	switch(key) {
 		case GrKey_Escape:
 			//Restore the gameplay screen
 			g->state = HELP_SCREEN_CLOSE;
+			break;
+	}
+}
+
+/**
+ * Function to handle death screen input.
+ */
+void handleDeathScreenKeyInput(Game* g, GrKeyType key) {
+	switch(key) {
+		default:
+			//Exit the game
+			g->state = EXIT_GAME;
 			break;
 	}
 }
@@ -260,6 +270,10 @@ void processKeyInput(Game* g) {
 
 			case HELP_SCREEN:
 				handleHelpScreenKeyInput(g, key);
+				break;
+
+			case DEATH_SCREEN:
+				handleDeathScreenKeyInput(g, key);
 				break;
 
 			default:
