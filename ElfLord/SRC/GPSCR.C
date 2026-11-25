@@ -45,6 +45,14 @@ GamePlayScreen* initGPScr(Screen* s, Map* map) {
 	gps->hudBackground = createGameImage("ASSET\\hud.ppm", 0, 0);
 	loadGameImage(gps->hudBackground);	
 
+	//Load the heart icon
+	gps->heartIcon = createGameImage("ASSET\\HEARTICO.PPM", 1, GrAllocColor(255, 0, 255));
+	loadGameImage(gps->heartIcon);
+
+	//Load the magic icon
+	gps->magicIcon = createGameImage("ASSET\\MAGICICO.PPM", 1, GrAllocColor(255, 0, 255));
+	loadGameImage(gps->magicIcon);
+
 	//Create the framebuffer
 	gps->frameBuffer = malloc(sizeof(GrColor) * gps->gAreaWidth * gps->gAreaHeight);
 
@@ -60,6 +68,7 @@ GamePlayScreen* initGPScr(Screen* s, Map* map) {
 void destoryGPScr(GamePlayScreen* g) {
 	//Destroy the textures
 	destroyGameImage(g->hudBackground);	
+	destroyGameImage(g->heartIcon);
 
 	//Free the framebuffer
 	free(g->frameBuffer);
@@ -673,7 +682,7 @@ void renderHudArea(Screen* s, Game* g) {
 	char healthText[20];
 	char manaText[20];
 	char goldText[20];
-	int fullBarWidth = 100;
+	int fullBarWidth = 95;
 
 	//Setup the health, mana, and gold text
 	sprintf(healthText, "%d/%d", p->currHP, p->maxHP);
@@ -686,26 +695,32 @@ void renderHudArea(Screen* s, Game* g) {
 	//Write the player information to the HUD
 	renderScreenText(p->name, 4, gps->gAreaHeight + 4, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 
+	//Draw the heart icon
+	renderGameImage(gps->heartIcon, s->frame, 4, gps->gAreaHeight + 13);
+
 	//Full Health
-	GrFilledBox(4, gps->gAreaHeight + 13, fullBarWidth, gps->gAreaHeight + 19, GrAllocColor(10, 70, 10));
+	GrFilledBox(20, gps->gAreaHeight + 13, fullBarWidth, gps->gAreaHeight + 19, GrAllocColor(10, 70, 10));
 
 	//Current Health
-	GrFilledBox(4, gps->gAreaHeight + 13, ((fullBarWidth * p->currHP) / p->maxHP), gps->gAreaHeight + 19, GrAllocColor(5, 140, 5));
+	GrFilledBox(20, gps->gAreaHeight + 13, ((fullBarWidth * p->currHP) / p->maxHP), gps->gAreaHeight + 19, GrAllocColor(5, 140, 5));
 
 	//Health text
-	renderScreenText(healthText, (fullBarWidth / 2), gps->gAreaHeight + 13, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText(healthText, (fullBarWidth / 2) + 12, gps->gAreaHeight + 13, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+
+	//Draw the magic icon
+	renderGameImage(gps->magicIcon, s->frame, 4, gps->gAreaHeight + 27);
 
 	//Full Mana
-	GrFilledBox(4, gps->gAreaHeight + 21, fullBarWidth, gps->gAreaHeight + 27, GrAllocColor(10, 10, 70));
+	GrFilledBox(20, gps->gAreaHeight + 27, fullBarWidth, gps->gAreaHeight + 33, GrAllocColor(10, 10, 70));
 
 	//Current Mana
-	GrFilledBox(4, gps->gAreaHeight + 21, ((fullBarWidth * p->currMP) / p->maxMP), gps->gAreaHeight + 27, GrAllocColor(5, 5, 140));
+	GrFilledBox(20, gps->gAreaHeight + 27, ((fullBarWidth * p->currMP) / p->maxMP), gps->gAreaHeight + 33, GrAllocColor(5, 5, 140));
 
 	//Mana text
-	renderScreenText(manaText, (fullBarWidth / 2), gps->gAreaHeight + 21, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+	renderScreenText(manaText, (fullBarWidth / 2) + 12, gps->gAreaHeight + 27, GR_ALIGN_CENTER, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 
 	//Gold text
-	renderScreenText(goldText, 4, gps->gAreaHeight + 29, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
+	//renderScreenText(goldText, 4, gps->gAreaHeight + 29, GR_ALIGN_LEFT, GrWhite(), GrNOCOLOR, &GrFont_PC6x8);
 
 	//Render the message area
 	renderMessageArea(&g->msgA, s, gps);

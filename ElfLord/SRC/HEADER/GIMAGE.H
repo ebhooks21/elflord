@@ -44,4 +44,9 @@ void destroyGameImage(GameImage* i);
  */
 int loadGameImage(GameImage* i);
 
+/**
+ * Function to render the image in a given location, on a given context.
+ */
+void renderGameImage(GameImage* gi, GrContext* c, int x, int y); 
+
 #endif

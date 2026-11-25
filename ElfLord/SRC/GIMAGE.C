@@ -51,3 +51,27 @@ int loadGameImage(GameImage* i) {
 		return -1;
 	}
 }
+
+/**
+ * Function to render the image in a given location, on a given context.
+ */
+void renderGameImage(GameImage* gi, GrContext* c, int x, int y) {
+	GrColor color;
+
+	//Loop over the image pixels and draw them on the framebuffer
+	for(int i = 0; i < gi->height; i++) {
+		for(int j = 0; j < gi->width; j++) {
+			color = GrPixelC(gi->image, i, j);
+
+			if(gi->trans) { 
+				if(gi->tColor != color) {
+					GrPlot((x + i), (y + j), color);
+				}
+			}
+
+			else {
+				GrPlot((x + i), (y + j), color);
+			}
+		}
+	}
+}
