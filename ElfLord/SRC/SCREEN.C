@@ -15,6 +15,7 @@
 #include "HEADER/CCSCR.H"
 #include "HEADER/SUCESSSR.H"
 #include "HEADER/HELPSCR.H"
+#include "HEADER/DSCREEN.H"
 #include <GRX20.H>
 #include <stdio.h>
 #include <string.h>
