@@ -1,6 +1,10 @@
 CC = gcc
-OBJECTS = BUILD\ElfLord.o BUILD\Mcell.o BUILD\Entity.o BUILD\Enemy.o BUILD\Espritet.o BUILD\Texprov.o BUILD\Msga.o BUILD\Keyb.o BUILD\Inv.o BUILD\Gtex.o BUILD\Gimage.o BUILD\Player.o BUILD\Menuopt.o BUILD\Helpscr.o BUILD\Sucesssr.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Charscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Ccscr.o BUILD\Item.o
-TOBJECTS = BUILD\Testm.o BUILD\Mcell.o BUILD\Entity.o BUILD\Enemy.o BUILD\Espritet.o BUILD\Texprov.o BUILD\Msga.o BUILD\Keyb.o BUILD\Inv.o BUILD\Gtex.o BUILD\Gimage.o BUILD\Player.o BUILD\Menuopt.o BUILD\Helpscr.o BUILD\Sucesssr.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Charscr.o BUILD\Map.o BUILD\Maplo.o BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Ccscr.o BUILD\Item.o
+OBJECTS = BUILD\ElfLord.o BUILD\Mcell.o BUILD\Entity.o BUILD\Enemy.o BUILD\Espritet.o BUILD\Texprov.o BUILD\Msga.o BUILD\Keyb.o BUILD\Inv.o BUILD\Gtex.o
+BUILD\Gimage.o BUILD\Player.o BUILD\Menuopt.o BUILD\Helpscr.o BUILD\Sucesssr.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Charscr.o BUILD\Map.o BUILD\Maplo.o
+BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Ccscr.o BUILD\Item.o BUILD\Dscreen.o
+TOBJECTS = BUILD\Testm.o BUILD\Mcell.o BUILD\Entity.o BUILD\Enemy.o BUILD\Espritet.o BUILD\Texprov.o BUILD\Msga.o BUILD\Keyb.o BUILD\Inv.o
+BUILD\Gtex.o BUILD\Gimage.o BUILD\Player.o BUILD\Menuopt.o BUILD\Helpscr.o BUILD\Sucesssr.o BUILD\Stryscr.o BUILD\Titlescr.o BUILD\Charscr.o BUILD\Map.o BUILD\Maplo.o
+BUILD\Gpscr.o BUILD\Game.o BUILD\Mouse.o BUILD\Screen.o BUILD\Ccscr.o BUILD\Item.o BUILD\Dscreen.o
 LIBS = -lgrx20
 
 clean: clean-assets
@@ -99,6 +103,9 @@ BUILD\Menuopt.o: SRC\Menuopt.c
 
 BUILD\Screen.o: SRC\Screen.c
 	$(CC) -c SRC\Screen.c -o BUILD\Screen.o
+
+BUILD\Dscreen.o: SRC\Dscreen.c
+	$(CC) -c SRC\Dscreen.c -o BUILD\Dscreen.o
 
 BUILD\Ccscr.o: SRC\Ccscr.c
 	$(CC) -c SRC\Ccscr.c -o BUILD\Ccscr.o
