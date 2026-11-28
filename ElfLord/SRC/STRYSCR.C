@@ -80,7 +80,7 @@ void renderStoryScreen(StoryScreen* ss, Screen* s, Game* g) {
 		renderScreenText("magical wall that makes up the veil...", 7, 104, GR_ALIGN_LEFT, GrBlack(), GrNOCOLOR, &GrFont_PC6x8);
 	}
 
-	if(((s->rCount / 120) % 2) == 0) {
+	if(((s->rCount / (g->targetFrameRate / 2)) % 2) == 0) {
 			renderScreenText("PRESS ANY KEY TO CONTINUE...", ((int)(s->width / 2) + 6), 180, GR_ALIGN_CENTER, s->red, GrNOCOLOR, &GrFont_PC8x14);
 	}
 }
