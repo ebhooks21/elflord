@@ -96,5 +96,10 @@ void saveCurrScreen(Screen* s);
  * Function to restore the previous screen.
  */
 void restorePrevScreen(Screen* s);
+
+/**
+ * Function to set the best graphics mode.
+ */
+int setBestGraphicsMode(Screen* s);
 	
 #endif 
