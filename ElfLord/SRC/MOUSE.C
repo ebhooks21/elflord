@@ -58,7 +58,8 @@
         GrMouseInit();
 
 		//Set the mouse sensitivity
-		GrMouseSetSpeed(1, 8);
+		//GrMouseSetSpeed(1, 8);
+		GrMouseSetSpeed(1, 1);
 		GrMouseSetAccel(64, 1);
 
         //Use this to stop the mouse input from eating keyboard input

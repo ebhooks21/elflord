@@ -19,7 +19,8 @@
 #include "HEADER/SUCESSSR.H"
 #include "HEADER/HELPSCR.H"
 #include "HEADER/DSCREEN.H"
-#include <time.h>
+#include <TIME.H>
+#include <dpmi.h>
 #include <stdlib.h>
 
 /**
@@ -42,6 +43,10 @@ void startGame(Game* g) {
 
 	//Set the number of ticks to 0
 	g->numTicks = 0;
+
+	//Set the frame information
+	g->targetFrameRate = 30;
+	g->ticksPerFrame = (UCLOCKS_PER_SEC / g->targetFrameRate);
 
 	//Create a seed for random numbers
 	srand(time(NULL));
@@ -224,6 +229,10 @@ Screen* createGameScreen(int width, int height) {
 void startGameLoop(Game* g) {
 	int running = 1;
 
+	//Track the frame times
+	uclock_t nextFrameTime = uclock() + g->ticksPerFrame;
+	uclock_t currFrametime = 0;
+
 	do {
 		//Check for keyboard input
 		processKeyInput(g);
@@ -236,5 +245,21 @@ void startGameLoop(Game* g) {
 
 		//Render the game screen
 		render(g->screen, g);	
+
+		//Wait out the rest of the frame time
+		while(uclock() < nextFrameTime) {
+			//Allow CPU time slicing for DOSBox(this does nothing on real hardware)
+			__dpmi_yield();
+		}
+
+		//Calculate the next frame time
+		nextFrameTime += g->ticksPerFrame;
+
+		//Check to see if we behind on the frame time
+		currFrametime = uclock();
+
+		if(currFrametime > nextFrameTime) {
+			nextFrameTime = currFrametime + g->ticksPerFrame;
+		}
 	} while(g->state != EXIT_GAME);
 }

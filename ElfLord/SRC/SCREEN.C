@@ -25,8 +25,15 @@
  * Function to initialize the screen.
  */
 void initScreen(Screen* s) {
-	//Set the graphics mode to 640x480 with 256 colors
-    GrSetMode(GR_width_height_color_graphics, s->width, s->height);
+	//Set the graphics mode 
+    if(setBestGraphicsMode(s) == -1) {
+        //Graphics mode is not available
+        GrSetMode(GR_default_text);
+        freopen("CON", "w", stderr);
+	    fprintf(stderr, "VGA-compatible graphics mode 320x200 not available.\n");
+        exit(1); 
+    } 
+
     GrSetRGBcolorMode();
 
     //Setup the mouse 
@@ -214,4 +221,23 @@ void restorePrevScreen(Screen* s) {
 
     //Clear the previous screen
     s->prevScreen = NULL;
+}
+
+/**
+ * Function to set the best graphics mode.
+ */
+int setBestGraphicsMode(Screen* s) {
+    int colorDepths[3] = {24, 16, 15};
+
+    for(int i = 0; i < 3; i++) {
+        if(GrSetMode(GR_width_height_bpp_graphics, s->width, s->height, colorDepths[i])) {
+            return colorDepths[i];
+        }
+    }
+
+    if(GrSetMode(GR_width_height_color_graphics, s->width, s->height, 256)) {
+        return 1;
+    }
+
+    return -1;
 }
