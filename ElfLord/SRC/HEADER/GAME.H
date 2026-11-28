@@ -12,6 +12,7 @@
 #include "PLAYER.H"
 #include "MAP.H"
 #include "MSGA.H"
+#include <time.h>
 
 typedef struct game_t {
 	//Reference to the screen
@@ -31,6 +32,12 @@ typedef struct game_t {
 
 	//Variable to track the number of ticks
 	int numTicks;
+
+	//Variable for the target framerate
+	int targetFrameRate;
+
+	//Variable for the ticks per frame
+	int ticksPerFrame;
 } Game;
 
 /**

@@ -20,6 +20,7 @@
 #include "HEADER/HELPSCR.H"
 #include "HEADER/DSCREEN.H"
 #include <time.h>
+#include <dpmi.h>
 #include <stdlib.h>
 
 /**
